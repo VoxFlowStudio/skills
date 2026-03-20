@@ -1,5 +1,5 @@
 ---
-name: voxflow-cli
+name: voxflow
 description: Use VoxFlow CLI for auth/login, command discovery, and audio workflows.
 ---
 

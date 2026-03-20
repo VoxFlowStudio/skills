@@ -10,10 +10,10 @@ Install all available skills:
 npx skills add VoxFlowStudio/skills
 ```
 
-Install only `voxflow-cli`:
+Install only `voxflow`:
 
 ```bash
-npx skills add VoxFlowStudio/skills --skill voxflow-cli
+npx skills add VoxFlowStudio/skills --skill voxflow
 ```
 
 List available skills before installing:
@@ -24,7 +24,7 @@ npx skills add VoxFlowStudio/skills --list
 
 ## Included Skills
 
-- `voxflow-cli`: authentication, command discovery, and command execution workflow for VoxFlow CLI.
+- `voxflow`: authentication, command discovery, and command execution workflow for VoxFlow CLI.
 
 ## Security
 
@@ -39,6 +39,6 @@ skills/
   README.md
   LICENSE
   SECURITY.md
-  voxflow-cli/
+  voxflow/
     SKILL.md
 ```
