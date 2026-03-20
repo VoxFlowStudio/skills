@@ -22,6 +22,26 @@ List available skills before installing:
 npx skills add VoxFlowStudio/skills --list
 ```
 
+## Update
+
+Check for available updates:
+
+```bash
+npx skills check
+```
+
+Update installed skills (project scope):
+
+```bash
+npx skills update
+```
+
+Update globally installed skills:
+
+```bash
+npx skills update -g
+```
+
 ## Included Skills
 
 - `voxflow`: authentication, command discovery, and command execution workflow for VoxFlow CLI.
