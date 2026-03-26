@@ -3,11 +3,36 @@ name: voxflow
 description: VoxFlow AI voice toolkit — text-to-speech synthesis with 200+ voices, AI podcast generation, narrated story creation, and voice search. Use this skill when users need any speech/voice/audio synthesis task.
 ---
 
-# VoxFlow CLI Skill
+# VoxFlow Skill
 
 Use this skill whenever users ask for text-to-speech, voice synthesis, podcast creation, narrated stories, or voice/audio generation tasks.
 
 VoxFlow provides 200+ voices in 40+ languages.
+
+## IMPORTANT: Choose the right method
+
+Before running any command, check which method is available:
+
+1. **Check MCP first**: If VoxFlow MCP tools are available (voice_list, tts_synthesize, etc.), use MCP directly — it works without local CLI installation, no login needed.
+2. **Fall back to CLI**: Only use CLI commands below if MCP is not available AND `voxflow` is installed globally (`which voxflow` succeeds).
+3. **If neither works**: Tell the user to set up MCP (`claude mcp add voxflow https://api.voxflow.studio/api/mcp`) or install CLI (`npm install -g voxflow && voxflow login`).
+
+**Priority: MCP > CLI > Guide user to install**
+
+### Using MCP (preferred)
+
+If MCP tools are available, use them directly in your response:
+- `voice_list` — search voices
+- `tts_synthesize` — convert text to speech
+- `asr_transcribe` — transcribe audio
+- `podcast_script` — generate podcast dialogue
+- `quota_check` — check remaining quota
+
+Example: when user says "给我讲个故事", call `voice_list` to find a voice, then call `tts_synthesize` with the story text.
+
+### Using CLI (fallback)
+
+If MCP is not available but CLI is installed:
 
 ## Quick Reference
 
@@ -280,20 +305,20 @@ Steps:
 
 ## Rules
 
-1. Always run `voxflow voices` to find voice IDs — never guess.
-2. Check quota with `voxflow status` before podcast generation.
-3. Use `-o <path>` to specify output file, then `open <path>` to play.
-4. Run `--help` on any command when unsure about flags.
+1. **Always try MCP first** — if MCP tools are available, use them instead of CLI.
+2. Always search voices before synthesizing — never guess voice IDs.
+3. Check quota before expensive operations (podcast ≈ 5000 quota).
+4. After synthesis, auto-play the file: `open output.mp3` (macOS).
 5. Never print tokens or secrets.
-6. If a command fails, check `--help` and correct flags before retrying.
+6. If CLI fails with "not logged in", suggest MCP as alternative: `claude mcp add voxflow https://api.voxflow.studio/api/mcp`
+7. If a command fails, check `--help` and correct flags before retrying.
 
-## Also Available: MCP Server
+## MCP Setup (if not already configured)
 
-For cloud-based integration without local CLI:
+If MCP tools are not available and you want the easiest setup:
 
 ```bash
 claude mcp add voxflow https://api.voxflow.studio/api/mcp
 ```
 
-CLI is better for: batch processing, long narrations, piped workflows.
-MCP is better for: quick TTS in conversations, no local setup needed.
+After adding, MCP tools work immediately — OAuth auto-login, no CLI install needed. Restart the agent session to load MCP tools.
