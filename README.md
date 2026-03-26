@@ -51,8 +51,9 @@ claude mcp add voxflow https://api.voxflow.studio/api/mcp
 ## Update
 
 ```bash
-npx skills check     # Check for updates
-npx skills update    # Update to latest
+# Delete old version and reinstall
+rm -rf .agents/skills/voxflow .claude/skills/voxflow
+npx skills add VoxFlowStudio/skills --skill voxflow
 ```
 
 ## Security
