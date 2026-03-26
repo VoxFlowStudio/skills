@@ -1,32 +1,299 @@
 ---
 name: voxflow
-description: Use VoxFlow CLI for auth/login, command discovery, and audio workflows.
+description: VoxFlow AI voice toolkit — text-to-speech synthesis with 200+ voices, AI podcast generation, narrated story creation, and voice search. Use this skill when users need any speech/voice/audio synthesis task.
 ---
 
 # VoxFlow CLI Skill
 
-Use this skill when users ask for VoxFlow dubbing, translation, TTS, or publishing tasks.
+Use this skill whenever users ask for text-to-speech, voice synthesis, podcast creation, narrated stories, or voice/audio generation tasks.
+
+VoxFlow provides 200+ voices in 40+ languages.
+
+## Quick Reference
+
+| Command | What it does | Example |
+|---------|-------------|---------|
+| `say` | Text → speech audio | `voxflow say "Hello" -o hello.mp3` |
+| `narrate` | File/text → multi-segment TTS | `voxflow narrate script.txt -o out.wav` |
+| `podcast` | Topic → AI podcast episode | `voxflow podcast "AI trends" --duration 3` |
+| `story` | Topic → AI narrated story | `voxflow story "太空冒险" -o story.wav` |
+| `voices` | Search voice library | `voxflow voices --lang zh --gender female` |
+| `asr` | Audio → text transcript | `voxflow asr meeting.mp3` |
+| `status` | Check login & quota | `voxflow status` |
 
 ## Authentication
-- Interactive login:
-  - `npx voxflow login`
-  - `npx voxflow status`
 
-## Command Discovery
-- List all commands:
-  - `npx voxflow --help`
-- Inspect specific commands:
-  - `npx voxflow publish --help`
-  - `npx voxflow video-translate --help`
-  - `npx voxflow say --help`
+```bash
+# Login (opens browser for Google/email OTP)
+voxflow login
 
-## Workflow
-1. Confirm user inputs (file path, language, output path).
-2. Run `--help` first when flags are unclear.
-3. Execute the target command with explicit arguments.
-4. Return output path, core command, and verification notes.
+# Check login status and remaining quota
+voxflow status
+
+# Logout
+voxflow logout
+```
+
+- Login is required before any command that calls the API.
+- Token is cached at `~/.config/voxflow/token.json`.
+- For CI environments, set `VOXFLOW_TOKEN` env var.
+
+## Commands
+
+### Text-to-Speech (`say`)
+
+The core command. Convert text to speech audio.
+
+```bash
+# Basic usage
+voxflow say "你好世界" -o hello.mp3
+
+# With specific voice
+voxflow say "Hello world" --voice v-female-R2s4N9qJ -o greeting.mp3
+
+# Slow narration speed
+voxflow say "慢速朗读" --speed 0.8 -o slow.mp3
+
+# WAV format
+voxflow say "高质量音频" --format wav -o output.wav
+```
+
+**Flags:** `--voice <id>` · `--speed <0.5-2.0>` · `--format <mp3|wav>` · `-o <path>`
+
+### Narrate (`narrate`)
+
+Read a file or long text, split into segments, synthesize each with TTS.
+
+```bash
+# From file
+voxflow narrate article.txt -o narration.wav
+
+# From stdin (pipe any text)
+cat readme.md | voxflow narrate -o readme_audio.wav
+
+# With voice
+voxflow narrate script.txt --voice v-male-Bk7vD3xP -o output.wav
+```
+
+Best for: long documents, articles, README files, email newsletters.
+
+### Podcast (`podcast`)
+
+Generate a multi-speaker podcast episode with AI-written script.
+
+```bash
+# From topic
+voxflow podcast "程序员如何用AI提升效率" --duration 3
+
+# With background music
+voxflow podcast "Tech trends" --bgm lofi --duration 5
+
+# From existing script
+voxflow podcast --script dialogue.txt
+
+# Control language
+voxflow podcast "量子计算" --language zh-CN
+```
+
+**Flags:** `--duration <min>` · `--bgm <lofi|jazz|ambient>` · `--script <file>` · `--language <zh-CN|en-US|ja-JP>`
+
+### Story (`story`)
+
+AI writes a short story and narrates it with TTS.
+
+```bash
+voxflow story "一只会飞的小猫" -o story.wav
+voxflow story "space adventure" --lang en -o adventure.wav
+```
+
+Best for: bedtime stories, creative writing demos, content samples.
+
+### Voice Search (`voices`)
+
+Browse the voice library. No login required.
+
+```bash
+# Chinese female voices
+voxflow voices --lang zh --gender female
+
+# English voices
+voxflow voices --lang en
+
+# Search by keyword
+voxflow voices --search "narrator"
+
+# All voices
+voxflow voices --all
+```
+
+Always call `voices` first when the user wants a specific voice style.
+
+### Speech Recognition (`asr`)
+
+Transcribe audio to text. Supports Chinese, English, Japanese, Korean.
+
+```bash
+voxflow asr recording.mp3
+voxflow asr meeting.wav --lang en
+```
+
+**Note:** Requires publicly accessible audio URL or local file upload.
+
+## Voice Selection Guide
+
+```bash
+# Step 1: Search for matching voices
+voxflow voices --lang zh --gender female
+
+# Step 2: Use the voice ID in synthesis
+voxflow say "测试" --voice v-female-R2s4N9qJ -o test.mp3
+```
+
+Popular voices:
+- `v-female-R2s4N9qJ` — 温柔姐姐 (Gentle Female, Chinese)
+- `v-male-Bk7vD3xP` — 威严霸总 (Authoritative Male, Chinese)
+- `v-female-m1KpW7zE` — 傲娇学姐 (Sassy Female, Chinese)
+
+## Common Scenarios
+
+### "把这段话念出来"
+```bash
+voxflow say "用户输入的文字" -o output.mp3 && open output.mp3
+```
+
+### "用温柔女声读这个文件"
+```bash
+voxflow voices --lang zh --gender female   # 先找音色
+voxflow narrate file.txt --voice v-female-R2s4N9qJ -o narration.mp3
+```
+
+### "生成一个关于 XX 的播客"
+```bash
+voxflow status                              # 检查配额（播客约 5000）
+voxflow podcast "话题" --duration 3 --bgm lofi
+```
+
+### "讲个睡前故事"
+```bash
+voxflow story "小狐狸的星星种子" -o bedtime.mp3 && open bedtime.mp3
+```
+
+### "转录这段录音"
+```bash
+voxflow asr recording.mp3
+```
+
+## Creative Workflows
+
+These workflows combine VoxFlow TTS with the AI agent's own abilities (writing, coding, web fetching). The agent writes content, then calls `voxflow say` or `voxflow narrate` to synthesize each part.
+
+### Audio Storybook (有声绘本)
+
+AI writes a children's story, generates SVG illustrations, synthesizes narration per page, and bundles everything into a single offline HTML file.
+
+Steps:
+1. Write a 6-page children's story
+2. For each page: generate an inline SVG illustration (400×300)
+3. Synthesize narration: `voxflow say "page text" --voice v-female-R2s4N9qJ --speed 0.85 -o /tmp/page_N.mp3`
+4. Read the mp3 files, base64 encode, embed inline in HTML
+5. Output a single self-contained HTML file with audio play buttons per page
+6. `open /tmp/storybook.html`
+
+### Audio Presentation (有声演示文稿)
+
+AI creates an HTML slide deck with TTS narration on each slide.
+
+Steps:
+1. Generate N slides (title + bullet points + narration script)
+2. For each slide: `voxflow say "narration script" -o /tmp/slide_N.mp3`
+3. Build an HTML file with slide navigation (prev/next) and audio buttons
+4. Embed audio inline as base64
+5. `open /tmp/presentation.html`
+
+Best for: product introductions, technical tutorials, course materials.
+
+### Article → Audio Briefing (文章有声摘要)
+
+Read a URL or document, summarize, synthesize as audio.
+
+Steps:
+1. Fetch/read the content
+2. Summarize into 3-5 key points
+3. `voxflow say "summary text" --voice v-male-Bk7vD3xP -o /tmp/briefing.mp3`
+4. `open /tmp/briefing.mp3`
+
+### Document Narration (文档朗读)
+
+Read a README, code comments, or any text file aloud.
+
+```bash
+voxflow narrate README.md --voice v-female-R2s4N9qJ --speed 0.9 -o /tmp/readme.mp3
+open /tmp/readme.mp3
+```
+
+### Multi-language Voice (多语言合成)
+
+AI translates text, then synthesizes in each language with matching voices.
+
+Steps:
+1. Translate user text to target languages (AI does this natively)
+2. `voxflow voices --lang en --gender female` → pick English voice
+3. `voxflow voices --lang ja --gender female` → pick Japanese voice
+4. `voxflow say "English text" --voice <en_id> -o /tmp/en.mp3`
+5. `voxflow say "日本語テキスト" --voice <ja_id> -o /tmp/ja.mp3`
+
+### Git Daily Report Audio (Git 日报音频)
+
+Steps:
+1. Read `git log --oneline --since="1 day ago"`
+2. Summarize changes into a brief report
+3. `voxflow say "today's summary..." -o /tmp/daily_report.mp3`
+4. `open /tmp/daily_report.mp3`
+
+### Code PR Explanation (PR 语音讲解)
+
+Steps:
+1. Read the PR diff
+2. Write a plain-language explanation
+3. `voxflow say "explanation..." -o /tmp/pr_review.mp3`
+4. `open /tmp/pr_review.mp3`
+
+### Mock Interview (模拟面试)
+
+Steps:
+1. Generate 3 interview questions on the topic
+2. For each: `voxflow say "question N..." --voice v-male-Bk7vD3xP -o /tmp/q_N.mp3`
+3. Play questions in sequence: `open /tmp/q_1.mp3`
+
+## Quota
+
+- Free: 10,000 quota/month
+- 1 TTS call ≈ 100 quota
+- 1 podcast ≈ 5,000 quota
+- Check: `voxflow status`
+
+## Prerequisites
+
+- **Node.js** 20+ required
+- **ffmpeg** optional (only for video-related commands)
+- Install CLI: `npm install -g voxflow`
 
 ## Rules
-- Never print tokens or secrets in logs.
-- Keep business logic in VoxFlow CLI commands, not in skill prose.
-- If a command fails, retry only after checking `--help` and correcting flags.
+
+1. Always run `voxflow voices` to find voice IDs — never guess.
+2. Check quota with `voxflow status` before podcast generation.
+3. Use `-o <path>` to specify output file, then `open <path>` to play.
+4. Run `--help` on any command when unsure about flags.
+5. Never print tokens or secrets.
+6. If a command fails, check `--help` and correct flags before retrying.
+
+## Also Available: MCP Server
+
+For cloud-based integration without local CLI:
+
+```bash
+claude mcp add voxflow https://api.voxflow.studio/api/mcp
+```
+
+CLI is better for: batch processing, long narrations, piped workflows.
+MCP is better for: quick TTS in conversations, no local setup needed.
