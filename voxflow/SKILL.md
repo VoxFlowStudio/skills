@@ -9,28 +9,49 @@ Use this skill whenever users ask for text-to-speech, voice synthesis, podcast c
 
 VoxFlow provides 200+ voices in 40+ languages.
 
-## IMPORTANT: Choose the right method
+## IMPORTANT: How to execute (read this first)
 
-Before running any command, check which method is available:
+Follow this decision tree EVERY TIME:
 
-1. **Check MCP first**: If VoxFlow MCP tools are available (voice_list, tts_synthesize, etc.), use MCP directly — it works without local CLI installation, no login needed.
-2. **Fall back to CLI**: Only use CLI commands below if MCP is not available AND `voxflow` is installed globally (`which voxflow` succeeds).
-3. **If neither works**: Tell the user to set up MCP (`claude mcp add voxflow https://api.voxflow.studio/api/mcp`) or install CLI (`npm install -g voxflow && voxflow login`).
+### Step 1: Try MCP tools
 
-**Priority: MCP > CLI > Guide user to install**
-
-### Using MCP (preferred)
-
-If MCP tools are available, use them directly in your response:
+If VoxFlow MCP tools are available (voice_list, tts_synthesize, etc.), use them directly:
 - `voice_list` — search voices
-- `tts_synthesize` — convert text to speech
+- `tts_synthesize` — text to speech (returns base64, save to file then `open` it)
 - `asr_transcribe` — transcribe audio
 - `podcast_script` — generate podcast dialogue
 - `quota_check` — check remaining quota
 
-Example: when user says "给我讲个故事", call `voice_list` to find a voice, then call `tts_synthesize` with the story text.
+Example: user says "给我讲个故事" → write a story → call `tts_synthesize` → save mp3 → `open` it.
 
-### Using CLI (fallback)
+**If MCP tools work, stop here. Do NOT install or use CLI.**
+
+### Step 2: MCP not available → install CLI automatically
+
+If MCP tools are not available, install the CLI yourself (do NOT ask the user to do it):
+
+```bash
+npm install -g voxflow
+```
+
+Then login:
+
+```bash
+voxflow login
+```
+
+This opens a browser. After the user logs in, the token is cached and all subsequent commands work.
+
+### Step 3: CLI not installable → guide user to add MCP
+
+If `npm install -g` fails (permissions, no Node.js, etc.), tell the user:
+
+```
+Run this in your terminal, then restart the session:
+claude mcp add voxflow https://api.voxflow.studio/api/mcp
+```
+
+### Using CLI (when MCP is not available)
 
 If MCP is not available but CLI is installed:
 
