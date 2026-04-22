@@ -1,6 +1,6 @@
 ---
 name: voxflow
-description: VoxFlow AI voice toolkit — text-to-speech synthesis with 200+ voices, AI podcast generation, narrated story creation, and voice search. Use this skill when users need any speech/voice/audio synthesis task.
+description: VoxFlow AI voice & video platform — text-to-speech (200+ voices, 40+ languages), AI podcast generation, AI short video clips (render_create/render_status), cloud rendering, and voice search. Use this skill for any speech, voice, audio, or AI video creation task.
 ---
 
 # VoxFlow Skill
@@ -15,12 +15,15 @@ Follow this decision tree EVERY TIME:
 
 ### Step 1: Try MCP tools
 
-If VoxFlow MCP tools are available (voice_list, tts_synthesize, etc.), use them directly:
+If VoxFlow MCP tools are available, use them directly:
 - `voice_list` — search voices
 - `tts_synthesize` — text to speech (returns base64, save to file then `open` it)
 - `asr_transcribe` — transcribe audio
 - `podcast_script` — generate podcast dialogue
 - `quota_check` — check remaining quota
+- `render_create` — create AI video clip (topic or pre-built cards mode)
+- `render_status` — poll render job until completed + get download URL
+- `render_list` — list recent render jobs
 
 Example: user says "给我讲个故事" → write a story → call `tts_synthesize` → save mp3 → `open` it.
 
@@ -324,15 +327,98 @@ Steps:
 - **ffmpeg** optional (only for video-related commands)
 - Install CLI: `npm install -g voxflow`
 
+## 🎬 AI Video Clips (render_create MCP tool)
+
+Generate short-form videos with AI-generated cards, TTS narration, captions, and BGM.
+
+**Cost:** 500 quota per video. Check with `quota_check` first.
+
+### Two modes
+
+**Topic mode** — full AI pipeline (LLM writes cards → TTS → Remotion render):
+```
+render_create(
+  topic = "5个改善睡眠质量的科学方法",
+  scheme = "aurora",
+  aspect_ratio = "9:16",
+  bgm_track = "calm",
+  voice_id = "v-male-s5NqE0rZ",
+  show_captions = true
+)
+```
+
+**Cards mode** — provide pre-built LayoutTree (skip LLM generation):
+```
+render_create(
+  cardsData = { cards: [...] },
+  scheme = "neon",
+  aspect_ratio = "1:1",
+  bgm_track = "tech"
+)
+```
+
+### Poll until done
+
+```
+job = render_create(topic="如何在30天内养成早起习惯")
+# Poll every 15-30 seconds until completed
+result = render_status(job_id=job.jobId)
+# When completed: result.downloadUrl is the MP4
+```
+
+Typical duration: 2-5 minutes.
+
+### scheme (visual theme)
+
+| scheme | Style | Best for |
+|--------|-------|----------|
+| `aurora` | Teal/purple dark | General, tech, knowledge |
+| `neon` | Cyan/pink cyberpunk | AI, gaming, future |
+| `noir` | Gold/dark editorial | Stories, culture, lifestyle |
+| `editorial` | Warm gold dark | Humanistic, narrative |
+| `brutalist` | B&W high contrast | Business, finance |
+| `minimal` | Clean white/blue | Professional, comparison |
+| `crimson` | Red dark | Health, sports |
+| `dusk` | Orange-brown warm | Food, travel |
+| `slate` | Blue-gray cool | Tech, productivity |
+| `sand` | Warm beige | Mindfulness, education |
+| `mint` | Green-teal soft | Wellness, environment |
+
+### bgm_track
+
+| bgm_track | Mood | Best for |
+|-----------|------|----------|
+| `corporate` | Professional | Business, knowledge, default |
+| `calm` | Peaceful | Health, sleep, mindfulness |
+| `upbeat` | Energetic | Sports, food, motivation |
+| `tech` | Electronic | AI, coding, sci-fi |
+| `inspiring` | Uplifting | Finance, growth, success |
+| `cinematic` | Emotional | Stories, culture, travel |
+| `none` | Silent | Clear narration |
+
+### Voice + BGM by content type
+
+| Content type | voice_id | bgm_track | scheme |
+|-------------|----------|-----------|--------|
+| Business / tech (Chinese) | `v-male-s5NqE0rZ` | `corporate` / `tech` | `aurora` / `neon` |
+| Health / lifestyle (Chinese) | `v-female-R2s4N9qJ` | `calm` / `upbeat` | `mint` / `crimson` |
+| Emotional / storytelling | `v-female-R2s4N9qJ` | `cinematic` | `noir` / `editorial` |
+| Knowledge / tutorial | `v-male-s5NqE0rZ` | `corporate` / `calm` | `aurora` / `minimal` |
+| Inspirational / finance | `v-male-s5NqE0rZ` | `inspiring` | `aurora` / `brutalist` |
+| English content | `v-female-T8m4WxP7` | `corporate` | `brutalist` / `minimal` |
+
+---
+
 ## Rules
 
 1. **Always try MCP first** — if MCP tools are available, use them instead of CLI.
 2. Always search voices before synthesizing — never guess voice IDs.
-3. Check quota before expensive operations (podcast ≈ 5000 quota).
+3. Check quota before expensive operations (podcast ≈ 5000, render ≈ 500 quota).
 4. After synthesis, auto-play the file: `open output.mp3` (macOS).
-5. Never print tokens or secrets.
-6. If CLI fails with "not logged in", suggest MCP as alternative: `claude mcp add voxflow https://api.voxflow.studio/api/mcp`
-7. If a command fails, check `--help` and correct flags before retrying.
+5. For video renders: poll `render_status` every 15-30s until `completed`. Typical: 2-5 min.
+6. Never print tokens or secrets.
+7. If CLI fails with "not logged in", suggest MCP: `claude mcp add voxflow https://api.voxflow.studio/api/mcp`
+8. If a command fails, check `--help` and correct flags before retrying.
 
 ## MCP Setup (if not already configured)
 
