@@ -206,11 +206,12 @@ Opens a pre-filled GitHub issue in the browser. System info (OS, Node, CLI versi
 ## Installing third-party voices or templates (`add`)
 
 ```bash
-voxflow add <recipe-name>      # install a voice preset or pipeline template
-voxflow add --list             # browse available recipes
+voxflow add <recipe-name>                  # install a voice preset or pipeline template
+voxflow add --list                         # browse available recipes
+voxflow add chico/my-recipe --force        # install from a custom author namespace
 ```
 
-Use this when the user asks to install a custom voice pack or community template.
+Use this when the user asks to install a specific named recipe (e.g. `dub-anime-jp-zh`). The registry is currently limited — if `--list` returns 404, the recipe may need to be referenced by full URL or the registry is not yet public.
 
 ## Rules
 
