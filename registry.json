@@ -1,0 +1,22 @@
+{
+  "$schema": "https://voxflow.studio/schema/registry.json",
+  "name": "voxflow-official",
+  "version": "0.1.0",
+  "homepage": "https://voxflow.studio",
+  "description": "Official VoxFlow registry — curated flows, voice recipes, and CLI presets",
+  "items": [
+    {
+      "name": "dub-anime-jp-zh",
+      "author": "voxflow",
+      "type": "voxflow:preset",
+      "version": "0.1.0",
+      "description": "Japanese-to-Chinese anime fan-dub preset — pre-tuned voice mapping for protagonist / antagonist / narrator with auto speed compensation",
+      "tags": ["dub", "anime", "japanese", "chinese", "fan-dub"],
+      "files": [
+        "voxflow/dub-anime-jp-zh/voices.json",
+        "voxflow/dub-anime-jp-zh/README.md"
+      ],
+      "tryWith": "voxflow dub input.srt --voices presets/dub-anime-jp-zh/voices.json --speed-auto"
+    }
+  ]
+}
