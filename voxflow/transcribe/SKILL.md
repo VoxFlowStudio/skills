@@ -16,8 +16,6 @@ Audio/video → text → other languages → re-voiced video. Five tightly-relat
 | `video-translate` | End-to-end: ASR → translate → dub → merge MP4 | MP4 in target language |
 | `summarize` | Audio/video/text → summary slides (PPTX, optional video) | PPTX / MP4 |
 
-If MCP is available, `asr_transcribe` is the equivalent of `voxflow asr`. Other steps are CLI-only.
-
 ## Prerequisites
 
 - `npm install -g voxflow` and `voxflow login`
@@ -329,7 +327,7 @@ voxflow summarize --text "长篇文章内容..." --slides 6 --lang zh
 | `--model` | `base` | Whisper model for local ASR |
 | `--tts` | false | Add TTS narration audio per slide |
 | `--video` | false | Also render an MP4 (needs `remotion-cards/`) |
-| `--scheme` | `aurora` | Video scheme — see `voxflow-video` skill for full table |
+| `--scheme` | `aurora` | Video scheme — see `voxflow:video` skill for full table |
 | `--voice <id>` | `v-female-R2s4N9qJ` | |
 | `--output <path>` | `<input>-summary.pptx` | |
 
