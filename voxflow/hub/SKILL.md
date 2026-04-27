@@ -198,38 +198,37 @@ When a voxflow command fails or the user asks to report a problem, **you (the AI
 ### AI workflow
 
 ```bash
-# 1. Get the issue URL (non-interactive, no browser, no TTY required)
+# Submit directly — no browser, no TTY required.
+# Uses `gh` CLI if available (direct GitHub issue creation).
+# Falls back to printing the pre-filled URL if gh is not installed.
 voxflow feedback --bug \
   --title "asr crashes on 2-hour wav files" \
-  --body "Error: timeout after 30s\n\nCommand: voxflow asr long.wav\nExpected: transcript\nActual: Fatal error: request timeout" \
-  --print-url
-
-# 2. Show the URL to the user and offer to open it:
-#    "I've prepared a bug report: <url>  — open it to submit?"
+  --body "Error: timeout after 30s\n\nCommand: voxflow asr long.wav\nExpected: transcript\nActual: Fatal error: request timeout"
+# stdout → https://github.com/VoxFlowStudio/FlowStudio/issues/NNNN  (or URL if no gh)
 ```
 
-The `--print-url` flag outputs only the URL (stdout, no browser). System info (CLI version, OS, Node) is appended automatically.
+System info (CLI version, OS, Node) is appended to the body automatically.
 
 ### Flags
 
 | Flag | Description |
 |---|---|
 | `--bug` / `--feature` / `--general` | Issue type |
-| `--title <text>` | Title (required for non-interactive mode) |
+| `--title <text>` | Title — triggers non-interactive mode |
 | `--body <text>` | Description body |
-| `--print-url` | Print URL to stdout instead of opening browser |
+| `--print-url` | Force URL output instead of submitting (even if gh is available) |
 
 ### User-initiated (interactive)
 
 ```bash
-voxflow feedback          # interactive prompts → browser
+voxflow feedback          # interactive prompts → submit via gh or browser
 voxflow feedback --bug    # skip type prompt, rest is interactive
 ```
 
 ### When to file automatically
 
-- Any CLI command exits with a fatal/unexpected error → offer to file a bug report
-- User says "这个不好用" / "report this" / "提个 issue" → use `--print-url` and show URL
+- Any CLI command exits with a fatal/unexpected error → offer to file a bug
+- User says "这个不好用" / "report this" / "提个 issue" → call with `--title` and submit directly
 
 ## Installing third-party voices or templates (`add`)
 
