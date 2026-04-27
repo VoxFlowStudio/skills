@@ -1,82 +1,97 @@
 # VoxFlow Skills
 
-Installable Agent Skills for [VoxFlow](https://voxflow.studio) AI voice workflows. Give your AI coding agent (Claude Code, Cursor, OpenClaw, etc.) the ability to synthesize speech, generate podcasts, dub videos, transcribe audio, and more — using the VoxFlow CLI.
+Agent skills for [VoxFlow](https://voxflow.studio) — give your AI coding agent the ability to synthesize speech, generate AI podcasts, dub videos, transcribe audio, create short videos, and more, all through the VoxFlow CLI.
+
+Compatible with Claude Code, Cursor, OpenClaw, and any agent that supports the Skills protocol.
 
 ## Install
 
 ```bash
-# Install the voxflow skill
-npx skills add VoxFlowStudio/skills --skill voxflow
+# Claude Code
+claude skills add voxflow
 
-# List available skills
-npx skills add VoxFlowStudio/skills --list
+# Cursor / other agents
+npx skills add VoxFlowStudio/skills --skill voxflow
 ```
 
 ## Prerequisites
 
 ```bash
-# Install VoxFlow CLI
 npm install -g voxflow
-
-# Login (one-time, opens browser)
-voxflow login
+voxflow login          # one-time browser auth
 ```
 
-## What it does
+## What You Get
 
-After installation, your AI agent automatically knows how to use VoxFlow CLI commands:
+Four focused skills, each loaded on demand:
+
+| Skill | Invoked as | What it covers |
+|-------|-----------|----------------|
+| **hub** | `voxflow:hub` | `say` · `narrate` · `story` · `voices` · auth · quota · feedback |
+| **podcast** | `voxflow:podcast` | Multi-speaker AI podcast from topic / URL / script |
+| **transcribe** | `voxflow:transcribe` | `asr` · `translate` · `dub` · `video-translate` · subtitles |
+| **video** | `voxflow:video` | `picstory` · `present` · `slides` · `explain` · `image` |
+
+Use the hub skill as the starting point — it routes to the others automatically.
+
+## Example Interactions
 
 | You say | Agent runs |
 |---------|-----------|
 | "把这段话合成语音" | `voxflow say "..." -o output.mp3` |
+| "生成一个 3 分钟 AI 播客" | `voxflow podcast "topic" --duration 3` |
 | "把这个视频翻译成日语" | `voxflow video-translate video.mp4 --to ja` |
-| "生成一个 AI 播客" | `voxflow podcast "topic" --duration 3` |
 | "转录这段录音" | `voxflow asr recording.mp3` |
-| "用温柔女声念这个文件" | `voxflow narrate file.txt --voice v-female-R2s4N9qJ` |
+| "做一个 AI 知识短视频" | `voxflow picstory "topic" --style sketchnote` |
+| "生成一套演示幻灯片" | `voxflow slides "topic" --slides 8` |
 
-## Included Skills
+## Skills Layout
 
-- **`voxflow`**: Full VoxFlow CLI skill — 11 commands, voice search, workflows, quota management. See [voxflow/SKILL.md](voxflow/SKILL.md) for the complete reference.
-
-## Also Available: MCP Server
-
-For AI agents that support [MCP](https://modelcontextprotocol.io) (Claude Code, Cursor, Windsurf):
-
-```bash
-claude mcp add voxflow https://api.voxflow.studio/api/mcp
+```text
+voxflow/
+  hub/SKILL.md          # TTS, voice search, auth, quota, feedback
+  podcast/SKILL.md      # AI dialogue podcast
+  transcribe/SKILL.md   # ASR, translation, dubbing
+  video/SKILL.md        # AI short video, slides, images
 ```
 
-**Skills vs MCP**: Skills teach the agent to use CLI (local, supports video/ffmpeg). MCP calls the cloud API directly (no local deps). Install both for full coverage.
+## Registry
 
-## Update
+```text
+registry.json           # VoxFlow CLI add-on recipes index
+voxflow/
+  dub-anime-jp-zh/      # Anime fan-dub voice preset (JP→ZH)
+```
+
+Install a recipe:
+```bash
+voxflow add dub-anime-jp-zh
+```
+
+## Quota
+
+Free tier: 10,000 / month. Check before large jobs:
 
 ```bash
-# Delete old version and reinstall
-rm -rf .agents/skills/voxflow .claude/skills/voxflow
-npx skills add VoxFlowStudio/skills --skill voxflow
+voxflow status
 ```
+
+| Operation | Cost |
+|-----------|------|
+| `say` (1 call) | ~100 |
+| `narrate` (per segment) | ~100 |
+| `podcast` (medium) | ~5,000 |
+| `picstory` (5 scenes) | ~3,100 |
 
 ## Security
 
-- This repository contains no API keys or tokens.
-- Do not add secrets to `SKILL.md` files.
+- No API keys or tokens in this repository.
 - Use `voxflow login` for interactive auth or `VOXFLOW_TOKEN` env var for CI.
-
-## Layout
-
-```text
-skills/
-  README.md
-  LICENSE
-  SECURITY.md
-  voxflow/
-    SKILL.md      # The skill file agents read (~200 lines)
-```
+- See [SECURITY.md](SECURITY.md) for vulnerability disclosure.
 
 ## Links
 
 - [VoxFlow Studio](https://voxflow.studio) — Web app
-- [CLI docs](https://voxflow.studio/docs/cli) — Command reference
-- [MCP docs](https://voxflow.studio/docs/mcp) — MCP server setup
-- [Skills docs](https://voxflow.studio/docs/skills) — Skills installation guide
-- [npm package](https://www.npmjs.com/package/voxflow) — CLI on npm
+- [CLI on npm](https://www.npmjs.com/package/voxflow) — `npm install -g voxflow`
+- [CLI docs](https://voxflow.studio/docs/cli) — Full command reference
+- [Skills source](https://github.com/VoxFlowStudio/FlowStudio/tree/main/cli/skills) — Canonical source in FlowStudio monorepo
