@@ -8,13 +8,13 @@ description: Use when the user wants to produce a multi-speaker AI podcast from 
 Generate multi-speaker AI podcasts entirely from the command line. Sister skills:
 
 - Simple TTS / narration / voice search → `voxflow` (hub)
-- Short videos / AI clips / knowledge cards → `voxflow-video`
-- Transcribe / translate subtitles / dub → `voxflow-transcribe`
+- Short videos / AI clips / knowledge cards → `voxflow:video`
+- Transcribe / translate subtitles / dub → `voxflow:transcribe`
 
 ## Prerequisites
 
-- Node.js >= 18
-- `npm install -g voxflow` (or `npx voxflow`)
+- Node.js `^20.19.0 || >=22.12.0`
+- `npm install -g voxflow` then `voxflow login`
 - VoxFlow account (free tier: 10K quota/month)
 
 **No API keys needed** — all auth goes through `voxflow login`.

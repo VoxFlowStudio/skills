@@ -1,30 +1,27 @@
 ---
 name: video
-description: Use when the user wants AI-generated short-form video — knowledge cards (picstory / 小红书 / TikTok / Reels), narrated explainers, presentations, AI clips, or slides — covering picstory, render_create (MCP), present, slides, explain, and image generation.
+description: Use when the user wants AI-generated short-form video — knowledge cards (picstory / 小红书 / TikTok / Reels), narrated explainers, presentations, AI clips, or slides — covering picstory, present, slides, explain, and image generation.
 ---
 
 # VoxFlow Video Skill
 
 Generate short-form videos with AI: LLM writes the script, AI draws cards or scenes, TTS narrates, FFmpeg / Remotion renders the final MP4.
 
-Five interchangeable entry points, pick by what the user wants:
+Five entry points — pick by what the user wants:
 
-| Entry point | Output | Use when |
+| Command | Output | Use when |
 |---|---|---|
-| `picstory` (CLI) | Vertical/landscape MP4 with hand-drawn cards or cinematic scenes | "知识卡片视频", 小红书 / Twitter edu, sketchnote tutorials |
-| `render_create` (MCP) | 1080×1920 / 1:1 / 9:16 short clip | "AI clip", themed brand-style cards (aurora/neon/noir/...), one-shot render via MCP |
-| `present` (CLI) | 1080×1920 narrated card video, 5 visual schemes | Pitch decks, explainer reels, branded short-form |
-| `explain` (CLI) | MP4 explainer with title / bullets / summary scenes | "What is X?" tutorials, course intros |
-| `slides` (CLI) | Self-contained HTML deck with embedded TTS audio | Product launches, talks, share-as-link |
-| `image` (CLI) | Single PNG | One-off illustrations / thumbnails (Hunyuan TextToImage) |
-
-If the agent only has MCP, use **`render_create`** (most robust, no local Remotion needed). If the user has CLI installed and wants knowledge cards, use **`picstory`**.
+| `picstory` | Vertical/landscape MP4 with hand-drawn cards or cinematic scenes | "知识卡片视频", 小红书 / Twitter edu, sketchnote tutorials |
+| `present` | 1080×1920 narrated card video, 5 visual schemes | Pitch decks, explainer reels, branded short-form |
+| `explain` | MP4 explainer with title / bullets / summary scenes | "What is X?" tutorials, course intros |
+| `slides` | Self-contained HTML deck with embedded TTS audio | Product launches, talks, share-as-link |
+| `image` | Single PNG | One-off illustrations / thumbnails (Hunyuan TextToImage) |
 
 ## Prerequisites
 
 - `npm install -g voxflow` and `voxflow login`
 - `ffmpeg` installed (`brew install ffmpeg` / `sudo apt install ffmpeg`) — required for MP4 render
-- For `present` / `explain` (Remotion-backed): the local plugin install includes `remotion-cards/`. If `present` says "Remotion not ready", run `npm install` inside the bundled `remotion-cards/` directory or fall back to `render_create` (cloud).
+- For `present` / `explain` (Remotion-backed): the local plugin install includes `remotion-cards/`. If `present` says "Remotion not ready", run `npm install` inside the bundled `remotion-cards/` directory. For `explain`, you can skip local Remotion with `--cloud`.
 
 ---
 
@@ -153,112 +150,6 @@ Topic / Text
 
 ---
 
-## 🎬 render_create (MCP) — AI clips
-
-If MCP tools are available, `render_create` is the most robust path: pure cloud render, no local FFmpeg / Remotion required, polls until ready.
-
-**Cost:** 500 quota per video. Auto-refunded on failure. Always `quota_check()` first.
-
-### Two modes
-
-**Topic mode** — full pipeline (LLM writes cards → TTS → cloud Remotion):
-
-```
-render_create(
-  topic = "5个改善睡眠质量的科学方法",
-  scheme = "aurora",
-  aspect_ratio = "9:16",
-  bgm_track = "calm",
-  voice_id = "v-female-R2s4N9qJ",
-  show_captions = true,
-  caption_size = "md"
-)
-```
-
-**Cards mode** — provide pre-built `cardsData.cards[]` (skip LLM):
-
-```
-render_create(
-  cardsData = { cards: [...] },
-  scheme = "neon",
-  aspect_ratio = "1:1",
-  bgm_track = "tech"
-)
-```
-
-### scheme (visual theme)
-
-| ID | Style | Best for |
-|---|---|---|
-| `aurora` | Teal/purple dark | General, tech, knowledge |
-| `neon` | Cyan/pink cyberpunk | AI, gaming, future tech |
-| `noir` | Gold/dark editorial | Stories, culture |
-| `editorial` | Warm gold dark | Narrative, humanistic |
-| `brutalist` | B&W high contrast | Business, finance |
-| `minimal` | Clean white/blue | Professional, comparison |
-| `crimson` | Red dark | Health, sports, energy |
-| `dusk` | Orange-brown warm | Lifestyle, food, travel |
-| `slate` | Blue-gray cool | Tech, productivity |
-| `sand` | Warm beige | Mindfulness, education |
-| `mint` | Green-teal soft | Wellness, environment |
-
-### bgm_track
-
-| ID | Mood | Best for |
-|---|---|---|
-| `corporate` | Professional neutral | Business, default |
-| `calm` | Peaceful slow | Health, sleep, mindfulness |
-| `upbeat` | Energetic positive | Sports, motivation, food |
-| `tech` | Electronic pulse | AI, sci-fi |
-| `inspiring` | Uplifting building | Finance, growth |
-| `cinematic` | Emotional dramatic | Stories, culture, travel |
-| `none` | No music | Narration must be crystal clear |
-
-### Voice recommendations by category
-
-| Content | Voice | Why |
-|---|---|---|
-| Business / tech (zh) | `v-male-s5NqE0rZ` | Authoritative, clear |
-| Health / lifestyle (zh) | `v-female-R2s4N9qJ` | Warm, approachable |
-| Storytelling | `v-female-R2s4N9qJ` | Natural cadence |
-| English | `v-female-T8m4WxP7` | Native-sounding |
-
-Always `voice_list()` to find more matches.
-
-### scheme + BGM auto-recommend
-
-```
-科技/AI/编程         → neon|slate     + tech       + male
-商业/投资/财商       → aurora|brutalist + corporate|inspiring + male
-健康/运动/营养       → crimson|mint   + upbeat|calm + female
-情感/故事/叙事       → noir|editorial + cinematic   + female
-生活/旅游/文化       → dusk|sand      + cinematic|calm + female
-知识/教程/方法论     → aurora|minimal + corporate|calm + either
-励志/成长/逆袭       → aurora         + inspiring   + male
-英文内容             → brutalist|minimal + corporate + v-female-T8m4WxP7
-```
-
-### Full workflow
-
-```
-quota_check()                                  # ensure ≥500
-jobId = render_create(topic="如何在30天内养成早起习惯",
-                      scheme="mint",
-                      aspect_ratio="9:16",
-                      bgm_track="calm",
-                      voice_id="v-female-R2s4N9qJ")
-
-# Poll every 15-30s. Typical: 2-5 min.
-while True:
-  result = render_status(job_id=jobId)
-  if result.status == "completed":
-    print(result.download_url); break
-```
-
-`render_list(limit=5)` returns recent jobs.
-
----
-
 ## 📑 present — narrated card video (Remotion local)
 
 Text or URL → LLM cards → TTS → Remotion render. 1080×1920, 5 visual schemes.
@@ -280,7 +171,7 @@ voxflow present --cards pre-generated.json --no-audio
 | `--web-search` | false | Augment LLM with up-to-date web facts |
 | `--output <path>` | `./present-<ts>.mp4` | `.mp4` or `.wav` |
 
-> If `present` reports "Remotion not ready", install deps inside the bundled `remotion-cards/` or use the cloud `render_create` (MCP) path instead.
+> If `present` reports "Remotion not ready", run `npm install` inside the bundled `remotion-cards/` directory to set up the local renderer.
 
 ---
 
@@ -352,19 +243,17 @@ Prompt max 1000 chars. Output: local PNG + COS URL.
 
 ```
 "小红书风格知识卡片"           → picstory
-"AI clip / 短视频 + caption"   → render_create (MCP)
+"AI 短视频 + caption"          → picstory --style sketchnote
 "explainer / What is X?"        → explain
-"branded short with my cards"   → present (--cards) or render_create (cardsData)
+"branded short with my text"    → present
+"already have cards/script"     → present --cards
 "shareable HTML deck w/ audio"  → slides
 "single illustration"           → image
-"already have script + cards"   → render_create cardsData OR present --cards
 ```
 
 ## Rules
 
-1. **Search voices** with `voxflow voices` / `voice_list` before passing `--voice`.
-2. **Always `quota_check()`** before video calls (each render = 500–3000 quota).
+1. **Search voices** with `voxflow voices` before passing `--voice`. Never guess IDs.
+2. **Check quota** before video calls (`voxflow status`): picstory ≈ 3K, present/explain ≈ 500–2K.
 3. **Test cheap first**: `picstory --scenes 2 --image-only` validates the script before paying for full render.
-4. **Poll `render_status` every 15-30s** until `completed`. Typical render: 2-5 min.
-5. **MCP `render_create` > CLI `present`** when you need cloud render and don't want to manage local Remotion.
-6. After local render finishes, auto-play: `open output.mp4` (macOS).
+4. After render finishes, auto-play: `open output.mp4` (macOS).

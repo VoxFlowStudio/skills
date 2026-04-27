@@ -10,40 +10,19 @@ VoxFlow turns text into speech in 200+ voices across 40+ languages, plus full au
 For specialized tasks, switch to:
 
 - **Podcasts** (multi-speaker dialogue) → `voxflow:podcast`
-- **Short videos / AI clips / knowledge cards** (`picstory`, `render_create`, `present`, `slides`, `explain`) → `voxflow:video`
+- **Short videos / AI clips / knowledge cards** (`picstory`, `present`, `slides`, `explain`) → `voxflow:video`
 - **Transcription, subtitle translation, dubbing** (`asr`, `translate`, `dub`, `video-translate`) → `voxflow:transcribe`
 
-## Decision tree (every time)
+## Install & login
 
-### 1. Try MCP tools first
-
-If VoxFlow MCP tools are exposed in the session — `voice_list`, `tts_synthesize`, `quota_check`, `asr_transcribe`, `podcast_script`, `render_create`, `render_status`, `render_list` — use them directly.
-
-```
-tts_synthesize(text="你好世界", voice_id="v-female-R2s4N9qJ")
-→ returns base64 audio → save → `open` it.
-```
-
-**If MCP works, stop here. Do not install the CLI.**
-
-### 2. MCP not available → install CLI yourself
-
-Don't ask the user to install. Just run:
+Install once, never ask the user again:
 
 ```bash
 npm install -g voxflow
-voxflow login   # opens browser for Google / email OTP
+voxflow login          # opens browser — Google or email OTP
 ```
 
 Token cached at `~/.config/voxflow/token.json`. For CI, set `VOXFLOW_TOKEN`.
-
-### 3. CLI install fails → tell the user to add MCP
-
-```
-claude mcp add voxflow https://api.voxflow.studio/api/mcp
-```
-
-After adding, restart the session.
 
 ## Authentication
 
@@ -134,14 +113,12 @@ Free tier: 10,000 quota / month (resets monthly). Bonus pool from invitations ne
 | `narrate` | ~100 per segment |
 | `story` (short) | ~500-1500 |
 | `podcast` (medium) | ~5,000 |
-| AI video clip (`render_create`) | 500 |
 | `picstory` 5-scene | ~3,100 |
 
 Always check before expensive operations:
 
 ```bash
-voxflow status   # CLI
-quota_check()    # MCP
+voxflow status
 ```
 
 ## Common scenarios
@@ -211,21 +188,40 @@ voxflow narrate --input README.md --voice v-female-R2s4N9qJ --speed 0.9 -o /tmp/
 ## Prerequisites
 
 - **Node.js** `^20.19.0 || >=22.12.0`
-- **ffmpeg** — only for video-related commands (see `voxflow-video`, `voxflow-transcribe`)
+- **ffmpeg** — only for video-related commands (see `voxflow:video`, `voxflow:transcribe`)
 - **Login** required for any API call — `voxflow login`
+
+## Feedback & support
+
+Found a bug or have a feature request? Run `voxflow feedback` from any terminal:
+
+```bash
+voxflow feedback          # interactive: choose type, enter title + details → opens GitHub issue
+voxflow feedback --bug    # pre-fill as bug report
+voxflow feedback --feature  # pre-fill as feature request
+```
+
+Opens a pre-filled GitHub issue in the browser. System info (OS, Node, CLI version) is attached automatically.
+
+## Installing third-party voices or templates (`add`)
+
+```bash
+voxflow add <recipe-name>      # install a voice preset or pipeline template
+voxflow add --list             # browse available recipes
+```
+
+Use this when the user asks to install a custom voice pack or community template.
 
 ## Rules
 
-1. **MCP first** — if MCP tools work, never fall back to CLI.
-2. **Search voices before use** — never invent voice IDs.
-3. **Check quota** before podcasts (~5K), picstory (~3K), or batched jobs.
-4. **Auto-play** after synthesis: `open output.mp3` (macOS) / `xdg-open` (Linux).
-5. **Never print tokens or secrets** to logs.
-6. If a command fails, run `voxflow <cmd> --help` to confirm flags before retry.
-7. If CLI says "not logged in" and login won't work in this env, suggest `claude mcp add voxflow https://api.voxflow.studio/api/mcp` instead.
+1. **Search voices before use** — never invent voice IDs. Always run `voxflow voices` first.
+2. **Check quota** before podcasts (~5K), picstory (~3K), or batched jobs: `voxflow status`.
+3. **Auto-play** after synthesis: `open output.mp3` (macOS) / `xdg-open` (Linux).
+4. **Never print tokens or secrets** to logs.
+5. If a command fails, run `voxflow <cmd> --help` to confirm flags before retry.
 
 ## When to switch skills
 
-- User says "podcast" / "对话" / "多人对谈" → load `voxflow-podcast`.
-- User says "short video" / "知识卡片" / "小红书" / "TikTok" / "AI clip" / "render" → load `voxflow-video`.
-- User says "transcribe" / "字幕" / "dub" / "translate this video" / "SRT" → load `voxflow-transcribe`.
+- User says "podcast" / "对话" / "多人对谈" → load `voxflow:podcast`.
+- User says "short video" / "知识卡片" / "小红书" / "TikTok" / "AI clip" / "render" → load `voxflow:video`.
+- User says "transcribe" / "字幕" / "dub" / "translate this video" / "SRT" → load `voxflow:transcribe`.
