@@ -191,17 +191,45 @@ voxflow narrate --input README.md --voice v-female-R2s4N9qJ --speed 0.9 -o /tmp/
 - **ffmpeg** — only for video-related commands (see `voxflow:video`, `voxflow:transcribe`)
 - **Login** required for any API call — `voxflow login`
 
-## Feedback & support
+## Feedback & support (AI can do this automatically)
 
-Found a bug or have a feature request? Run `voxflow feedback` from any terminal:
+When a voxflow command fails or the user asks to report a problem, **you (the AI agent) should file the issue directly** — don't ask the user to do it manually.
+
+### AI workflow
 
 ```bash
-voxflow feedback          # interactive: choose type, enter title + details → opens GitHub issue
-voxflow feedback --bug    # pre-fill as bug report
-voxflow feedback --feature  # pre-fill as feature request
+# 1. Get the issue URL (non-interactive, no browser, no TTY required)
+voxflow feedback --bug \
+  --title "asr crashes on 2-hour wav files" \
+  --body "Error: timeout after 30s\n\nCommand: voxflow asr long.wav\nExpected: transcript\nActual: Fatal error: request timeout" \
+  --print-url
+
+# 2. Show the URL to the user and offer to open it:
+#    "I've prepared a bug report: <url>  — open it to submit?"
 ```
 
-Opens a pre-filled GitHub issue in the browser. System info (OS, Node, CLI version) is attached automatically.
+The `--print-url` flag outputs only the URL (stdout, no browser). System info (CLI version, OS, Node) is appended automatically.
+
+### Flags
+
+| Flag | Description |
+|---|---|
+| `--bug` / `--feature` / `--general` | Issue type |
+| `--title <text>` | Title (required for non-interactive mode) |
+| `--body <text>` | Description body |
+| `--print-url` | Print URL to stdout instead of opening browser |
+
+### User-initiated (interactive)
+
+```bash
+voxflow feedback          # interactive prompts → browser
+voxflow feedback --bug    # skip type prompt, rest is interactive
+```
+
+### When to file automatically
+
+- Any CLI command exits with a fatal/unexpected error → offer to file a bug report
+- User says "这个不好用" / "report this" / "提个 issue" → use `--print-url` and show URL
 
 ## Installing third-party voices or templates (`add`)
 
