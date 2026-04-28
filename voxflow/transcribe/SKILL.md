@@ -47,7 +47,7 @@ voxflow asr --mic --lang 16k_en                                          # live 
 | `auto` *(default)* | Whisper local if installed, else Tencent cloud | API or free | Default |
 | `cloud` | Tencent ASR | per call | ≤2-hour files, fast turnaround |
 | `local` | whisper.cpp | Free | No quota, offline, slower |
-| `azure` | **Azure Speech Batch (R2-uploaded)** | ~150 quota / minute | **30-min+ recordings, word-level timestamps, speaker diarization, multi-locale auto-detect** |
+| `azure` | **Azure Speech Batch (R2-uploaded)** | 150 / min, ceil to next minute | **30-min+ recordings, word-level timestamps, speaker diarization, multi-locale auto-detect** |
 
 #### Azure path (durable jobs)
 
@@ -392,7 +392,7 @@ voxflow summarize --input lecture-2h.mp4 --slides 12 --lang zh --tts -o summary.
 |---|---|
 | `asr` cloud (Tencent, per call) | ~50–200 |
 | `asr` local (Whisper) | 0 |
-| `asr` azure (per audio minute) | 150 (30-min file = 4500; 1-hr = 9000) |
+| `asr` azure (per audio minute, ceil) | 150 (78s = 2min = 300; 30-min = 4500; 1-hr = 9000) |
 | `translate` (per 1K target chars) | ~50 |
 | `dub` per caption (TTS) | ~100 |
 | `video-translate` 5-min video | ~3,000–5,000 |
