@@ -7,10 +7,10 @@
 ```bash
 # 1. 准备好你的 SRT（带 [Speaker: <角色名>] 标签）
 # 2. 用本预设的 voices.json 配音：
-voxflow dub anime.srt \
+voxflow dub --srt anime.srt \
   --voices presets/dub-anime-jp-zh/voices.json \
   --speed-auto \
-  --merge-video anime.mp4
+  --video anime.mp4
 ```
 
 ## SRT 格式约定
@@ -29,14 +29,17 @@ voxflow dub anime.srt \
 
 ## 角色 → 音色对应
 
-| 角色 | 音色 ID | 适用类型 |
+| 角色 | 音色 ID | 备注 |
 |---|---|---|
-| Hero | `v-male-young-energetic` | 少年主角，热血/正义 |
-| Heroine | `v-female-young-bright` | 少女主角，明朗/坚强 |
-| Villain | `v-male-bass-cold` | 反派，低音/冷峻 |
-| Mentor | `v-male-elder-warm` | 师长/导师，沉稳 |
-| Sidekick | `v-male-cheerful-light` | 搞笑/伙伴 |
-| Narrator | `v-female-calm-clear` | 旁白 |
+| Hero | `v-male-s5NqE0rZ` | 自然男声 — 少年主角 |
+| Heroine | `v-female-R2s4N9qJ` | 温柔姐姐 — 少女主角 |
+| Villain | `v-male-Bk7vD3xP` | 威严霸总 — 冷峻反派 |
+| Mentor | `v-male-Bk7vD3xP` | 同上，沉稳师长 |
+| Sidekick | `v-male-s5NqE0rZ` | 同 Hero，伙伴/搞笑 |
+| Narrator | `v-female-m1KpW7zE` | 傲娇学姐 — 旁白 |
+
+> 当前公共音色库 zh 主轴只有 4 条，多角色时会复用。如需更细粒度，
+> `voxflow voices --search` 找替代或自训克隆音色后改 `voices.json`。
 
 ## 想自定义？
 
