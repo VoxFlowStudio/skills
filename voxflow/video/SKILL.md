@@ -1,11 +1,13 @@
 ---
 name: video
-description: Use when the user wants AI-generated short-form video — knowledge cards (picstory / 小红书 / TikTok / Reels), narrated explainers, presentations, AI clips, or slides — covering picstory, present, slides, explain, and image generation.
+description: Use when the user wants AI-generated short-form video — knowledge cards (picstory / 小红书 / TikTok / Reels), narrated explainers, presentations, AI clips, or slides — covering picstory, present, slides, explain, and image generation. For PaperSlide / paper-textured article-to-card reels, use voxflow:paper-slide.
 ---
 
 # VoxFlow Video Skill
 
 Generate short-form videos with AI: LLM writes the script, AI draws cards or scenes, TTS narrates, FFmpeg / Remotion renders the final MP4.
+
+For PaperSlide / paper-textured article-to-card reels, switch to `voxflow:paper-slide`.
 
 Five entry points — pick by what the user wants:
 

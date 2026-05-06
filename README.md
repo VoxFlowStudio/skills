@@ -6,11 +6,22 @@ Compatible with Claude Code, Cursor, OpenClaw, and any agent that supports the S
 
 ## Install
 
+The simplest path — let the VoxFlow CLI auto-detect your agent and run the right command:
+
+```bash
+npm install -g voxflow
+voxflow skills install
+```
+
+It detects Claude Code / Cursor / Codex / Gemini / WorkBuddy / OpenClaw on your `$PATH`, picks the right install command, asks for confirmation, runs it, and prints next steps. Use `--all` to install for every detected agent, or `--for <agent>` to force one.
+
+If you'd rather run the install command directly:
+
 ```bash
 # Claude Code
 claude skills add voxflow
 
-# Cursor / other agents
+# Cursor / Codex / Gemini / WorkBuddy / OpenClaw / any Skills-protocol agent
 npx skills add VoxFlowStudio/skills --skill voxflow
 ```
 
@@ -23,7 +34,7 @@ voxflow login          # one-time browser auth
 
 ## What You Get
 
-Four focused skills, each loaded on demand:
+Five focused skills, each loaded on demand:
 
 | Skill | Invoked as | What it covers |
 |-------|-----------|----------------|
@@ -31,6 +42,7 @@ Four focused skills, each loaded on demand:
 | **podcast** | `voxflow:podcast` | Multi-speaker AI podcast from topic / URL / script |
 | **transcribe** | `voxflow:transcribe` | `asr` · `translate` · `dub` · `video-translate` · subtitles |
 | **video** | `voxflow:video` | `picstory` · `present` · `slides` · `explain` · `image` |
+| **paper-slide** | `voxflow:paper-slide` | Paper-textured vertical knowledge reels from articles / notes / reports |
 
 Use the hub skill as the starting point — it routes to the others automatically.
 
@@ -53,6 +65,7 @@ voxflow/
   podcast/SKILL.md      # AI dialogue podcast
   transcribe/SKILL.md   # ASR, translation, dubbing
   video/SKILL.md        # AI short video, slides, images
+  paper-slide/SKILL.md  # PaperSlide-style article-to-card reels
 ```
 
 ## Registry
