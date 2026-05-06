@@ -1,6 +1,6 @@
 ---
 name: hub
-description: VoxFlow AI voice toolkit — text-to-speech, voice search, AI stories, install/auth/quota. Use when the user wants to read text aloud, search voices, sample stories, or set up VoxFlow access. For podcasts use voxflow:podcast; for short videos / AI clips use voxflow:video; for transcription / dubbing / subtitle translation use voxflow:transcribe.
+description: VoxFlow AI voice toolkit — text-to-speech, voice search, AI stories, install/auth/quota. Use when the user wants to read text aloud, search voices, sample stories, or set up VoxFlow access. For podcasts use voxflow:podcast; for short videos / AI clips use voxflow:video; for PaperSlide article-to-card reels use voxflow:paper-slide; for transcription / dubbing / subtitle translation use voxflow:transcribe.
 ---
 
 # VoxFlow Skill — Hub
@@ -11,6 +11,7 @@ For specialized tasks, switch to:
 
 - **Podcasts** (multi-speaker dialogue) → `voxflow:podcast`
 - **Short videos / AI clips / knowledge cards** (`picstory`, `present`, `slides`, `explain`) → `voxflow:video`
+- **PaperSlide-style article-to-card reels** (paper-textured vertical knowledge videos) → `voxflow:paper-slide`
 - **Transcription, subtitle translation, dubbing** (`asr`, `translate`, `dub`, `video-translate`) → `voxflow:transcribe`
 
 ## Install & login
@@ -252,4 +253,5 @@ Use this when the user asks to install a specific named recipe (e.g. `dub-anime-
 
 - User says "podcast" / "对话" / "多人对谈" → load `voxflow:podcast`.
 - User says "short video" / "知识卡片" / "小红书" / "TikTok" / "AI clip" / "render" → load `voxflow:video`.
+- User says "PaperSlide" / "paperslide" / "paper-slide" / "纸面手绘风" / "文章转知识短视频" → load `voxflow:paper-slide`.
 - User says "transcribe" / "字幕" / "dub" / "translate this video" / "SRT" → load `voxflow:transcribe`.
