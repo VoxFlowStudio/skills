@@ -15,15 +15,16 @@ voxflow skills install
 
 It detects Claude Code / Cursor / Codex / Gemini / WorkBuddy / OpenClaw on your `$PATH`, picks the right install command, asks for confirmation, runs it, and prints next steps. Use `--all` to install for every detected agent, or `--for <agent>` to force one.
 
-If you'd rather run the install command directly:
+If you'd rather run the install command directly — **one command for every agent**:
 
 ```bash
-# Claude Code
-claude skills add voxflow
-
-# Cursor / Codex / Gemini / WorkBuddy / OpenClaw / any Skills-protocol agent
-npx skills add VoxFlowStudio/skills --skill voxflow
+npx -y skills add VoxFlowStudio/skills --all --yes
 ```
+
+The `skills` npm package detects every AI agent on your machine (Claude Code,
+Cursor, Codex CLI, Gemini CLI, Cline, Amp, Antigravity, CodeBuddy, OpenClaw…)
+and writes the 5 VoxFlow skills (`hub`, `podcast`, `transcribe`, `video`,
+`paper-slide`) to each agent's standard skill location in a single shot.
 
 ## Prerequisites
 
