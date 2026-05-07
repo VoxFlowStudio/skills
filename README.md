@@ -1,5 +1,7 @@
 # VoxFlow Skills
 
+> **This repo is a public mirror.** Canonical source: [`FlowStudio/cli/skills/`](https://github.com/VoxFlowStudio/FlowStudio/tree/main/cli/skills). Do not send PRs against this repo's skill files — they are overwritten on every sync. See [CLAUDE.md](CLAUDE.md) for the contribution flow.
+
 Agent skills for [VoxFlow](https://voxflow.studio) — give your AI coding agent the ability to synthesize speech, generate AI podcasts, dub videos, transcribe audio, create short videos, and more, all through the VoxFlow CLI.
 
 Compatible with Claude Code, Cursor, OpenClaw, and any agent that supports the Skills protocol.
