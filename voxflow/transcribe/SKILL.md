@@ -406,9 +406,27 @@ Always `voxflow status` before long jobs.
    - `local` — best when you have whisper.cpp installed and want zero quota.
    - `cloud` (Tencent) — best for short clips (≤2 hr), fast turnaround.
    - `azure` — best for **30-min+ recordings, word-level timestamps, multi-locale auto-detect, or anything you might need to resume after a disconnect**. Server-side jobs survive Ctrl+C.
-2. **`--realign`** when translating between very different language families (EN ↔ JA / ZH).
-3. **For multi-speaker dub**, generate the SRT with `--speakers` first, manually verify and tag, then `dub --voices`.
-4. **Always test on a 1-minute clip** before running `video-translate` on a long video — it consumes quota linearly.
-5. After completion, auto-play: `open output.mp4`.
-6. Keep `--keep-intermediates` on for the first run of any pipeline so you can inspect what failed.
-7. For Azure jobs that are still running, **don't re-submit** if the user closes the terminal — `voxflow asr-jobs list` to find the jobId, then `voxflow asr --engine azure --job-id <uuid>` (or `voxflow asr-jobs download <uuid>`) resumes free of charge.
+2. **Translation batch size is critical:**
+   - Default `--batch-size 5` is the sweet spot. Larger batches (10+) cause LLM to silently drop captions.
+   - If you see untranslated lines in output, reduce to `--batch-size 3`.
+   - The CLI auto-retries failed batches up to 2 times with validation.
+3. **`--realign`** when translating between very different language families (EN ↔ JA / ZH).
+4. **For multi-speaker dub**, generate the SRT with `--speakers` first, manually verify and tag, then `dub --voices`.
+5. **Always test on a 1-minute clip** before running `video-translate` on a long video — it consumes quota linearly.
+6. After completion, auto-play: `open output.mp4`.
+7. Keep `--keep-intermediates` on for the first run of any pipeline so you can inspect what failed.
+8. For Azure jobs that are still running, **don't re-submit** if the user closes the terminal — `voxflow asr-jobs list` to find the jobId, then `voxflow asr --engine azure --job-id <uuid>` (or `voxflow asr-jobs download <uuid>`) resumes free of charge.
+9. **video-translate auto-enables `--speed-auto`** — if TTS audio overflows the time slot, it auto-adjusts. No manual flag needed.
+10. **Quality self-check**: After translation, the CLI checks if >30% captions are unchanged (untranslated). If so, it warns you to use a smaller batch size.
+
+## Troubleshooting
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| Captions left untranslated (original language) | LLM dropped lines in large batch | Use `--batch-size 3` |
+| `cloud` ASR returns 500 error | Tencent service transient failure | Switch to `--engine azure` |
+| TTS audio overflows time slot | Translation text longer than source | Add `--speed-auto` (or use `video-translate` which enables it by default) |
+| `ffmpeg` not found for `--video` | Not installed or not in PATH | `brew install ffmpeg` / install ffmpeg-full for subtitle burn-in |
+| Azure job seems stuck | Still processing | `voxflow asr-jobs show <id>` to check status; don't re-submit |
+| Subtitle timing drift after translation | Different word density between languages | Add `--realign` |
+| Low subtitle quality in specific domain | ASR hot-words not tuned | Try `--engine azure --lang <exact BCP-47>` for better recognition |
