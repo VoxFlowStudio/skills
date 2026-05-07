@@ -1,6 +1,6 @@
 ---
 name: hub
-description: VoxFlow AI voice toolkit — text-to-speech, voice search, AI stories, install/auth/quota. Use when the user wants to read text aloud, search voices, sample stories, or set up VoxFlow access. For podcasts use voxflow:podcast; for short videos / AI clips use voxflow:video; for PaperSlide article-to-card reels use voxflow:paper-slide; for transcription / dubbing / subtitle translation use voxflow:transcribe.
+description: Use when the user wants to read text aloud (TTS), search VoxFlow voices, sample AI stories, or set up VoxFlow install/auth/quota — the entry-point voice toolkit. For podcasts use voxflow:podcast; for short videos / AI clips use voxflow:video; for PaperSlide article-to-card reels use voxflow:paper-slide; for transcription / dubbing / subtitle translation use voxflow:transcribe.
 ---
 
 # VoxFlow Skill — Hub
