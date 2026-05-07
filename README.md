@@ -43,7 +43,7 @@ Five focused skills, each loaded on demand:
 |-------|-----------|----------------|
 | **hub** | `voxflow:hub` | `say` · `narrate` · `story` · `voices` · auth · quota · feedback |
 | **podcast** | `voxflow:podcast` | Multi-speaker AI podcast from topic / URL / script |
-| **transcribe** | `voxflow:transcribe` | `asr` · `translate` · `dub` · `video-translate` · subtitles |
+| **transcribe** | `voxflow:transcribe` | `asr` · `asr-jobs` · `translate` · `dub` · `video-translate` · `summarize` · `publish` |
 | **video** | `voxflow:video` | `picstory` · `present` · `slides` · `explain` · `image` |
 | **paper-slide** | `voxflow:paper-slide` | Paper-textured vertical knowledge reels from articles / notes / reports |
 
@@ -54,7 +54,7 @@ Use the hub skill as the starting point — it routes to the others automaticall
 | You say | Agent runs |
 |---------|-----------|
 | "把这段话合成语音" | `voxflow say "..." -o output.mp3` |
-| "生成一个 3 分钟 AI 播客" | `voxflow podcast "topic" --duration 3` |
+| "生成一个 AI 播客" | `voxflow podcast "topic" --length medium` |
 | "把这个视频翻译成日语" | `voxflow video-translate video.mp4 --to ja` |
 | "转录这段录音" | `voxflow asr recording.mp3` |
 | "做一个 AI 知识短视频" | `voxflow picstory "topic" --style sketchnote` |

@@ -12,7 +12,7 @@ For specialized tasks, switch to:
 - **Podcasts** (multi-speaker dialogue) → `voxflow:podcast`
 - **Short videos / AI clips / knowledge cards** (`picstory`, `present`, `slides`, `explain`) → `voxflow:video`
 - **PaperSlide-style article-to-card reels** (paper-textured vertical knowledge videos) → `voxflow:paper-slide`
-- **Transcription, subtitle translation, dubbing** (`asr`, `translate`, `dub`, `video-translate`) → `voxflow:transcribe`
+- **Transcription, subtitle translation, dubbing, summarize, publish** (`asr`, `asr-jobs`, `translate`, `dub`, `video-translate`, `summarize`, `publish`) → `voxflow:transcribe`
 
 ## Install & login
 

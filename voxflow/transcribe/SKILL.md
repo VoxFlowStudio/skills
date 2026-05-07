@@ -317,6 +317,36 @@ voxflow video-translate --input video.mp4 --to en --keep-intermediates
 
 ---
 
+## 🚀 publish — one-shot end-to-end (recommended for agents)
+
+`publish` bundles ASR / translation / dubbing / merge into a single command and emits a structured JSON result via `--json`. Use this instead of stitching `asr` + `translate` + `dub` yourself when an agent or web orchestrator drives the run.
+
+Three build modes (auto-selected from inputs):
+
+| Mode | Use when | Inputs |
+|---|---|---|
+| `video-translate` | Source video → translated dubbed video | `--input <video> --to <lang>` |
+| `srt-dub` | You already have an SRT and want it dubbed onto a video | `--input <video> --srt <subs.srt>` |
+| `merge-existing` | Video + audio already produced; just merge + deliver | `--video <v.mp4> --audio <a.wav>` |
+
+Publish targets:
+
+- `--publish local` (default) — copy artifact to `./published/<base>-<platform>-<ts>.mp4`
+- `--publish webhook --publish-webhook <url>` — POST artifact metadata to webhook, return URL
+- `--publish none` — skip publish step, return final MP4 path only
+
+Always pass **`--json`** when invoking from a Skill — stdout becomes a single JSON doc (`artifact.path` / `artifact.durationSec` / `artifact.sizeBytes` / `publish.publishUrl` / `quotaUsed`, etc.) instead of human-readable progress.
+
+```bash
+# End-to-end: source video → translated dubbed publish
+voxflow publish --input talk.mp4 --to en --json
+
+# Hand off to webhook publisher
+voxflow publish --input talk.mp4 --to ja --publish webhook --publish-webhook https://hook.example.com/in --json
+```
+
+---
+
 ## 📋 summarize — content → slides (and optional video)
 
 Long video/audio/text → ASR (if needed) → LLM summary → PPTX deck. Optional TTS narration and Remotion video render.

@@ -73,7 +73,7 @@ Expected: `1080×1920`, 20-35 seconds, no black flashes, no title/caption overfl
 When exact PaperSlide Remotion code is unavailable:
 
 ```bash
-voxflow present --text "paste article or summary" --style paper --output paperslide-draft.mp4
+voxflow present --text "paste article or summary" --style editorial --output paperslide-draft.mp4
 voxflow picstory --topic "topic" --style sketchnote --scenes 4 --output paperslide-sketch.mp4
 ```
 
