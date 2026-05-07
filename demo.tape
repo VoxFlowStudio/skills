@@ -21,7 +21,6 @@ Output demo.gif
 # rounded corners) is the visual identity.
 Set Theme "TokyoNight"
 Set FontSize 18
-Set FontFamily "JetBrains Mono"
 Set Width 960
 Set Height 540
 Set Padding 20
