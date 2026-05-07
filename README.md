@@ -18,7 +18,7 @@ It detects Claude Code / Cursor / Codex / Gemini / WorkBuddy / OpenClaw on your 
 If you'd rather run the install command directly — **one command for every agent**:
 
 ```bash
-npx -y skills add VoxFlowStudio/skills --all --yes
+npx -y skills add VoxFlowStudio/skills --all --yes --global
 ```
 
 The `skills` npm package detects every AI agent on your machine (Claude Code,
