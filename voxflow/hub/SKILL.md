@@ -56,6 +56,35 @@ No login required. Output includes the voice ID, language, gender, and a short d
 | `v-female-m1KpW7zE` | 傲娇学姐 (sassy female) | zh |
 | `v-female-T8m4WxP7` | Chenwen (native English female) | en |
 
+## Voice cloning (`clone`)
+
+Clone a voice from a local audio file (30s+, wav/mp3). Returns a permanent voice ID usable in all commands.
+
+```bash
+voxflow clone --input recording.wav --name "My Voice"
+# → Voice cloned successfully!
+# → Voice ID: My_Voice_xxxxx_01
+```
+
+No file? Opens the web UI for browser-based recording:
+
+```bash
+voxflow clone
+# → Opens https://www.voxflow.studio/app#voice-clone
+```
+
+| Flag | Default | Notes |
+|------|---------|-------|
+| `--input <file>` | (none) | Audio file to clone from. Without this, opens web UI |
+| `--name <name>` | filename | Human-readable voice name (1-50 chars) |
+
+Tips:
+- Quiet room, normal speaking pace, no background music → best results
+- 60 seconds is optimal; 30s minimum
+- Don't "perform" — natural speech clones better than broadcast voice
+
+After cloning, use the voice ID anywhere: `--voice <id>`
+
 ## Text-to-speech (`say` / `synthesize`)
 
 The atomic command. One snippet → one audio file.
