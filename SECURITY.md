@@ -2,7 +2,7 @@
 
 ## Scope
 
-This repository is a **public mirror** of skill content. The canonical source lives in [`FlowStudio/cli/skills`](https://github.com/VoxFlowStudio/FlowStudio/tree/main/cli/skills); the runtime that the skills drive is the [`voxflow` CLI on npm](https://www.npmjs.com/package/voxflow). Vulnerabilities in the CLI itself should be reported there too — this advisory channel covers both.
+This repository ships skill content (markdown guidance for AI agents) that drives the [`voxflow` CLI on npm](https://www.npmjs.com/package/voxflow). Vulnerabilities in the CLI runtime itself should also be reported through this advisory channel — both are covered.
 
 `SKILL.md` files contain natural-language guidance for AI agents and cannot execute on their own. Issues most relevant to this repo:
 
