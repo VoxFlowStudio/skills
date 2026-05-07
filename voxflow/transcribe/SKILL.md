@@ -1,6 +1,6 @@
 ---
 name: transcribe
-description: Use when the user wants to transcribe audio/video (including 30-min+ files with word-level timestamps via Azure Batch), translate subtitles, dub a video from SRT, run end-to-end video translation, or summarize spoken content. Covers asr, asr-jobs, translate, dub, video-translate, and summarize CLI commands.
+description: Use when the user wants to transcribe audio/video (including 30-min+ files with word-level timestamps via Azure Batch), translate subtitles, dub a video from SRT, run end-to-end video translation, summarize spoken content, or publish a finished translated video for Skill/agent orchestration. Covers asr, asr-jobs, translate, dub, video-translate, summarize, and publish CLI commands.
 ---
 
 # VoxFlow Transcribe / Dub / Translate Skill

@@ -78,23 +78,3 @@ voxflow picstory --topic "topic" --style sketchnote --scenes 4 --output papersli
 ```
 
 Tell the user this is a PaperSlide-adjacent draft, not the exact PaperSlide renderer.
-
-## Open-Source Packaging Rules
-
-- Include only `SKILL.md`, lightweight references, and optional reusable scripts/templates.
-- Do not include generated `.mp4`, `.mp3`, `.wav`, `.aiff`, `.env`, tokens, or private API URLs.
-- Prefer local/system TTS for demos, or document that VoxFlow CLI is optional.
-- Keep the skill trigger broad enough to catch `PaperSlide`, `paperslide`, `paper-slide`, `paper slide`, `文章转知识短视频`, and `纸面手绘风`.
-
-## Release Checklist
-
-Before publishing a skill package:
-
-```bash
-python3 <skill-creator>/scripts/quick_validate.py cli/skills/paper-slide
-rg -n "(service_role|api[.]voxflow|supabase|PRIVATE KEY)" cli/skills/paper-slide --glob '!SKILL.md'
-find cli/skills/paper-slide -type f | rg "\\.(mp4|mp3|wav|aiff|mov)$" && exit 1 || true
-claude plugin tag cli --dry-run
-```
-
-If `claude plugin tag` complains about uncommitted changes, commit the skill changes first; use `--force` only for local validation.
