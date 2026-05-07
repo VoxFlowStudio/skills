@@ -28,8 +28,10 @@ Set Margin 30
 Set MarginFill "#5851b8"
 
 # ── setup (hidden) ────────────────────────────────────────────────────────
+# Unset CLAUDECODE so the CLI's plugin-install hint (<claude-code-hint .../>)
+# doesn't leak into the recording when running inside Claude Code.
 Hide
-Type "clear"
+Type "unset CLAUDECODE && clear"
 Enter
 Show
 
@@ -39,25 +41,21 @@ Sleep 800ms
 Enter
 Sleep 500ms
 
-# ── 1. one-line TTS ───────────────────────────────────────────────────────
-Type "voxflow say 'Hello from VoxFlow' -o hello.mp3"
-Sleep 400ms
-Enter
-Sleep 3s
-
-Type "ls -lh hello.mp3"
-Sleep 300ms
-Enter
-Sleep 1500ms
-
-# ── 2. browse the voice catalog ───────────────────────────────────────────
+# ── 1. browse the voice catalog (read-only API, reliable) ────────────────
 Type "voxflow voices --lang en --gender female | head -8"
 Sleep 400ms
 Enter
-Sleep 2500ms
+Sleep 5s
+# voxflow's post-command "Was this helpful?" prompt opens stdin briefly
+# after the command exits — Enter consumes it (skip path).
+Enter
+Sleep 700ms
 
-# ── 3. the skill pitch ────────────────────────────────────────────────────
-Type "# 200+ voices · 40+ languages · podcasts · transcribe · video dub"
+# ── 2. the skill pitch ────────────────────────────────────────────────────
+Type "# 200+ voices · 40+ languages — TTS, podcasts, ASR, video dub"
+Sleep 1500ms
+Enter
+Type "# Try it: voxflow say 'Hello from VoxFlow' -o hello.mp3"
 Sleep 1500ms
 Enter
 Type "# Install for your AI agent: npx skills add VoxFlowStudio/skills"
