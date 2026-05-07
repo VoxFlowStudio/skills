@@ -264,7 +264,18 @@ mergeAudioVideo() → MP4
 
 ## 🌍 video-translate — end-to-end pipeline
 
-ASR → translate → dub → merge MP4. The "translate this video into another language" one-shot.
+ASR → translate → dub → burn subtitles → auto-open. The "translate this video into another language" one-shot.
+
+**Pipeline (5 stages):**
+```
+[1/5] FFmpeg check
+[2/5] ASR (flash mode → Azure fallback) → fine-grained per-sentence SRT
+[3/5] Translate → quality check → auto-retry untranslated captions
+[4/5] TTS dub (speed-auto) → merge audio into video
+[5/5] Burn subtitles into video → auto-open output
+```
+
+**Output:** `<input>-<lang>.mp4` (with burned subtitles) + `<input>-<lang>.srt` (standalone subtitle file)
 
 ```bash
 # Auto-detect source, dub to English
