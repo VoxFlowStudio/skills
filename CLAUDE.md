@@ -5,7 +5,8 @@ This repository is a **public mirror**. The canonical source lives in the privat
 ## Do not commit directly to this repo
 
 - Skill content (`voxflow/*/SKILL.md`, registry recipes, `registry.json`) is overwritten on every sync. Manual edits here will be lost.
-- README / LICENSE / SECURITY / `.gitignore` are the only files maintained in-place. Touch them only with explicit user authorization.
+- The README's body is synced from `FlowStudio/cli/skills/README.md`; only the top-of-page mirror warning is added by the sync script. Don't edit body text in the mirror.
+- Files maintained in-place (mirror-only, not synced): `CLAUDE.md`, `LICENSE`, `SECURITY.md`, `.gitignore`, `demo.tape`, `demo.gif`. Touch only with explicit user authorization.
 - AI agents must NOT generate "comprehensive analysis", "architecture overview", or "documentation index" files in this repo. They are out of scope for a public mirror and will be wiped.
 
 ## How changes flow
