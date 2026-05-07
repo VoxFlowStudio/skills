@@ -15,13 +15,17 @@
 
 Output demo.gif
 
-Set Theme "Catppuccin Mocha"
+Set Theme "TokyoNight"
 Set FontSize 18
 Set FontFamily "JetBrains Mono"
-Set Width 1000
-Set Height 560
-Set Padding 24
+Set Width 1200
+Set Height 700
+Set Padding 30
 Set TypingSpeed 55ms
+Set WindowBar Colorful
+Set BorderRadius 10
+Set Margin 30
+Set MarginFill "#5851b8"
 
 # ── setup (hidden) ────────────────────────────────────────────────────────
 Hide
