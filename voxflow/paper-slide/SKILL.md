@@ -11,12 +11,12 @@ Create paper-textured vertical knowledge reels from articles, notes, reports, or
 
 | Context | Route |
 |---|---|
-| Local checkout has a `video-present/src/compositions/PaperSlide` Remotion composition | Use the local Remotion `PaperSlideDeck` composition. |
-| User has VoxFlow CLI but no PaperSlide component | Use `voxflow present` for narrated card video, or `voxflow picstory --style sketchnote` for illustrated knowledge cards. |
+| User has VoxFlow CLI installed (default for npm / skills users) | Use `voxflow present` for narrated card video, or `voxflow picstory --style sketchnote` for illustrated knowledge cards. See **VoxFlow CLI Route** below. |
+| Local checkout has the private `video-present/src/compositions/PaperSlide` Remotion composition (VoxFlow contributors only) | Use the local Remotion `PaperSlideDeck` composition — see **Local Remotion Route (contributors only)** below. |
 | User only wants strategy or copy | Produce the PaperSlide deck JSON and explain what renderer is needed. |
 | User asks to open-source or package it | Keep private APIs, tokens, generated audio, and MP4 outputs out of the skill package. |
 
-If there is a local experiment script such as `video-present/scripts/paper-slide-experiments.mjs`, prefer running it over rewriting render orchestration.
+The exact `PaperSlideDeck` Remotion composition is internal to VoxFlow and is **not shipped to npm / skills users** — most readers should pick the CLI route. Only fall through to the local Remotion route if `video-present/src/compositions/PaperSlide` is actually present.
 
 ## Workflow
 
@@ -29,9 +29,22 @@ If there is a local experiment script such as `video-present/scripts/paper-slide
 
 Read `references/deck-schema.md` when writing deck JSON, adding keywords, or debugging layout. Read `references/example-decks.md` when the user asks for examples, wants to compare scenarios, or needs a seed deck for experiments.
 
-## Local Remotion Commands
+## VoxFlow CLI Route
 
-From the local checkout root (where `video-present/` lives):
+This is the route that works for everyone with the VoxFlow CLI. No private code required.
+
+```bash
+voxflow present --text "paste article or summary" --style editorial --output paperslide-draft.mp4
+voxflow picstory --topic "topic" --style sketchnote --scenes 4 --output paperslide-sketch.mp4
+```
+
+Tell the user this is a PaperSlide-adjacent draft, not the exact PaperSlide renderer (the exact renderer is private to VoxFlow Studio).
+
+## Local Remotion Route (contributors only)
+
+**Skip this section if `video-present/src/compositions/PaperSlide` is not present in your checkout.** It is private code; npm / skills users will not have it.
+
+From the VoxFlow contributor's local checkout root (where `video-present/` lives):
 
 ```bash
 cd video-present
@@ -68,13 +81,3 @@ Expected: `1080×1920`, 20-35 seconds, no black flashes, no title/caption overfl
 - Use figure/icon keywords as accents: `thinking`, `running`, `climbing`, `stuck`, `celebrating`, `briefcase`, `users`, `target`, `clock`, `flame`, `lightbulb`, `chart-bar`.
 - Vary adjacent visuals. Do not use `thinking` on every card.
 
-## VoxFlow CLI Fallback
-
-When exact PaperSlide Remotion code is unavailable:
-
-```bash
-voxflow present --text "paste article or summary" --style editorial --output paperslide-draft.mp4
-voxflow picstory --topic "topic" --style sketchnote --scenes 4 --output paperslide-sketch.mp4
-```
-
-Tell the user this is a PaperSlide-adjacent draft, not the exact PaperSlide renderer.

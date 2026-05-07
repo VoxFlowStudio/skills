@@ -2,11 +2,16 @@
 
 > Skill files in this repo are auto-overwritten on each release. For feedback or fixes, please [open an issue](https://github.com/VoxFlowStudio/skills/issues) instead of submitting a PR.
 
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+[![npm version](https://img.shields.io/npm/v/voxflow.svg)](https://www.npmjs.com/package/voxflow)
+[![5 skills](https://img.shields.io/badge/skills-5-purple.svg)](#what-you-get)
+[![Works with](https://img.shields.io/badge/works%20with-Claude%20Code%20%C2%B7%20Cursor%20%C2%B7%20Codex%20%C2%B7%20Gemini-orange.svg)](#install)
+
 ![VoxFlow CLI demo](https://github.com/VoxFlowStudio/skills/raw/main/demo.gif)
 
-Agent skills for [VoxFlow](https://voxflow.studio) — give your AI coding agent the ability to synthesize speech, generate AI podcasts, dub videos, transcribe audio, create short videos, and more, all through the VoxFlow CLI.
+Voice in your AI workflow. Five skills that let any AI coding agent (Claude Code · Cursor · Codex · Gemini CLI · Cline) speak in 200+ voices, generate podcasts, dub videos, and transcribe audio — through one CLI.
 
-Compatible with Claude Code, Cursor, OpenClaw, and any agent that supports the Skills protocol.
+**Why VoxFlow over a raw TTS API?** One CLI handles auth, voice search, multi-speaker dialogue, video pipelines, and quota. The skills layer makes it native to whichever agent you're already using — no new context-switch.
 
 ## Install
 
@@ -55,6 +60,9 @@ Use the hub skill as the starting point — it routes to the others automaticall
 
 | You say | Agent runs |
 |---------|-----------|
+| "Read this README out loud" | `voxflow narrate README.md -o readme.mp3` |
+| "Make a 5-min podcast on AI agents" | `voxflow podcast "AI agents" --length short` |
+| "Dub this tutorial into Japanese" | `voxflow video-translate tutorial.mp4 --to ja` |
 | "把这段话合成语音" | `voxflow say "..." -o output.mp3` |
 | "生成一个 AI 播客" | `voxflow podcast "topic" --length medium` |
 | "把这个视频翻译成日语" | `voxflow video-translate video.mp4 --to ja` |
