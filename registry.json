@@ -1,5 +1,4 @@
 {
-  "$schema": "https://voxflow.studio/schema/registry.json",
   "name": "voxflow-official",
   "version": "0.1.0",
   "homepage": "https://voxflow.studio",
