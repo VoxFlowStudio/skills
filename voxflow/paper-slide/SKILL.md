@@ -11,7 +11,7 @@ Create paper-textured vertical knowledge reels from articles, notes, reports, or
 
 | Context | Route |
 |---|---|
-| FlowStudio repo has `video-present/src/compositions/PaperSlide` | Use the local Remotion `PaperSlideDeck` composition. |
+| Local checkout has a `video-present/src/compositions/PaperSlide` Remotion composition | Use the local Remotion `PaperSlideDeck` composition. |
 | User has VoxFlow CLI but no PaperSlide component | Use `voxflow present` for narrated card video, or `voxflow picstory --style sketchnote` for illustrated knowledge cards. |
 | User only wants strategy or copy | Produce the PaperSlide deck JSON and explain what renderer is needed. |
 | User asks to open-source or package it | Keep private APIs, tokens, generated audio, and MP4 outputs out of the skill package. |
@@ -29,9 +29,9 @@ If there is a local experiment script such as `video-present/scripts/paper-slide
 
 Read `references/deck-schema.md` when writing deck JSON, adding keywords, or debugging layout. Read `references/example-decks.md` when the user asks for examples, wants to compare scenarios, or needs a seed deck for experiments.
 
-## Local FlowStudio Commands
+## Local Remotion Commands
 
-From the repo root:
+From the local checkout root (where `video-present/` lives):
 
 ```bash
 cd video-present

@@ -234,7 +234,7 @@ When a voxflow command fails or the user asks to report a problem, **you (the AI
 voxflow feedback --bug \
   --title "asr crashes on 2-hour wav files" \
   --body "Error: timeout after 30s\n\nCommand: voxflow asr long.wav\nExpected: transcript\nActual: Fatal error: request timeout"
-# stdout → https://github.com/VoxFlowStudio/FlowStudio/issues/NNNN  (or URL if no gh)
+# stdout → the created GitHub issue URL  (or a pre-filled URL if gh is not installed)
 ```
 
 System info (CLI version, OS, Node) is appended to the body automatically.

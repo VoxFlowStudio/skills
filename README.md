@@ -1,6 +1,6 @@
 # VoxFlow Skills
 
-> **This repo is a public mirror.** Canonical source: [`FlowStudio/cli/skills/`](https://github.com/VoxFlowStudio/FlowStudio/tree/main/cli/skills). Do not send PRs against this repo's skill files — they are overwritten on every sync. See [CLAUDE.md](CLAUDE.md) for the contribution flow.
+> Skill files in this repo are auto-overwritten on each release. For feedback or fixes, please [open an issue](https://github.com/VoxFlowStudio/skills/issues) instead of submitting a PR.
 
 ![VoxFlow CLI demo](https://github.com/VoxFlowStudio/skills/raw/main/demo.gif)
 
@@ -112,4 +112,3 @@ voxflow status
 - [VoxFlow Studio](https://voxflow.studio) — Web app
 - [CLI on npm](https://www.npmjs.com/package/voxflow) — `npm install -g voxflow`
 - [CLI docs](https://voxflow.studio/docs/cli) — Full command reference
-- [Skills source](https://github.com/VoxFlowStudio/FlowStudio/tree/main/cli/skills) — Canonical source in FlowStudio monorepo
