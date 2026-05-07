@@ -15,17 +15,19 @@
 
 Output demo.gif
 
+# ── canvas ────────────────────────────────────────────────────────────────
+# 800x500 fits inside GitHub README's ~768px container without scaling.
+# No outer frame — the terminal window itself (with traffic lights +
+# rounded corners) is the visual identity.
 Set Theme "TokyoNight"
 Set FontSize 18
 Set FontFamily "JetBrains Mono"
-Set Width 1200
-Set Height 700
-Set Padding 30
-Set TypingSpeed 55ms
+Set Width 960
+Set Height 540
+Set Padding 20
+Set TypingSpeed 35ms
 Set WindowBar Colorful
 Set BorderRadius 10
-Set Margin 30
-Set MarginFill "#5851b8"
 
 # ── setup (hidden) ────────────────────────────────────────────────────────
 # Unset CLAUDECODE so the CLI's plugin-install hint (<claude-code-hint .../>)
@@ -36,27 +38,27 @@ Enter
 Show
 
 # ── intro ─────────────────────────────────────────────────────────────────
-Type "# VoxFlow — AI voice CLI that ships as a skill for any AI agent"
-Sleep 800ms
+Type "# VoxFlow — voice CLI that ships as a skill"
+Sleep 600ms
 Enter
-Sleep 500ms
+Sleep 400ms
 
 # ── 1. browse the voice catalog (read-only API, reliable) ────────────────
 Type "voxflow voices --lang en --gender female | head -8"
-Sleep 400ms
+Sleep 300ms
 Enter
-Sleep 5s
+Sleep 4s
 # voxflow's post-command "Was this helpful?" prompt opens stdin briefly
 # after the command exits — Enter consumes it (skip path).
 Enter
-Sleep 700ms
+Sleep 500ms
 
-# ── 2. the skill pitch ────────────────────────────────────────────────────
-Type "# 200+ voices · 40+ languages — TTS, podcasts, ASR, video dub"
-Sleep 1500ms
+# ── 2. the skill pitch (3 short lines, all < 74 chars) ───────────────────
+Type "# 200+ voices · 40+ languages"
+Sleep 1s
 Enter
-Type "# Try it: voxflow say 'Hello from VoxFlow' -o hello.mp3"
-Sleep 1500ms
+Type "# voxflow say 'Hello' -o hi.mp3   # one-line TTS"
+Sleep 1s
 Enter
-Type "# Install for your AI agent: npx skills add VoxFlowStudio/skills"
-Sleep 2500ms
+Type "# npx skills add VoxFlowStudio/skills   # for any AI agent"
+Sleep 2s
