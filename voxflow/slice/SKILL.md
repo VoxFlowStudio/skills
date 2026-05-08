@@ -13,10 +13,11 @@ Turn an article, note, paper, or rough topic into a vertical 1080×1920 card vid
 
 | Context | Route | Notes |
 |---|---|---|
-| User has internet + a VoxFlow account (default) | **Web app**: `https://voxflow.studio/apps/slice` | The only place that runs the **exact** 6 Slice themes. Free tier ships 9:16 mp4 + multi-aspect cover (9:16/3:4/1:1). |
-| User has VoxFlow CLI installed and wants offline / scriptable | `voxflow present` or `voxflow picstory --style sketchnote` | **Approximation only.** CLI uses different visual schemes and cannot output Slice's `editorial-mag` / `notion-card` / `brutalist` / `glass-dark` themes. See **CLI Approximation** below. |
+| User wants the deck JSON (no render) — fast, scriptable, pipeable | **CLI**: `voxflow slice <article.md> --theme <id>` | Hits `/api/paper-slide/slice` directly (200 quota). Returns the canonical 5–8 card deck JSON validated by the same backend the web app uses, all 6 themes accepted. No mp4 — pipe `--json` into custom tools, the local Remotion composition (contributors), or paste into the web app for rendering. |
+| User wants a finished mp4 + cover (default consumer flow) | **Web app**: `https://voxflow.studio/apps/slice` | The only place that runs the **exact** 6 Slice themes end-to-end. Free tier ships 9:16 mp4 + multi-aspect cover (9:16/3:4/1:1). |
+| User wants a similar-looking video offline via CLI but the deck-only `voxflow slice` isn't enough | `voxflow present` or `voxflow picstory --style sketchnote` | **Approximation only.** Different visual schemes; cannot output Slice's `editorial-mag` / `notion-card` / `brutalist` / `glass-dark` themes. See **CLI Approximation** below. |
 | Local checkout has `video-present/src/compositions/PaperSlide` (VoxFlow contributors only) | Local Remotion experiment script | See **Local Remotion Route**. |
-| User only wants strategy or copy | Produce the deck JSON; tell them which renderer to use. | The deck schema is renderer-agnostic; same JSON renders in any theme. |
+| User only wants strategy or copy | Produce the deck JSON via `voxflow slice` (or by hand following the schema); tell them which renderer to use. | The deck schema is renderer-agnostic; same JSON renders in any theme. |
 | User asks to open-source / package | Keep private APIs, tokens, generated audio, MP4 outputs out of the skill package. | |
 
 ## Workflow
@@ -46,9 +47,31 @@ Workflow:
 
 Tell the user this is the **only** route that produces the exact Slice render — themes are private Remotion compositions, not shipped with the CLI.
 
-## CLI Approximation Route
+## CLI Deck Route (`voxflow slice`)
 
-This is for users who can't or don't want to use the web app. **It is not the same renderer.** Be honest with the user about this.
+For users who want the structured deck JSON without the render — fast (one round-trip, 200 quota), pipeable, theme-aware. Hits the same `/api/paper-slide/slice` backend the web app uses, so the deck shape is canonical.
+
+```bash
+voxflow slice article.md                                  # default theme: paper-slide
+voxflow slice article.md --theme editorial-mag -o deck.json
+voxflow slice --text "long article ..." --theme bold-poster --json | jq .deck
+```
+
+When to use this route:
+
+- The user wants to inspect / iterate on the AI's slicing quality before committing to a render.
+- The user wants to paste the deck into the web app's "import deck" flow to render with a different theme.
+- The user is a contributor with the private `video-present/src/compositions/PaperSlide` Remotion composition and wants to render the deck locally — `voxflow slice ... --json -o props.json` then feed `props.json` into the experiment script.
+- The user is building automation that needs structured output (e.g. publishing knowledge cards as text on Twitter / 即刻 from `deck.cards[*].caption + narration`).
+
+Limits:
+
+- No mp4. The cloud renderer that produces the 1080×1920 video lives in the web app.
+- No TTS. Pair `voxflow slice` with `voxflow narrate` if you want per-card audio without rendering.
+
+## CLI Approximation Route (full mp4 fallback)
+
+If the user **must** have an mp4 from the CLI alone (no web app, no contributor Remotion access), fall back to `voxflow present` or `voxflow picstory` — they cover the same article-to-video shape but with their own visual schemes, not the exact 6 Slice themes.
 
 ```bash
 voxflow present --text "paste article or summary" --style editorial --output slice-approx.mp4
