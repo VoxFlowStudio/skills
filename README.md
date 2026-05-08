@@ -33,7 +33,7 @@ npx -y skills add VoxFlowStudio/skills --all --yes --global
 The `skills` npm package detects every AI agent on your machine (Claude Code,
 Cursor, Codex CLI, Gemini CLI, Cline, Amp, Antigravity, CodeBuddy, OpenClaw…)
 and writes the 5 VoxFlow skills (`hub`, `podcast`, `transcribe`, `video`,
-`paper-slide`) to each agent's standard skill location in a single shot.
+`slice`) to each agent's standard skill location in a single shot.
 
 ## Prerequisites
 
@@ -52,7 +52,7 @@ Five focused skills, each loaded on demand:
 | **podcast** | `voxflow:podcast` | Multi-speaker AI podcast from topic / URL / script |
 | **transcribe** | `voxflow:transcribe` | `asr` · `asr-jobs` · `translate` · `dub` · `video-translate` · `summarize` · `publish` |
 | **video** | `voxflow:video` | `picstory` · `present` · `slides` · `explain` · `image` |
-| **paper-slide** | `voxflow:paper-slide` | Paper-textured vertical knowledge reels from articles / notes / reports |
+| **slice** | `voxflow:slice` | Article → vertical card video (1080×1920); 6 themes: paper / editorial / poster / Notion / brutalist / glass |
 
 Use the hub skill as the starting point — it routes to the others automatically.
 
@@ -78,7 +78,7 @@ voxflow/
   podcast/SKILL.md      # AI dialogue podcast
   transcribe/SKILL.md   # ASR, translation, dubbing
   video/SKILL.md        # AI short video, slides, images
-  paper-slide/SKILL.md  # PaperSlide-style article-to-card reels
+  slice/SKILL.md        # Article → vertical card video (6 themes)
 ```
 
 ## Registry
