@@ -14,6 +14,7 @@ Turn an article, note, paper, or rough topic into a vertical 1080×1920 card vid
 | Context | Route | Notes |
 |---|---|---|
 | User wants the deck JSON (no render) — fast, scriptable, pipeable | **CLI**: `voxflow slice <article.md> --theme <id>` | Hits `/api/paper-slide/slice` directly (200 quota). Returns the canonical 5–8 card deck JSON validated by the same backend the web app uses, all 6 themes accepted. No mp4 — pipe `--json` into custom tools, the local Remotion composition (contributors), or paste into the web app for rendering. |
+| User is iterating on a deck — multi-round edits to copy/structure before committing to a render | **CLI**: `voxflow slice stage <deck.json>` | Boots a localhost preview page (no quota cost) that hot-reloads on every save of the deck JSON. Useful loop: `voxflow slice ... -o deck.json` → `voxflow slice stage deck.json` → tweak prompt → re-run slice → preview updates instantly. See **Stage Route** below. |
 | User wants a finished mp4 + cover (default consumer flow) | **Web app**: `https://voxflow.studio/apps/slice` | The only place that runs the **exact** 6 Slice themes end-to-end. Free tier ships 9:16 mp4 + multi-aspect cover (9:16/3:4/1:1). |
 | User wants a similar-looking video offline via CLI but the deck-only `voxflow slice` isn't enough | `voxflow present` or `voxflow picstory --style sketchnote` | **Approximation only.** Different visual schemes; cannot output Slice's `editorial-mag` / `notion-card` / `brutalist` / `glass-dark` themes. See **CLI Approximation** below. |
 | Local checkout has `video-present/src/compositions/PaperSlide` (VoxFlow contributors only) | Local Remotion experiment script | See **Local Remotion Route**. |
@@ -68,6 +69,57 @@ Limits:
 
 - No mp4. The cloud renderer that produces the 1080×1920 video lives in the web app.
 - No TTS. Pair `voxflow slice` with `voxflow narrate` if you want per-card audio without rendering.
+
+## Stage Route — `voxflow slice stage` (iteration preview)
+
+For the human-in-the-loop iteration phase **before** committing to a cloud render. Stage spins up a localhost HTTP server with hot reload — every save of the deck JSON updates the page instantly. No quota cost, no network round-trip.
+
+```bash
+voxflow slice deck.md -o deck.json     # 1. produce a deck (200 quota)
+voxflow slice stage deck.json          # 2. open localhost preview (free)
+                                       # 3. edit deck.json by hand or re-run slice
+                                       # 4. preview hot-reloads on save
+```
+
+Want a no-quota, no-login starter? Use the bundled sample directly:
+
+```bash
+voxflow slice stage examples/11-slice-stage/sample-deck.json
+```
+
+Flags:
+
+```
+voxflow slice stage <deck.json> [--port <n>] [--theme <id>] [--no-open]
+  --port      Default 5180. Auto-skips +1 up to 5189 on conflict.
+  --theme     Lock the preview to one theme (must be one of the 6 valid ids).
+  --no-open   Don't auto-launch the browser (CI / SSH / agent environments).
+```
+
+When to use Stage:
+
+- The user is in a multi-round editing loop — copy tweaks, card re-ordering, theme A/B — and reopening the mp4 each iteration is expensive friction.
+- The user wants to publish single cards (PNG) or carousels (ZIP) for image-first platforms (小红书 / X / 微博 / 公众号 头图) — Phase 1.4+ adds these export buttons.
+- AI-driven loops where the agent regenerates `deck.json` and the human reviews via browser — the page updates without the agent having to re-print paths.
+
+What Stage is NOT:
+
+- Not a full Remotion preview yet. MVP shows deck structure (cards + JSON); cloud-rendered theme thumbnails arrive in Phase 1.3 via `renderStill`.
+- Not a publish flow. To get the finished mp4, still use the web app or contributor Remotion route.
+- Not a substitute for the full render — themes are server-side compositions; Stage previews the **deck**, not the final video frames.
+
+### Edit-with-AI loop (the actual iteration workflow)
+
+Stage doesn't try to be Cursor — it's a **visual feedback closer** that hands prompts to whatever AI tool the user already has open (Claude Code, Cursor, ChatGPT, anything). Two affordances cover the whole edit loop:
+
+| Intent | UX | Output |
+|---|---|---|
+| Whole-card rewrite ("regen this card, keep the rest") | Hover the card → corner button **Edit with AI** | Modal with a prompt: file path + `cards[N]` JSON snippet + `<your instruction>` slot |
+| Local phrase rewrite ("just this phrase is off") | Select text inside a card → floating **Edit selection with AI** button appears | Modal with a prompt: file path + the exact selected substring quoted + full card JSON for context |
+
+The user types the instruction (e.g. "shorten to 12 chars, more visceral"), clicks **Copy prompt**, pastes into their AI. The AI uses its native file-edit tools (Claude Code's Edit, Cursor's Apply, etc.) to rewrite the file. Stage's SSE watcher hot-reloads the preview within ~150 ms. Loop until satisfied.
+
+Why this design and not an embedded chat / MCP server: see [#3330](https://github.com/VoxFlowStudio/FlowStudio/issues/3330) for the full design rationale (universal copy-paste vs. Claude Code-only MCP, cost vs. coverage tradeoff, future MCP upgrade path conditional on usage telemetry).
 
 ## CLI Approximation Route (full mp4 fallback)
 

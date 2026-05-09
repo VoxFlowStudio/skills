@@ -142,7 +142,7 @@ Free tier: 10,000 quota / month (resets monthly). Bonus pool from invitations ne
 | 1 TTS call (`say`) | ~100 |
 | `narrate` | ~100 per segment |
 | `story` (short) | ~500-1500 |
-| `podcast` (medium) | ~5,000 |
+| `podcast` (medium) | ~6,600 (5K script + ~16 × 100 TTS) |
 | `picstory` 5-scene | ~3,100 |
 
 Always check before expensive operations:
