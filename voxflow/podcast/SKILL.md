@@ -111,12 +111,12 @@ voxflow podcast \
 | Operation | Cost |
 |-----------|------|
 | Script generation (medium, ~16 turns) | 2,000 |
-| TTS per turn (native pause voice) | 100 |
-| TTS per chunk (splice fallback voice) | 100 |
+| TTS per turn (native pause voice) | 50 |
+| TTS per chunk (splice fallback voice) | 50 |
 
 **Per-turn TTS call count depends on voice**: voices flagged `nativePauseSupported: true` (most podcast voices) take 1 TTS call per turn — TRTC honors `<|break|>` / `<|s_break|>` markers natively (~250-430ms inserted). Voices that haven't been verified (e.g. 旁白 narration voices) fall back to client-side splice = N calls per turn.
 
-Typical medium podcast (16 turns, all native voices) ≈ 16 × 100 + 2,000 = 3,600 quota — Free tier (10K/month) comfortably covers two medium podcasts. **Tip**: if you already have a script, pass `--script my.json` to skip the 2,000 LLM step entirely. Mixed-voice podcasts cost slightly more if they include non-native voices.
+Typical medium podcast (16 turns, all native voices) ≈ 16 × 50 + 2,000 = 2,800 quota — Free tier (10K/month) covers ~3 medium podcasts. **Tip**: if you already have a script, pass `--script my.json` to skip the 2,000 LLM step entirely. Mixed-voice podcasts cost slightly more if they include non-native voices.
 
 ## Examples
 

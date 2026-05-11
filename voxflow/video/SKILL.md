@@ -123,10 +123,10 @@ Use `fast` for iteration; `hd-aiberm` when cards must contain accurate Chinese c
 | Operation | Quota |
 |---|---|
 | LLM script | 100 |
-| TTS / scene | 100 |
+| TTS / scene | 50 |
 | Image / scene | 500 |
-| **2-scene test** | **~1,300** |
-| **5-scene full** | **~3,100** |
+| **2-scene test** | **~1,200** |
+| **5-scene full** | **~2,850** |
 
 Free tier (10K/month) ≈ 3 full picstory videos.
 

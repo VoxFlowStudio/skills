@@ -435,9 +435,9 @@ voxflow summarize --input lecture-2h.mp4 --slides 12 --lang zh --tts -o summary.
 | `asr` local (Whisper) | 0 |
 | `asr` azure (per audio minute, ceil) | 150 (78s = 2min = 300; 30-min = 4500; 1-hr = 9000) |
 | `translate` (per 1K target chars) | ~50 |
-| `dub` per caption (TTS) | ~100 |
-| `video-translate` 5-min video | ~3,000–5,000 |
-| `summarize` 1-hr video | ~5,000–8,000 |
+| `dub` per caption (TTS) | ~50 |
+| `video-translate` 5-min video | ~2,000–4,000 |
+| `summarize` 1-hr video | ~4,000–6,000 |
 
 Always `voxflow status` before long jobs.
 
