@@ -1,0 +1,22 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "voxflow",
+  "description": "VoxFlow — AI voice CLI as a skill for any AI agent. Bundles 5 skills (hub, podcast, transcribe, video, slice) that drive a hosted TTS/ASR/podcast/render backend.",
+  "owner": {
+    "name": "VoxFlow",
+    "url": "https://voxflow.studio"
+  },
+  "plugins": [
+    {
+      "name": "voxflow",
+      "description": "AI voice CLI: text-to-speech in 200+ voices across 40+ languages, multi-speaker AI podcasts, video dubbing from SRT subtitles, transcription via cloud or local Whisper, end-to-end video translation, and short-form vertical reels via Remotion. Five bundled skills cover hub (TTS), podcast, transcribe, video, and slice (article-to-card reels).",
+      "category": "productivity",
+      "source": "./voxflow",
+      "homepage": "https://voxflow.studio",
+      "author": {
+        "name": "VoxFlow",
+        "url": "https://voxflow.studio"
+      }
+    }
+  ]
+}
