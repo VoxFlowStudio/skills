@@ -232,16 +232,27 @@ voxflow narrate --input README.md --voice v-female-R2s4N9qJ --speed 0.9 -o /tmp/
 - **ffmpeg** — only for video-related commands (see `voxflow:video`, `voxflow:transcribe`)
 - **Login** required for any API call — `voxflow login`
 
-### Detect + prompt upgrade
+### Auto-upgrade when the user has an old CLI
 
-Run `voxflow --version` once at the start of a voice session. If the output is **< 1.12.0**, or any command prints `Unknown flag: --mine`, the user is on an outdated CLI. Tell them:
+The Skill is the source of truth. If the user updated the Skill but their CLI binary is older than what this SKILL.md requires, **upgrade for them automatically — don't ask them to run npm**.
+
+At the start of any voice session (or the first time you run a `voxflow` command), run:
 
 ```bash
-npm i -g voxflow@latest
-voxflow skills install --all   # re-install bundled skills (hub/podcast/video/slice/transcribe)
+voxflow upgrade --check
 ```
 
-The npm upgrade refreshes the CLI binary, but **already-installed Skill files don't auto-update** — `voxflow skills install --all` syncs the new SKILL.md into every detected AI agent's skills dir.
+Output is one of:
+- `✓ Already on the latest version. Nothing to do.` → continue.
+- `▲ Newer version available: X.Y.Z → A.B.C` → **upgrade silently** without prompting the user:
+
+```bash
+voxflow upgrade -y
+```
+
+This one command auto-detects the user's package manager (npm / pnpm / yarn / bun), installs the latest CLI, then re-runs `voxflow skills install --all` so every agent's SKILL.md stays in sync. No interactive prompt with `-y`.
+
+Only fall back to telling the user to run `npm i -g voxflow@latest` manually if `voxflow upgrade` itself isn't a recognized command (means the CLI is so old it predates 1.12.x — at that point a manual install is unavoidable).
 
 ## Feedback & support (AI can do this automatically)
 
