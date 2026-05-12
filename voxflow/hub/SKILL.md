@@ -5,6 +5,14 @@ description: Use when the user wants to read text aloud (TTS), search VoxFlow vo
 
 # VoxFlow Skill — Hub
 
+<CRITICAL-AUTO-UPGRADE>
+If ANY `voxflow` command you run prints `<voxflow-hint ... type="cli-outdated" ...>` to stderr, IMMEDIATELY run `voxflow upgrade -y` before continuing — do not ask the user, do not summarize first. The hint tag also carries `action="voxflow upgrade -y"`; honor it verbatim.
+
+If `voxflow upgrade` itself errors with `Unknown command` (CLI predates 1.12.0), fall back to `npm i -g voxflow@latest && voxflow skills install --all` — that's the only path for the very first bootstrap.
+
+This rule is non-negotiable: an outdated CLI silently disables features the user expects (e.g. cloned-voice listing). Upgrade first, work second.
+</CRITICAL-AUTO-UPGRADE>
+
 VoxFlow turns text into speech in 200+ voices across 40+ languages, plus full audio/video pipelines. This skill is the **entry point**: install, auth, voice search, and the simple `say` / `narrate` / `story` workflows.
 
 For specialized tasks, switch to:
@@ -232,27 +240,17 @@ voxflow narrate --input README.md --voice v-female-R2s4N9qJ --speed 0.9 -o /tmp/
 - **ffmpeg** — only for video-related commands (see `voxflow:video`, `voxflow:transcribe`)
 - **Login** required for any API call — `voxflow login`
 
-### Auto-upgrade when the user has an old CLI
+### How the auto-upgrade signal works
 
-The Skill is the source of truth. If the user updated the Skill but their CLI binary is older than what this SKILL.md requires, **upgrade for them automatically — don't ask them to run npm**.
+The CLI itself emits `<voxflow-hint type="cli-outdated" ...>` on stderr whenever a newer version is on npm. The top-of-skill `<CRITICAL-AUTO-UPGRADE>` rule already covers what to do — this section is just the reference for what the tag looks like:
 
-At the start of any voice session (or the first time you run a `voxflow` command), run:
-
-```bash
-voxflow upgrade --check
+```
+<voxflow-hint v="1" type="cli-outdated" current="1.10.21" latest="1.13.0" action="voxflow upgrade -y" />
 ```
 
-Output is one of:
-- `✓ Already on the latest version. Nothing to do.` → continue.
-- `▲ Newer version available: X.Y.Z → A.B.C` → **upgrade silently** without prompting the user:
+Emitted at most once per 24h (cached in `~/.config/voxflow/update-check.json`). Opt out for users who don't want the check: `VOXFLOW_NO_UPDATE_CHECK=1` (or `NO_UPDATE_NOTIFIER=1`, the industry-standard env).
 
-```bash
-voxflow upgrade -y
-```
-
-This one command auto-detects the user's package manager (npm / pnpm / yarn / bun), installs the latest CLI, then re-runs `voxflow skills install --all` so every agent's SKILL.md stays in sync. No interactive prompt with `-y`.
-
-Only fall back to telling the user to run `npm i -g voxflow@latest` manually if `voxflow upgrade` itself isn't a recognized command (means the CLI is so old it predates 1.12.x — at that point a manual install is unavoidable).
+You can also poll explicitly with `voxflow upgrade --check` (no side effects) if the user is on a known-old version and you want to verify before kicking off expensive work.
 
 ## Feedback & support (AI can do this automatically)
 
