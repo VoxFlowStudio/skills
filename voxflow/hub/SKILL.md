@@ -44,7 +44,17 @@ voxflow voices --search "narrator"
 voxflow voices --all
 ```
 
-No login required. Output includes the voice ID, language, gender, and a short description.
+No login required for the public catalog. Output includes the voice ID, language, gender, and a short description.
+
+### Listing the user's own cloned voices
+
+When the user says things like "用我的克隆声音 / use my cloned voice / 用我之前克隆的", the public `voxflow voices` catalog **does not include cloned voices** — you must query the authenticated endpoint:
+
+```bash
+voxflow voices --mine
+```
+
+Prints cloned voice IDs, names, duration, and creation time (requires login). Always run this **before** concluding the user has no cloned voice — the web UI "我的声音" tab and `--mine` are the only sources of truth.
 
 ### Popular voice IDs (sane defaults)
 
@@ -218,8 +228,20 @@ voxflow narrate --input README.md --voice v-female-R2s4N9qJ --speed 0.9 -o /tmp/
 ## Prerequisites
 
 - **Node.js** `^20.19.0 || >=22.12.0`
+- **voxflow CLI ≥ 1.12.0** (for `voxflow voices --mine` — lists the user's cloned voices)
 - **ffmpeg** — only for video-related commands (see `voxflow:video`, `voxflow:transcribe`)
 - **Login** required for any API call — `voxflow login`
+
+### Detect + prompt upgrade
+
+Run `voxflow --version` once at the start of a voice session. If the output is **< 1.12.0**, or any command prints `Unknown flag: --mine`, the user is on an outdated CLI. Tell them:
+
+```bash
+npm i -g voxflow@latest
+voxflow skills install --all   # re-install bundled skills (hub/podcast/video/slice/transcribe)
+```
+
+The npm upgrade refreshes the CLI binary, but **already-installed Skill files don't auto-update** — `voxflow skills install --all` syncs the new SKILL.md into every detected AI agent's skills dir.
 
 ## Feedback & support (AI can do this automatically)
 

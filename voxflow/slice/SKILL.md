@@ -1,29 +1,29 @@
 ---
 name: slice
-description: Use when the user wants to turn a long article / note / report into a vertical 1080×1920 card video — VoxFlow Slice. Six themes: paper-slide (纸面), editorial-mag (杂志), bold-poster (大字海报), notion-card (Notion 卡), brutalist (粗野), glass-dark (玻璃夜). Triggers: Slice / slice video / 切片视频 / 文章转视频 / 知识卡片视频 / 抖音知识号 / 小红书图文转视频 / 知乎长文转视频 / 公众号转视频 / PaperSlide / paperslide / paper-slide (legacy name).
+description: Use when the user wants to turn a long article / note / report into a vertical 1080×1920 card video — VoxFlow Slice. 13 themes: paper-slide (纸面), editorial-mag (编辑刊), bold-poster (大字海报), notion-card (Notion 卡), brutalist (粗野), glass-dark (玻璃夜), editorial-stencil (编辑·海报), broadsheet (财经刊), blueprint (蓝晒图), daisy-pastel (雏菊), showa-catalog (昭和目录), photo-feature (摄影刊), atmospheric (深夜刊). Triggers: Slice / slice video / 切片视频 / 文章转视频 / 知识卡片视频 / 抖音知识号 / 小红书图文转视频 / 知乎长文转视频 / 公众号转视频 / PaperSlide / paperslide / paper-slide (legacy name).
 ---
 
 # Slice Skill
 
-Turn an article, note, paper, or rough topic into a vertical 1080×1920 card video — narrated, paginated to TTS rhythm, with 6 visual themes covering 抖音 / 小红书 / 知乎 / X / 公众号 / 飞书 / TikTok.
+Turn an article, note, paper, or rough topic into a vertical 1080×1920 card video — narrated, paginated to TTS rhythm, with 13 visual themes covering 抖音 / 小红书 / 知乎 / X / 公众号 / 飞书 / TikTok / LinkedIn / 雪球 / 微博 / 即刻 / B 站 / 播客.
 
-> **Renamed from `paper-slide` → `slice`.** The product is now called **Slice** (`voxflow.studio/apps/slice`); the legacy slug is no longer registered. `paper-slide` survives only as one of the 6 theme ids.
+> **Renamed from `paper-slide` → `slice`.** The product is now called **Slice** (`voxflow.studio/apps/slice`); the legacy slug is no longer registered. `paper-slide` survives only as one of the 13 theme ids.
 
 ## Pick the Route
 
 | Context | Route | Notes |
 |---|---|---|
-| User wants the deck JSON (no render) — fast, scriptable, pipeable | **CLI**: `voxflow slice <article.md> --theme <id>` | Hits `/api/paper-slide/slice` directly (200 quota). Returns the canonical 5–8 card deck JSON validated by the same backend the web app uses, all 6 themes accepted. No mp4 — pipe `--json` into custom tools, the local Remotion composition (contributors), or paste into the web app for rendering. |
+| User wants the deck JSON (no render) — fast, scriptable, pipeable | **CLI**: `voxflow slice <article.md> --theme <id>` | Hits `/api/paper-slide/slice` directly (200 quota). Returns the canonical 5–8 card deck JSON validated by the same backend the web app uses, all 13 themes accepted. No mp4 — pipe `--json` into custom tools, the local Remotion composition (contributors), or paste into the web app for rendering. |
 | User is iterating on a deck — multi-round edits to copy/structure before committing to a render | **CLI**: `voxflow slice stage <deck.json>` | Boots a localhost preview page (no quota cost) that hot-reloads on every save of the deck JSON. Useful loop: `voxflow slice ... -o deck.json` → `voxflow slice stage deck.json` → tweak prompt → re-run slice → preview updates instantly. See **Stage Route** below. |
 | User wants a finished mp4 + cover (default consumer flow) | **Web app**: `https://voxflow.studio/apps/slice` | The only place that runs the **exact** 6 Slice themes end-to-end. Free tier ships 9:16 mp4 + multi-aspect cover (9:16/3:4/1:1). |
 | User wants a similar-looking video offline via CLI but the deck-only `voxflow slice` isn't enough | `voxflow present` or `voxflow picstory --style sketchnote` | **Approximation only.** Different visual schemes; cannot output Slice's `editorial-mag` / `notion-card` / `brutalist` / `glass-dark` themes. See **CLI Approximation** below. |
-| Local checkout has `video-present/src/compositions/PaperSlide` (VoxFlow contributors only) | Local Remotion experiment script | See **Local Remotion Route**. |
+| Local checkout has `video-present/src/compositions/PaperSlide` (VoxFlow contributors only) | Local Remotion experiment script | See **Local Remotion Route**. Note: experiment script only exercises the original `paper-slide` composition; other 12 themes render via cloud worker only. |
 | User only wants strategy or copy | Produce the deck JSON via `voxflow slice` (or by hand following the schema); tell them which renderer to use. | The deck schema is renderer-agnostic; same JSON renders in any theme. |
 | User asks to open-source / package | Keep private APIs, tokens, generated audio, MP4 outputs out of the skill package. | |
 
 ## Workflow
 
-1. **Pick a theme that matches the platform.** Read `references/themes.md` once — it lists all 6 themes, their visual signature, and which platform / content type each one fits. Don't default to `paper-slide` for everything.
+1. **Pick a theme that matches the platform.** Read `references/themes.md` once — it lists all 13 themes, their visual signature, and which platform / content type each one fits. Don't default to `paper-slide` for everything.
 2. **Pick a scenario.** Concrete use case beats generic filler: paper digest, product update, meeting closeout, career advice, founder lesson, market commentary, incident review.
 3. **Write a tight deck.** 4-6 cards: one title + 3-5 body. One idea per body card. Captions short enough to fit one line.
 4. **Choose visuals from controlled keywords.** Don't search the web or generate random images at render time — pick a canonical `figureKeyword`; the renderer maps it to a local hand-drawn scene / pose / icon. (See `references/deck-schema.md`.)
@@ -43,10 +43,10 @@ Workflow:
 
 1. Paste the article / note into the hero composer.
 2. AI slices it into 5–8 cards.
-3. Pick a theme (6 options) + a voice (6 production voices: 男主播 / 霸总男声 / 闲聊男声 / 小美 / 小心 / 小徐).
+3. Pick a theme (13 options — see `references/themes.md`) + a voice (6 production voices: 男主播 / 霸总男声 / 闲聊男声 / 小美 / 小心 / 小徐).
 4. Render → 1080×1920 mp4 + multi-aspect cover (9:16 / 3:4 / 1:1).
 
-Tell the user this is the **only** route that produces the exact Slice render — themes are private Remotion compositions, not shipped with the CLI.
+Tell the user this is the **only** route that produces the exact Slice render for all 13 themes — they're private Remotion compositions, not shipped with the CLI.
 
 ## CLI Deck Route (`voxflow slice`)
 
@@ -92,7 +92,7 @@ Flags:
 ```
 voxflow slice stage <deck.json> [--port <n>] [--theme <id>] [--no-open]
   --port      Default 5180. Auto-skips +1 up to 5189 on conflict.
-  --theme     Lock the preview to one theme (must be one of the 6 valid ids).
+  --theme     Lock the preview to one theme (must be one of the 13 valid ids).
   --no-open   Don't auto-launch the browser (CI / SSH / agent environments).
 ```
 
@@ -123,7 +123,7 @@ Why this design and not an embedded chat / MCP server: see [#3330](https://githu
 
 ## CLI Approximation Route (full mp4 fallback)
 
-If the user **must** have an mp4 from the CLI alone (no web app, no contributor Remotion access), fall back to `voxflow present` or `voxflow picstory` — they cover the same article-to-video shape but with their own visual schemes, not the exact 6 Slice themes.
+If the user **must** have an mp4 from the CLI alone (no web app, no contributor Remotion access), fall back to `voxflow present` or `voxflow picstory` — they cover the same article-to-video shape but with their own visual schemes, not the exact 13 Slice themes.
 
 ```bash
 voxflow present --text "paste article or summary" --style editorial --output slice-approx.mp4
@@ -140,8 +140,15 @@ Closest CLI scheme per Slice theme:
 | notion-card | `voxflow present --style minimal` |
 | brutalist | `voxflow present --style brutalist` |
 | glass-dark | `voxflow present --style noir` or `--style aurora` |
+| editorial-stencil | `voxflow present --style editorial` (no letterbox / dual-tone equivalent) |
+| broadsheet | `voxflow present --style editorial` (no FT salmon palette) |
+| blueprint | `voxflow picstory --style chalkboard` (closest grid/diagram feel) |
+| daisy-pastel | `voxflow picstory --style sketchnote` (no pastel illustration equivalent) |
+| showa-catalog | `voxflow picstory --style vintage_newspaper` (no city-pop equivalent) |
+| photo-feature | `voxflow picstory --style photo` (photo-feature needs imageUrl per card — see deck-schema) |
+| atmospheric | `voxflow present --style noir` |
 
-Always tell the user: "This is a Slice-adjacent draft. The exact 6-theme renderer lives on `voxflow.studio/apps/slice`."
+Always tell the user: "This is a Slice-adjacent draft. The exact 13-theme renderer lives on `voxflow.studio/apps/slice`."
 
 ## Local Remotion Route (contributors only)
 
@@ -175,7 +182,7 @@ ffmpeg -y -hide_banner -loglevel error -ss 9 \
 
 Expected: `1080×1920`, 20-35 seconds, no black flashes, no caption overflow, figure not clipped.
 
-## Deck Writing Rules (apply across all 6 themes)
+## Deck Writing Rules (apply across all 13 themes)
 
 - **Title card**: hook, contrast, or promise. Avoid abstract labels like "Introduction".
 - **Body card**: one idea only. Caption usually under 16 Chinese chars or 7 English words.
@@ -183,4 +190,4 @@ Expected: `1080×1920`, 20-35 seconds, no black flashes, no caption overflow, fi
 - **Scene keywords** (prefer when they fit): `problem-framing`, `evidence-board`, `customer-pain`, `timeline-review`, `owner-deadline`, `risk-guardrail`, `cashflow-ledger`, `team-alignment`, `before-after`, `learning-loop`, `decision-fork`, `growth-system`.
 - **Figure / icon keywords** (visual accents): `thinking`, `running`, `climbing`, `stuck`, `celebrating`, `briefcase`, `users`, `target`, `clock`, `flame`, `lightbulb`, `chart-bar`.
 - **Vary adjacent visuals.** Don't use `thinking` on every card.
-- **Theme is independent of deck content** — the same deck JSON renders in any of the 6 themes; pick the theme based on platform / mood, not content.
+- **Theme is independent of deck content** — the same deck JSON renders in any of the 13 themes; pick the theme based on platform / mood, not content. Exception: `photo-feature` and `atmospheric` use each card's `imageUrl` as a backdrop and degrade to an SVG stub when missing — see `references/deck-schema.md`.
