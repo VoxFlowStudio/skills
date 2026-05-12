@@ -1,6 +1,6 @@
 ---
 name: slice
-description: Use when the user wants to turn a long article / note / report into a vertical 1080×1920 card video — VoxFlow Slice. 13 themes: paper-slide (纸面), editorial-mag (编辑刊), bold-poster (大字海报), notion-card (Notion 卡), brutalist (粗野), glass-dark (玻璃夜), editorial-stencil (编辑·海报), broadsheet (财经刊), blueprint (蓝晒图), daisy-pastel (雏菊), showa-catalog (昭和目录), photo-feature (摄影刊), atmospheric (深夜刊). Triggers: Slice / slice video / 切片视频 / 文章转视频 / 知识卡片视频 / 抖音知识号 / 小红书图文转视频 / 知乎长文转视频 / 公众号转视频 / PaperSlide / paperslide / paper-slide (legacy name).
+description: "Use when the user wants to turn a long article / note / report into a vertical 1080×1920 card video — VoxFlow Slice. 13 themes — paper-slide (纸面), editorial-mag (编辑刊), bold-poster (大字海报), notion-card (Notion 卡), brutalist (粗野), glass-dark (玻璃夜), editorial-stencil (编辑·海报), broadsheet (财经刊), blueprint (蓝晒图), daisy-pastel (雏菊), showa-catalog (昭和目录), photo-feature (摄影刊), atmospheric (深夜刊). Triggers — Slice / slice video / 切片视频 / 文章转视频 / 知识卡片视频 / 抖音知识号 / 小红书图文转视频 / 知乎长文转视频 / 公众号转视频 / PaperSlide / paperslide / paper-slide (legacy name)."
 ---
 
 # Slice Skill
