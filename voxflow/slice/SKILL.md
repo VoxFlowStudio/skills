@@ -13,7 +13,7 @@ Turn an article, note, paper, or rough topic into a vertical 1080×1920 card vid
 
 | Context | Route | Notes |
 |---|---|---|
-| User wants the deck JSON (no render) — fast, scriptable, pipeable | **CLI**: `voxflow slice <article.md> --theme <id>` | Hits `/api/paper-slide/slice` directly (200 quota). Returns the canonical 5–8 card deck JSON validated by the same backend the web app uses, all 13 themes accepted. No mp4 — pipe `--json` into custom tools, the local Remotion composition (contributors), or paste into the web app for rendering. |
+| User wants the deck JSON (no render) — fast, scriptable, pipeable | **CLI**: `voxflow slice <article.md> --theme <id>` | Hits `/api/slice/deck` directly (200 quota; renamed from `/api/paper-slide/slice` in #3307 Deploy 2). Returns the canonical 5–8 card deck JSON validated by the same backend the web app uses, all 13 themes accepted. No mp4 — pipe `--json` into custom tools, the local Remotion composition (contributors), or paste into the web app for rendering. |
 | User is iterating on a deck — multi-round edits to copy/structure before committing to a render | **CLI**: `voxflow slice stage <deck.json>` | Boots a localhost preview page (no quota cost) that hot-reloads on every save of the deck JSON. Useful loop: `voxflow slice ... -o deck.json` → `voxflow slice stage deck.json` → tweak prompt → re-run slice → preview updates instantly. See **Stage Route** below. |
 | User wants a finished mp4 + cover (default consumer flow) | **Web app**: `https://voxflow.studio/apps/slice` | The only place that runs the **exact** 6 Slice themes end-to-end. Free tier ships 9:16 mp4 + multi-aspect cover (9:16/3:4/1:1). |
 | User wants a similar-looking video offline via CLI but the deck-only `voxflow slice` isn't enough | `voxflow present` or `voxflow picstory --style sketchnote` | **Approximation only.** Different visual schemes; cannot output Slice's `editorial-mag` / `notion-card` / `brutalist` / `glass-dark` themes. See **CLI Approximation** below. |
@@ -50,7 +50,7 @@ Tell the user this is the **only** route that produces the exact Slice render fo
 
 ## CLI Deck Route (`voxflow slice`)
 
-For users who want the structured deck JSON without the render — fast (one round-trip, 200 quota), pipeable, theme-aware. Hits the same `/api/paper-slide/slice` backend the web app uses, so the deck shape is canonical.
+For users who want the structured deck JSON without the render — fast (one round-trip, 200 quota), pipeable, theme-aware. Hits the same `/api/slice/deck` backend the web app uses, so the deck shape is canonical.
 
 ```bash
 voxflow slice article.md                                  # default theme: paper-slide
@@ -99,14 +99,26 @@ voxflow slice stage <deck.json> [--port <n>] [--theme <id>] [--no-open]
 When to use Stage:
 
 - The user is in a multi-round editing loop — copy tweaks, card re-ordering, theme A/B — and reopening the mp4 each iteration is expensive friction.
-- The user wants to publish single cards (PNG) or carousels (ZIP) for image-first platforms (小红书 / X / 微博 / 公众号 头图) — Phase 1.4+ adds these export buttons.
+- The user wants to publish individual cards as plain text on text-first platforms (X / Twitter / 即刻 / Threads / Mastodon / blog comments). Stage gives each card a "Copy text" button (title + caption + narration), and the deck-level toolbar offers "Copy JSON / Download .json / Copy as Markdown" for pasting into Notion / blog / 飞书. Image / carousel exports for 小红书 / 微博 / 公众号 头图 land in a future Phase once per-card stills are available.
 - AI-driven loops where the agent regenerates `deck.json` and the human reviews via browser — the page updates without the agent having to re-print paths.
+
+### Text export utilities (Phase 1.4 text-only)
+
+The Stage UI ships text-first export controls so cards can be reused on text-only platforms without paying for a full render:
+
+- **Per-card "Copy text"** — click the small button on any card → clipboard gets `{title}\n\n{caption (if distinct)}\n\n{narration}` (trimmed). Drop into a tweet, 即刻 post, blog snippet.
+- **Deck toolbar — "Copy JSON"** — copies the full deck JSON to clipboard (for piping into custom tools / sharing with another agent / saving a snapshot).
+- **Deck toolbar — "Download .json"** — saves the deck as `<seriesTitle>.json` (filename auto-sanitised, capped at 60 chars + `.json`).
+- **Deck toolbar — "Copy as Markdown"** — formats the whole deck as Markdown (H1 = seriesTitle, H2 per card, narration as blockquote). Paste into Notion / blog editor / 飞书 docs.
+
+Formatters live in `lib/stage-core/deck-format.js` (`formatCardAsText`, `formatDeckAsMarkdown`, `suggestDeckFilename`) and are unit-tested in `tests/deck-format.test.js`. Their source is stringified into the served HTML via `Function.prototype.toString()` so the browser executes the *same* code the tests cover — single source of truth, no double maintenance.
+
+**Image / MP4 carousel exports** for 小红书 / 微博 / 公众号 头图 are NOT in Phase 1.4 text-only. Those land in a future Phase once `renderStill` per-card thumbnails are available (they require a backend Remotion endpoint that doesn't exist yet).
 
 What Stage is NOT:
 
 - Not a full Remotion preview yet. MVP shows deck structure (cards + JSON); cloud-rendered theme thumbnails arrive in Phase 1.3 via `renderStill`.
-- Not a publish flow. To get the finished mp4, still use the web app or contributor Remotion route.
-- Not a substitute for the full render — themes are server-side compositions; Stage previews the **deck**, not the final video frames.
+- Not a substitute for the full render's pixels — themes are server-side compositions. Stage previews the **deck text**, not the final video frames.
 
 ### Edit-with-AI loop (the actual iteration workflow)
 
