@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "voxflow",
-  "description": "VoxFlow — AI voice CLI as a skill for any AI agent. Bundles 5 skills (hub, podcast, transcribe, video, slice) that drive a hosted TTS / ASR / podcast / render backend.",
+  "description": "VoxFlow — AI voice CLI as a skill for any AI agent. Bundles 6 skills (hub, podcast, transcribe, video, slice, card) that drive a hosted TTS / ASR / podcast / render backend.",
   "owner": {
     "name": "VoxFlow",
     "url": "https://voxflow.studio"
@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "voxflow",
-      "description": "AI voice CLI bundled as 5 skills. TTS in 200+ voices across 40+ languages, multi-speaker AI podcasts, audio/video transcription with word-level timestamps, SRT-driven dubbing, end-to-end video translation, and long-article → vertical card video reels via Remotion. Backed by a hosted TTS/ASR/LLM/render service with per-user quota (free tier 10K/mo).",
+      "description": "AI voice CLI bundled as 6 skills. TTS in 200+ voices across 40+ languages, multi-speaker AI podcasts, audio/video transcription with word-level timestamps, SRT-driven dubbing, end-to-end video translation, long-article → vertical card video reels via Remotion, and turning text into polished shareable card images. Backed by a hosted TTS/ASR/LLM/render service with per-user quota (free tier 10K/mo).",
       "category": "productivity",
       "source": "./",
       "homepage": "https://voxflow.studio",

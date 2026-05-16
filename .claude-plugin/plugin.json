@@ -1,7 +1,7 @@
 {
   "name": "voxflow",
-  "version": "1.15.0",
-  "description": "AI voice CLI bundled as 5 skills (hub, podcast, transcribe, video, slice). Synthesize speech in 200+ voices across 40+ languages, generate multi-speaker AI podcasts, transcribe audio/video with word-level timestamps, dub videos from SRT subtitles, run end-to-end video translation, and turn long articles into vertical card video reels via Remotion. Backed by a hosted TTS/ASR/LLM/render service with per-user quota (free tier 10K/mo).",
+  "version": "1.16.0",
+  "description": "AI voice CLI bundled as 6 skills (hub, podcast, transcribe, video, slice, card). Synthesize speech in 200+ voices across 40+ languages, generate multi-speaker AI podcasts, transcribe audio/video with word-level timestamps, dub videos from SRT subtitles, run end-to-end video translation, turn long articles into vertical card video reels via Remotion, and turn text into polished shareable card images. Backed by a hosted TTS/ASR/LLM/render service with per-user quota (free tier 10K/mo).",
   "author": {
     "name": "VoxFlow",
     "url": "https://voxflow.studio"
@@ -19,6 +19,7 @@
     "dubbing",
     "video",
     "remotion",
+    "card",
     "voxflow",
     "skill"
   ]

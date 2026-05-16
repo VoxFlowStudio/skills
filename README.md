@@ -4,12 +4,12 @@
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 [![npm version](https://img.shields.io/npm/v/voxflow.svg)](https://www.npmjs.com/package/voxflow)
-[![5 skills](https://img.shields.io/badge/skills-5-purple.svg)](#what-you-get)
+[![6 skills](https://img.shields.io/badge/skills-6-purple.svg)](#what-you-get)
 [![Works with](https://img.shields.io/badge/works%20with-Claude%20Code%20%C2%B7%20Cursor%20%C2%B7%20Codex%20%C2%B7%20Gemini-orange.svg)](#install)
 
 ![VoxFlow CLI demo](https://github.com/VoxFlowStudio/skills/raw/main/demo.gif)
 
-Voice in your AI workflow. Five skills that let any AI coding agent (Claude Code · Cursor · Codex · Gemini CLI · Cline) speak in 200+ voices, generate podcasts, dub videos, and transcribe audio — through one CLI.
+Voice in your AI workflow. Six skills that let any AI coding agent (Claude Code · Cursor · Codex · Gemini CLI · Cline) speak in 200+ voices, generate podcasts, dub videos, transcribe audio, and turn text into card images — through one CLI.
 
 **Why VoxFlow over a raw TTS API?** One CLI handles auth, voice search, multi-speaker dialogue, video pipelines, and quota. The skills layer makes it native to whichever agent you're already using — no new context-switch.
 
@@ -32,8 +32,8 @@ npx -y skills add VoxFlowStudio/skills --all --yes --global
 
 The `skills` npm package detects every AI agent on your machine (Claude Code,
 Cursor, Codex CLI, Gemini CLI, Cline, Amp, Antigravity, CodeBuddy, OpenClaw…)
-and writes the 5 VoxFlow skills (`hub`, `podcast`, `transcribe`, `video`,
-`slice`) to each agent's standard skill location in a single shot.
+and writes the 6 VoxFlow skills (`hub`, `podcast`, `transcribe`, `video`,
+`slice`, `card`) to each agent's standard skill location in a single shot.
 
 ## Prerequisites
 
@@ -44,7 +44,7 @@ voxflow login          # one-time browser auth
 
 ## What You Get
 
-Five focused skills, each loaded on demand:
+Six focused skills, each loaded on demand:
 
 | Skill | Invoked as | What it covers |
 |-------|-----------|----------------|
@@ -52,7 +52,8 @@ Five focused skills, each loaded on demand:
 | **podcast** | `voxflow:podcast` | Multi-speaker AI podcast from topic / URL / script |
 | **transcribe** | `voxflow:transcribe` | `asr` · `asr-jobs` · `translate` · `dub` · `video-translate` · `summarize` · `publish` |
 | **video** | `voxflow:video` | `picstory` · `present` · `slides` · `explain` · `image` |
-| **slice** | `voxflow:slice` | Article → vertical card video (1080×1920); 6 themes: paper / editorial / poster / Notion / brutalist / glass |
+| **slice** | `voxflow:slice` | Article → vertical card video (1080×1920); 13 editorial / poster / magazine themes |
+| **card** | `voxflow:card` | Text → shareable card images (HTML/CSS + Playwright); 1:1 / 3:4 / 9:16, editorial design system |
 
 Use the hub skill as the starting point — it routes to the others automatically.
 
@@ -78,7 +79,8 @@ voxflow/
   podcast/SKILL.md      # AI dialogue podcast
   transcribe/SKILL.md   # ASR, translation, dubbing
   video/SKILL.md        # AI short video, slides, images
-  slice/SKILL.md        # Article → vertical card video (6 themes)
+  slice/SKILL.md        # Article → vertical card video (13 themes)
+  card/SKILL.md         # Text → shareable card images (1:1 / 3:4 / 9:16)
 ```
 
 ## Registry
