@@ -1,6 +1,6 @@
 ---
 name: card
-description: Use when the user wants to turn text content into a set of polished, shareable visual CARD IMAGES — knowledge cards, quote cards, 小红书图文, carousel cards, poster cards — rendered as HTML/CSS and exported via Playwright at ratios like 1:1 / 3:4 / 9:16. Triggers: card / 卡片 / 知识卡 / 文字卡片 / 金句卡 / 图文卡片 / 卡片生成 / make cards. For article → vertical card VIDEO use voxflow:slice; for short videos / AI clips use voxflow:video; for podcasts use voxflow:podcast.
+description: "Use when the user wants to turn text content into a set of polished, shareable visual CARD IMAGES — knowledge cards, quote cards, 小红书图文, carousel cards, poster cards — rendered as HTML/CSS and exported via Playwright at ratios like 1:1 / 3:4 / 9:16. Triggers: card / 卡片 / 知识卡 / 文字卡片 / 金句卡 / 图文卡片 / 卡片生成 / make cards. For article → vertical card VIDEO use voxflow:slice; for short videos / AI clips use voxflow:video; for podcasts use voxflow:podcast."
 ---
 
 # VoxFlow Skill — Card
