@@ -1,0 +1,37 @@
+{
+  "header": "产品发布",
+  "seriesTitle": "我们做了一年的东西",
+  "seriesTagline": "上线第一天的真心话",
+  "theme": "paper-slide",
+  "cards": [
+    {
+      "kind": "title",
+      "title": ["十年的痛", "今天有个答案"],
+      "narration": "我们做了一整年的东西，今天上线。先讲讲为什么要做。"
+    },
+    {
+      "kind": "body",
+      "caption": "重复的活，每天都在做",
+      "figureKeyword": "stuck",
+      "narration": "团队里有 30% 的时间花在同一件事上：把素材塞进同一个模板。"
+    },
+    {
+      "kind": "body",
+      "caption": "工具早就有，但用起来割裂",
+      "figureKeyword": "decision-fork",
+      "narration": "市面上有十几个工具能做这个分工，但每多一个工具，团队学习成本翻倍。"
+    },
+    {
+      "kind": "body",
+      "caption": "我们把它合并到一个对话",
+      "figureKeyword": "team-alignment",
+      "narration": "今天发布的版本，把这些动作统一在一个 Claude Code 会话里。"
+    },
+    {
+      "kind": "body",
+      "caption": "30 分钟出片，0 模板锁定",
+      "figureKeyword": "growth-system",
+      "narration": "首批用户的反馈是平均 30 分钟从想法到成片，比之前快五倍。"
+    }
+  ]
+}

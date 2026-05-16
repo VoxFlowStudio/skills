@@ -1,0 +1,37 @@
+{
+  "header": "深夜 · 散文",
+  "seriesTitle": "为什么周末也很累",
+  "seriesTagline": "写给一直没歇的你",
+  "theme": "atmospheric",
+  "cards": [
+    {
+      "kind": "title",
+      "title": ["不是身体在累", "是脑子没下班"],
+      "narration": "周一到周五累不奇怪，奇怪的是周末也累，原因和工作量无关。"
+    },
+    {
+      "kind": "body",
+      "caption": "睡了八小时还是不解乏",
+      "figureKeyword": "stuck",
+      "narration": "明明睡满八小时，醒来还是疲惫，是因为脑子一整晚都在处理白天没结束的事。"
+    },
+    {
+      "kind": "body",
+      "caption": "未结清的小事最耗能",
+      "figureKeyword": "thinking",
+      "narration": "心理学叫蔡格尼克效应，未完成的小事比已完成的大事更占内存。"
+    },
+    {
+      "kind": "body",
+      "caption": "睡前花五分钟把它们写下来",
+      "figureKeyword": "evidence-board",
+      "narration": "解法很轻：睡前花五分钟把脑子里悬着的事写下来，写完它们就先安心地等着。"
+    },
+    {
+      "kind": "body",
+      "caption": "不是认真就行，是让它们不再追你",
+      "figureKeyword": "growth-system",
+      "narration": "你不是要认真处理每件小事，你是要让它们停止半夜还在追你。"
+    }
+  ]
+}

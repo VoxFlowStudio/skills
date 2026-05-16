@@ -1,0 +1,37 @@
+{
+  "header": "线上事故 · 复盘",
+  "seriesTitle": "一次三小时的宕机",
+  "seriesTagline": "我们认了，下次不会再这样",
+  "theme": "brutalist",
+  "cards": [
+    {
+      "kind": "title",
+      "title": ["3 小时宕机", "我们的复盘"],
+      "narration": "周二晚上九点，我们的服务挂了三个小时。这是怎么发生的。"
+    },
+    {
+      "kind": "body",
+      "caption": "一次例行发布触发了 OOM",
+      "figureKeyword": "risk-guardrail",
+      "narration": "晚上 21:08 上线了一个新功能，新代码在峰值流量下吃掉了所有内存。"
+    },
+    {
+      "kind": "body",
+      "caption": "告警没响，监控盲区",
+      "figureKeyword": "evidence-board",
+      "narration": "OOM 杀死了进程但没杀掉容器，健康检查仍然通过，告警延迟了 40 分钟。"
+    },
+    {
+      "kind": "body",
+      "caption": "回滚花了一小时，因为没演练过",
+      "figureKeyword": "timeline-review",
+      "narration": "我们有回滚脚本，但从来没真正跑过，第一次跑发现配置漂移了，又花一小时手动修。"
+    },
+    {
+      "kind": "body",
+      "caption": "三件改变：金丝雀、内存告警、月度演练",
+      "figureKeyword": "learning-loop",
+      "narration": "下个版本起：所有发布走 5% 金丝雀；监控加内存阈值；每月演练一次回滚。"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "header": "数据发现",
+  "seriesTitle": "一个反直觉数字",
+  "seriesTagline": "看完你大概率会改方法",
+  "theme": "bold-poster",
+  "cards": [
+    {
+      "kind": "title",
+      "title": ["90%", "其实是错的"],
+      "narration": "我们查了一千个团队的工时表，发现一个反直觉的数字。"
+    },
+    {
+      "kind": "data",
+      "data": {
+        "value": "47",
+        "unit": "%",
+        "label": "时间花在等其他人决策"
+      },
+      "narration": "受访的产品经理里，平均 47% 的工时不是在做事，是在等其他人拍板。"
+    },
+    {
+      "kind": "body",
+      "caption": "瓶颈不在产能，在决策",
+      "figureKeyword": "decision-fork",
+      "narration": "团队越大，决策的链路越长，工时就越多地耗在等待。"
+    },
+    {
+      "kind": "body",
+      "caption": "把决策权下放到能做的人",
+      "figureKeyword": "owner-deadline",
+      "narration": "解法不复杂：明确谁能拍板，让 ta 不必再等上级签字。"
+    },
+    {
+      "kind": "body",
+      "caption": "47% 是可以拿回来的",
+      "figureKeyword": "growth-system",
+      "narration": "下调一层决策权之后，工时回收的中位数是 22%。值得动一下。"
+    }
+  ]
+}

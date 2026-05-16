@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "templates": [
+    {
+      "id": "product-launch",
+      "name": "Product launch story",
+      "theme": "paper-slide",
+      "description": "Five-card narrative arc for a startup launch — pain → insight → demo → result → CTA. Best for 抖音 / 视频号 / 小红书 knowledge-card content.",
+      "lang": "zh",
+      "tags": ["startup", "launch", "narrative"]
+    },
+    {
+      "id": "founder-lesson",
+      "name": "Founder lesson (look-back)",
+      "theme": "editorial-mag",
+      "description": "Quiet hindsight from a solo founder. Magazine-style editorial fit for 知乎 / 公众号 / LinkedIn long-form readers.",
+      "lang": "zh",
+      "tags": ["founder", "hindsight", "essay"]
+    },
+    {
+      "id": "data-finding",
+      "name": "Surprising stat",
+      "theme": "bold-poster",
+      "description": "Bold-poster card that opens on a surprising number, then breaks it down. Best for X / Threads / LinkedIn where a single visual carries the room.",
+      "lang": "zh",
+      "tags": ["data", "number", "headline"]
+    },
+    {
+      "id": "incident-review",
+      "name": "Incident post-mortem",
+      "theme": "brutalist",
+      "description": "Brutalist black-and-white deck for an honest post-mortem — what happened, why, what changes. Best for engineering team channels / 即刻 / Mastodon.",
+      "lang": "zh",
+      "tags": ["postmortem", "engineering", "candor"]
+    },
+    {
+      "id": "quiet-essay",
+      "name": "Late-night reflection",
+      "theme": "atmospheric",
+      "description": "Atmospheric one-light-source vibe for personal essay. Best for 即刻 / 微博 / 播客 closing thoughts.",
+      "lang": "zh",
+      "tags": ["essay", "reflection", "mood"]
+    }
+  ]
+}

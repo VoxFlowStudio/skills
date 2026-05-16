@@ -1,0 +1,37 @@
+{
+  "header": "创业 · 复盘",
+  "seriesTitle": "一个人创业",
+  "seriesTagline": "回看一年前的自己",
+  "theme": "editorial-mag",
+  "cards": [
+    {
+      "kind": "title",
+      "title": ["最重要的事", "不是技术"],
+      "narration": "一年前我以为是技术决定生死，一年后才发现真正的决定者是别的。"
+    },
+    {
+      "kind": "body",
+      "caption": "把功能写得太多",
+      "figureKeyword": "stuck",
+      "narration": "前半年我加了二十个功能，用户记得的只有三个。剩下的成了我的债务。"
+    },
+    {
+      "kind": "body",
+      "caption": "把用户的话当作功能列表",
+      "figureKeyword": "problem-framing",
+      "narration": "用户说什么我就做什么，没意识到他们说的是问题，不是答案。"
+    },
+    {
+      "kind": "body",
+      "caption": "把孤独当作专注的代价",
+      "figureKeyword": "thinking",
+      "narration": "一个人写完所有代码，但没有人和我讨论方向，慢慢就走偏了。"
+    },
+    {
+      "kind": "body",
+      "caption": "现在每周强制和三个用户聊",
+      "figureKeyword": "team-alignment",
+      "narration": "现在每周固定和三个真实用户聊半小时，比写代码更影响下一步。"
+    }
+  ]
+}
