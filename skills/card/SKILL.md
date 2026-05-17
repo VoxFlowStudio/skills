@@ -66,7 +66,8 @@ Collect or infer:
 - `content`: source text, outline, notes, URL, topic, or brief.
 - `ratio`: default to `1:1` unless the user requests `3:4`, `9:16`, or another ratio.
 - `count`: default to an automatic count based on content density; accept explicit quantities.
-- `style`: accept explicit style directions, brand constraints, audience, mood, language, and platform.
+- `style`: accept explicit style directions, brand constraints, audience, mood, and platform.
+- `content-language`: zh / en / mixed. Infer from the source; ask only when ambiguous and it would change font selection. Drives the language override in `references/fonts.md`.
 - `output`: choose a clear local folder such as `cards/<slug>/` unless the user specifies one.
 
 If important facts may be current or disputed, search or verify before planning. Keep source attribution available for the user when research affects the content. See the Research & Fact Confirmation section for when this becomes a full deep-research pass instead of a quick check.
@@ -177,6 +178,19 @@ When asking the user to choose a style, do not present only one recommendation p
 - the situation where it works best;
 - a one-line visual description;
 - the internal theme preset and design-language mapping.
+
+Use a two-layer selection logic so outputs stay appropriate without collapsing into the same few looks:
+
+1. Default recommendation layer:
+   - Offer 3-5 high-fit styles based on content type, platform, audience, and sharing goal.
+   - Keep the recommended set close enough to the user's task that any option can succeed without heavy rework.
+   - Prefer options that differ in visible outcome, not just token names. For example: conservative report, data poster, social notebook, magazine explainer, bold opinion.
+
+2. Variant perturbation layer:
+   - When the user has not strongly specified an exact style, rotate within the compatible family instead of always selecting the top default.
+   - Vary at least two of these dimensions across similar tasks: theme preset, primary design language, modifiers, layout recipes, visual anchors, surface metaphor, or title composition.
+   - Keep perturbations semantically compatible with the content. Do not use random novelty that fights the topic, platform, accessibility, or factual clarity.
+   - Record the final selected combination in the concept plan or `sources.md` / `credits.md` so the variation is inspectable.
 
 Use user-facing scenario labels such as:
 
@@ -294,8 +308,11 @@ Use `references/design-languages.md` to define the card set's visual grammar ind
 4. Pick the theme preset and design language, then build the layout plan.
    - Load `references/taste.md` now and read it as an active checklist; the hard constraints apply to every subsequent design decision in this step.
    - Confirm or revisit the theme preset chosen in step 1 against the taste baseline; if a preset would violate a hard constraint, swap it before continuing.
+   - Apply the two-layer style selection logic: first choose from the high-fit recommendation set, then apply a compatible variant perturbation when the user did not specify an exact style.
+   - The perturbation must affect the visible result, not only metadata. Rotate layout recipes, visual anchors, surface metaphors, and composition moves alongside theme / design-language tokens.
    - Assign one concrete layout recipe per card. For stronger design work, use `references/layouts/card-layouts.md`; for magazine/editorial cards, also use `references/magazine-card-adaptations.md`.
    - Assign a design-language combination when the style is open or the user wants more design variation. Load the individual spec file for the selected primary language from `references/design-languages/<name>.md`.
+   - Load `references/fonts.md` and run its font-selection algorithm: from the chosen preset × design-language × content-language, take the per-role candidate pools, apply hard-constraint filtering, then weighted-random pick one font per role for the whole set (seed the randomness with the output slug so a given set is reproducible but different topics vary). Record the selected display/serif/sans/mono families in `sources.md`.
    - For each card, identify the visual anchor and composition move before writing body copy. If the card is only text blocks, equal boxes, or a background grid, either choose a stronger layout or deliberately mark it as a low-design utility card.
    - Respect low-density primary language limits by moving detail to another card in the set, not by overloading `swiss-poster`, `cinematic-still`, quote, cover, or closer cards.
 
@@ -313,7 +330,7 @@ Use `references/design-languages.md` to define the card set's visual grammar ind
 6. Build the card webpages.
    - Create one HTML page per card, named predictably such as `card-01.html`, `card-02.html`.
    - Use one shared CSS file or shared design tokens so size, typography, spacing, palette, border radius, and component styling stay consistent.
-   - Choose fonts and colors that satisfy `references/taste.md`: do not default to Inter, do not use pure black, and avoid generic AI purple-blue gradients or neon glow effects.
+   - Choose fonts via the `references/fonts.md` selection algorithm decided in step 4; embed them locally by importing `assets/fonts/fonts.css` (or copying the used fonts into `cards/<slug>/assets/fonts/` and referencing them with local `@font-face`). Never load fonts from a CDN. Choose colors that satisfy `references/taste.md`: do not default to Inter, do not use pure black, and avoid generic AI purple-blue gradients or neon glow effects.
    - Set an explicit fixed canvas size derived from the ratio. Recommended bases:
      - `1:1`: `1080x1080`
      - `3:4`: `1080x1440`
@@ -392,7 +409,7 @@ npx playwright install chromium
 - Use concept variations before coding when style is ambiguous or the card set is high-impact.
 - Define theme tokens first: background, surface levels, border levels, text levels, accent trio, semantic colors, gradients, radius, shadow, and fonts.
 - Use tokens in component CSS. Avoid scattering literal colors outside the token block unless a one-off asset or data visualization genuinely requires it.
-- Do not use Inter as the default card font. Prefer Geist, Satoshi, Cabinet Grotesk, Outfit, Avenir Next, high-quality system sans, or appropriate serif/mono choices for the selected design language.
+- Do not use Inter as the default card font. Select concrete fonts via the weighted-random algorithm in `references/fonts.md` (preset × design-language × content-language → per-role pick). Do not hardcode a font list here; `references/fonts.md` is the single source of truth. Avenir Next and other paid/system fonts are disallowed because every font must be locally embeddable.
 - Do not use pure black. Use off-black, charcoal, zinc-like darks, or ink colors.
 - Do not copy external theme CSS wholesale. Recreate the needed palette and behavior in the local card style, and keep source inspiration in `sources.md` or `credits.md` when relevant.
 - Avoid one-note palettes unless the user explicitly asks for a monochrome look.
@@ -405,6 +422,6 @@ npx playwright install chromium
 - Prefer semantic HTML and CSS over canvas for card content unless the visual requires custom drawing.
 - Keep assets and source attribution inside the output folder.
 - Keep letter spacing at `0` unless the file's existing design system clearly requires uppercase tracking; do not use negative letter spacing.
-- For editorial layouts, manually control long Chinese title breaks and keep dense body copy in sans-serif; reserve serif/display type for headlines, quotes, and numbers.
+- For technical or dense cards, keep body copy in sans-serif and reserve serif/display type for headlines, quotes, and numbers. Editorial/literary presets (`magazine-eink`, `field-notes`, `kraft-editorial`) may use serif or kai (楷体) body per `references/fonts.md`. For editorial layouts, manually control long Chinese title breaks regardless of the body typeface.
 - For image-heavy cards, standardize image ratios or frame heights inside each group, crop from the bottom when using `cover`, and use `contain` for diagrams or text-bearing screenshots.
 - Do not skip visual verification. The final answer must state whether rendering and export succeeded.

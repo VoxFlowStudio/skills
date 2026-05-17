@@ -35,7 +35,7 @@ Every card set should define a compact theme token block before component stylin
 - `--grad`, `--grad-soft`
 - `--radius`, `--radius-sm`, `--radius-lg`
 - `--shadow`, `--shadow-lg`
-- `--font-sans`, `--font-serif`, `--font-mono`, `--font-display`
+- `--font-sans`, `--font-serif`, `--font-mono`, `--font-display` — do not hardcode font names here; their values come from the `references/fonts.md` selection algorithm (preset × design-language × content-language → weighted-random pick), embedded locally via `assets/fonts/fonts.css`.
 
 Use tokens in component CSS. Avoid scattering literal colors outside the token block unless a one-off asset or data visualization genuinely requires it.
 

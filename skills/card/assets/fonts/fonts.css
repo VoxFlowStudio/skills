@@ -1,0 +1,25 @@
+/* fonts.css — 本地内嵌字体（download-fonts.sh 生成，勿手改）
+   规则与主题映射见 ../../references/fonts.md。
+   家族名：Geist / Geist Mono / Space Grotesk / Newsreader / Source Serif 4 /
+   Spectral / IBM Plex Mono / Libre Caslon Display / Satoshi / General Sans /
+   Cabinet Grotesk / Noto Sans SC / Noto Serif SC / LXGW WenKai* / Smiley Sans Oblique */
+
+@import url("./css/geist.css");
+@import url("./css/geist-mono.css");
+@import url("./css/space-grotesk.css");
+@import url("./css/newsreader.css");
+@import url("./css/source-serif-4.css");
+@import url("./css/spectral.css");
+@import url("./css/spectral-600.css");
+@import url("./css/spectral-800.css");
+@import url("./css/ibm-plex-mono.css");
+@import url("./css/ibm-plex-mono-500.css");
+@import url("./css/ibm-plex-mono-600.css");
+@import url("./css/libre-caslon-display.css");
+@import url("./css/noto-sans-sc.css");
+@import url("./css/noto-serif-sc.css");
+@import url("./css/satoshi.css");
+@import url("./css/general-sans.css");
+@import url("./css/cabinet-grotesk.css");
+@import url("./packages/lxgw-wenkai/style.css");
+@import url("./packages/smiley-sans/font.css");

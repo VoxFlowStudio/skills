@@ -64,8 +64,8 @@ Conflict resolution:
 
 ## Typography
 
-- Default sans choices: Geist, Satoshi, Cabinet Grotesk, Outfit, Avenir Next, system-ui fallback.
-- Default serif choices: Noto Serif SC, Source Han Serif, Songti SC, Georgia.
+- Concrete font choices, the per-theme candidate pools, and the weighted-random font-selection algorithm live in `references/fonts.md` (single source of truth). Do not maintain a separate font list here.
+- Hard floor only: never default to Inter; all fonts must be locally embedded via `assets/fonts/fonts.css` (no CDN/hotlink); body text avoids pure black.
 - Technical dashboard-like cards should use high-quality sans or mono, not decorative serif.
 - Large editorial cards may use serif/display titles, but body text should stay readable.
 - Body text should avoid pure black. Use charcoal or deep gray such as `#1f1d1a`, `#2f2a24`, `#333333`, or `#4a4a4a`.

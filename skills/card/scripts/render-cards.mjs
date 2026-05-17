@@ -177,6 +177,9 @@ async function main() {
       });
 
       await page.goto(pathToFileURL(file).href, { waitUntil: 'load' });
+      // Wait for locally embedded fonts to finish loading before screenshotting,
+      // otherwise the capture can show fallback glyphs / font swap.
+      await page.evaluate(() => document.fonts && document.fonts.ready).catch(() => {});
       await page.waitForTimeout(Number(args.wait));
 
       const handle = await page.$(args.selector);

@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>卡片字体预览 · VoxFlow card</title>
+
+<!-- 全本地内嵌字体（由 scripts/download-fonts.sh 下载生成，零 CDN/外链） -->
+<link href="../assets/fonts/fonts.css" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#f3efe7; --panel:#fbf9f4; --ink:#211c16; --ink-2:#5c544a;
+    --ink-3:#8a8073; --line:rgba(33,28,22,.14); --accent:#8a5a32;
+    --ok:#3f7d54; --miss:#b2603a;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:"Geist","Noto Sans SC",system-ui,sans-serif;
+    line-height:1.6; -webkit-font-smoothing:antialiased;
+    padding:48px clamp(16px,5vw,72px) 96px;
+  }
+  a{color:var(--accent)}
+  header.page{max-width:1180px;margin:0 auto 40px}
+  h1{font-family:"Newsreader",serif;font-weight:700;font-size:34px;margin:0 0 6px;letter-spacing:0}
+  .sub{color:var(--ink-2);font-size:15px;margin:0 0 18px;max-width:760px}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12.5px;color:var(--ink-2);
+    border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:12px 16px}
+  .legend b{color:var(--ink)}
+  .dot{display:inline-block;width:8px;height:8px;border-radius:50%;vertical-align:middle;margin-right:6px}
+  .dot.ok{background:var(--ok)} .dot.miss{background:var(--miss)} .dot.wait{background:var(--ink-3)}
+  .wrap{max-width:1180px;margin:0 auto}
+  h2.section{font-family:"Newsreader",serif;font-weight:700;font-size:23px;
+    margin:54px 0 6px;padding-top:20px;border-top:1px solid var(--line)}
+  h2.section span{font-family:"Geist Mono",monospace;font-size:12px;color:var(--ink-3);font-weight:400}
+  h3.role{font-family:"Geist Mono",monospace;font-size:12px;letter-spacing:.04em;
+    text-transform:uppercase;color:var(--accent);margin:30px 0 12px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:16px}
+  .spec{background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:20px 22px;overflow:hidden}
+  .spec .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:4px}
+  .spec .name{font-weight:600;font-size:16px}
+  .spec .meta{font-family:"Geist Mono",monospace;font-size:11px;color:var(--ink-3);
+    margin:2px 0 16px;letter-spacing:0}
+  .badge{font-family:"Geist Mono",monospace;font-size:10px;padding:3px 7px;border-radius:999px;
+    border:1px solid var(--line);color:var(--ink-2);white-space:nowrap}
+  .badge.cdn{color:var(--ok);border-color:rgba(63,125,84,.4)}
+  .badge.local{color:var(--miss);border-color:rgba(178,96,58,.4)}
+  .status{font-family:"Geist Mono",monospace;font-size:11px;color:var(--ink-3);margin-top:14px}
+  .big{font-size:38px;line-height:1.15;margin:2px 0 10px;letter-spacing:0}
+  .para{font-size:15px;color:var(--ink-2);margin:0 0 8px}
+  .num{font-size:22px;letter-spacing:.01em;color:var(--ink);margin:6px 0 0;
+    font-variant-numeric:tabular-nums}
+  .wts{font-size:13px;color:var(--ink-3);margin-top:8px}
+  .wts span{margin-right:14px}
+  /* 主题搭配卡 */
+  .pairs{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:18px}
+  .pcard{border-radius:16px;padding:30px 30px 26px;border:1px solid rgba(0,0,0,.10);
+    min-height:230px;display:flex;flex-direction:column;position:relative;overflow:hidden}
+  .pcard .pk{font-family:"Geist Mono",monospace;font-size:11px;opacity:.62;letter-spacing:.03em;margin-bottom:auto}
+  .pcard .ph{font-size:33px;line-height:1.12;margin:0 0 12px}
+  .pcard .pp{font-size:14.5px;line-height:1.55;opacity:.82;margin:0 0 16px}
+  .pcard .pf{font-size:11px;letter-spacing:.02em;opacity:.6;display:flex;justify-content:space-between;gap:10px}
+  .foot{max-width:1180px;margin:60px auto 0;font-size:12.5px;color:var(--ink-3);
+    border-top:1px solid var(--line);padding-top:18px;line-height:1.7}
+</style>
+</head>
+<body>
+
+<header class="page">
+  <h1>卡片字体预览</h1>
+  <p class="sub">
+    VoxFlow card 技能的字体目录与主题搭配可视化。规则见
+    <code>references/fonts.md</code>。全部字体<strong>本地内嵌</strong>（<code>scripts/download-fonts.sh</code>
+    下载到 <code>assets/fonts/</code>），零 CDN/外链，与最终卡片导出完全一致。
+  </p>
+  <div class="legend">
+    <span><span class="dot ok"></span><b>内嵌</b> 已打包进 assets/fonts/，本地加载</span>
+    <span><span class="dot miss"></span><b>未内嵌</b> 授权/源限制未打包，仅本机已装时显示，否则回退已内嵌字体</span>
+    <span><span class="dot wait"></span>检测中…</span>
+    <span style="color:var(--ink-3)">每张卡右下角实时显示该字体是否真的加载成功</span>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- ============ 英文 ============ -->
+  <h2 class="section">英文 / 拉丁字体 · 10 款 <span>全部 OFL / ITF-FFL，可内嵌打包</span></h2>
+
+  <h3 class="role">无衬线 · 正文与 UI</h3>
+  <div class="grid">
+    <div class="spec" data-f="Geist">
+      <div class="top"><span class="name">Geist</span><span class="badge cdn">内嵌</span></div>
+      <div class="meta">geometric sans · OFL · variable 100–900 · 替代 Inter 首选</div>
+      <div class="big" style="font-family:'Geist';font-weight:700">Designed for clarity</div>
+      <p class="para" style="font-family:'Geist'">The quick brown fox jumps over the lazy dog. 中性几何，克制呼吸。</p>
+      <div class="num" style="font-family:'Geist'">0123456789 · $1,280 · 99.7%</div>
+      <div class="wts"><span style="font-family:Geist;font-weight:400">Regular</span><span style="font-family:Geist;font-weight:500">Medium</span><span style="font-family:Geist;font-weight:700">Bold</span><span style="font-family:Geist;font-weight:900">Black</span></div>
+      <div class="status" data-status>检测中…</div>
+    </div>
+    <div class="spec" data-f="Satoshi">
+      <div class="top"><span class="name">Satoshi</span><span class="badge cdn">内嵌</span></div>
+      <div class="meta">geometric sans · ITF-FFL · variable 300–900 · 社媒主力</div>
+      <div class="big" style="font-family:'Satoshi';font-weight:700">Sharp yet friendly</div>
+      <p class="para" style="font-family:'Satoshi'">The quick brown fox jumps over the lazy dog. 圆润骨架，锐利切角。</p>
+      <div class="num" style="font-family:'Satoshi'">0123456789 · $1,280 · 99.7%</div>
+      <div class="wts"><span style="font-family:Satoshi;font-weight:400">Regular</span><span style="font-family:Satoshi;font-weight:500">Medium</span><span style="font-family:Satoshi;font-weight:700">Bold</span><span style="font-family:Satoshi;font-weight:900">Black</span></div>
+      <div class="status" data-status>检测中…</div>
+    </div>
+    <div class="spec" data-f="General Sans">
+      <div class="top"><span class="name">General Sans</span><span class="badge cdn">内嵌</span></div>
+      <div class="meta">humanist sans · ITF-FFL · variable 200–700 · 编辑长文正文</div>
+      <div class="big" style="font-family:'General Sans';font-weight:600">A quiet humanist</div>
+      <p class="para" style="font-family:'General Sans'">The quick brown fox jumps over the lazy dog. 人文比例，长文友好。</p>
+      <div class="num" style="font-family:'General Sans'">0123456789 · $1,280 · 99.7%</div>
+      <div class="wts"><span style="font-family:'General Sans';font-weight:400">Regular</span><span style="font-family:'General Sans';font-weight:600">Semibold</span><span style="font-family:'General Sans';font-weight:700">Bold</span></div>
+      <div class="status" data-status>检测中…</div>
+    </div>
+  </div>
+
+  <h3 class="role">grotesque / 克制展示 · 封面标题</h3>
+  <div class="grid">
+    <div class="spec" data-f="Space Grotesk">
+      <div class="top"><span class="name">Space Grotesk</span><span class="badge cdn">内嵌</span></div>
+      <div class="meta">grotesque · OFL · variable 300–700 · 技术/海报封面</div>
+      <div class="big" style="font-family:'Space Grotesk';font-weight:700">SYSTEM DESIGN</div>
+      <p class="para" style="font-family:'Space Grotesk'">The quick brown fox jumps over the lazy dog. 工程味瑞士气质。</p>
+      <div class="num" style="font-family:'Space Grotesk'">0123456789 · $1,280 · 99.7%</div>
+      <div class="status" data-status>检测中…</div>
+    </div>
+    <div class="spec" data-f="Cabinet Grotesk">
+      <div class="top"><span class="name">Cabinet Grotesk</span><span class="badge cdn">内嵌</span></div>
+      <div class="meta">display restrained · ITF-FFL · variable 100–800 · 杂志封面大标题</div>
+      <div class="big" style="font-family:'Cabinet Grotesk';font-weight:800">Magazine cover</div>
+      <p class="para" style="font-family:'Cabinet Grotesk';font-weight:500">The quick brown fox jumps over the lazy dog. 复古骨架，柔化终端。</p>
+      <div class="num" style="font-family:'Cabinet Grotesk'">0123456789 · $1,280 · 99.7%</div>
+      <div class="status" data-status>检测中…</div>
+    </div>
+  </div>
+
+  <h3 class="role">衬线 · 标题 / 引用 / 长文</h3>
+  <div class="grid">
+    <div class="spec" data-f="Newsreader">
+      <div class="top"><span class="name">Newsreader</span><span class="badge cdn">内嵌</span></div>
+      <div class="meta">serif editorial · OFL · variable + 光学轴 + 真斜体</div>
+      <div class="big" style="font-family:'Newsreader';font-weight:700">The Reading Press</div>
+      <p class="para" style="font-family:'Newsreader'">The quick brown fox jumps over the lazy dog. <em style="font-style:italic">报刊阅读衬线，真斜体。</em></p>
+      <div class="num" style="font-family:'Newsreader'">0123456789 · $1,280 · 99.7%</div>
+      <div class="status" data-status>检测中…</div>
+    </div>
+    <div class="spec" data-f="Source Serif 4">
+      <div class="top"><span class="name">Source Serif 4</span><span class="badge cdn">内嵌</span></div>
+      <div class="meta">serif text · OFL · variable 200–900 + 光学轴 · 报告长文</div>
+      <div class="big" style="font-family:'Source Serif 4';font-weight:700">A measured serif</div>
+      <p class="para" style="font-family:'Source Serif 4'">The quick brown fox jumps over the lazy dog. 过渡衬线，理性中性。</p>
+      <div class="num" style="font-family:'Source Serif 4'">0123456789 · $1,280 · 99.7%</div>
+      <div class="status" data-status>检测中…</div>
+    </div>
+    <div class="spec" data-f="Spectral">
+      <div class="top"><span class="name">Spectral</span><span class="badge cdn">内嵌</span></div>
+      <div class="meta">serif text · OFL · 静态 7 字重 · 编辑/field notes 正文</div>
+      <div class="big" style="font-family:'Spectral';font-weight:800">Long-form reading</div>
+      <p class="para" style="font-family:'Spectral'">The quick brown fox jumps over the lazy dog. 低对比温润屏读衬线。</p>
+      <div class="num" style="font-family:'Spectral'">0123456789 · $1,280 · 99.7%</div>
+      <div class="status" data-status>检测中…</div>
+    </div>
+    <div class="spec" data-f="Libre Caslon Display">
+      <div class="top"><span class="name">Libre Caslon Display</span><span class="badge cdn">内嵌</span></div>
+      <div class="meta">serif display · OFL · 候补封面衬线 · 古典优雅</div>
+      <div class="big" style="font-family:'Libre Caslon Display'">Classic Caslon</div>
+      <p class="para" style="font-family:'Libre Caslon Display'">The quick brown fox jumps over the lazy dog.</p>
+      <div class="num" style="font-family:'Libre Caslon Display'">0123456789 · $1,280 · 99.7%</div>
+      <div class="status" data-status>检测中…</div>
+    </div>
+  </div>
+
+  <h3 class="role">等宽 · 数据 / 元信息</h3>
+  <div class="grid">
+    <div class="spec" data-f="Geist Mono">
+      <div class="top"><span class="name">Geist Mono</span><span class="badge cdn">内嵌</span></div>
+      <div class="meta">mono · OFL · variable 100–900 · 与 Geist 配对</div>
+      <div class="big" style="font-family:'Geist Mono';font-weight:700">build/01 → ok</div>
+      <p class="para" style="font-family:'Geist Mono'">const fox = "jumps"; // 纯几何中性等宽</p>
+      <div class="num" style="font-family:'Geist Mono'">0123456789 · 99.7% · v2.0.1</div>
+      <div class="status" data-status>检测中…</div>
+    </div>
+    <div class="spec" data-f="IBM Plex Mono">
+      <div class="top"><span class="name">IBM Plex Mono</span><span class="badge cdn">内嵌</span></div>
+      <div class="meta">mono · OFL · 静态 6 字重 · 数据/元信息</div>
+      <div class="big" style="font-family:'IBM Plex Mono';font-weight:600">2026-05-16 14:08</div>
+      <p class="para" style="font-family:'IBM Plex Mono'">SELECT * FROM cards; — 企业级中性等宽</p>
+      <div class="num" style="font-family:'IBM Plex Mono'">0123456789 · 99.7% · v2.0.1</div>
+      <div class="status" data-status>检测中…</div>
+    </div>
+  </div>
+
+  <!-- ============ 中文 ============ -->
+  <h2 class="section">中文字体 · 10 款 <span>基座 OFL：思源黑 + 思源宋 + 更纱黑 Mono</span></h2>
+
+  <h3 class="role">黑体 · 正文 / 标题（基座）</h3>
+  <div class="grid">
+    <div class="spec" data-f="Noto Sans SC">
+      <div class="top"><span class="name">思源黑体 Noto Sans SC</span><span class="badge cdn">内嵌</span></div>
+      <div class="meta">黑体 · OFL · 7 字重 · 百搭基座 · 正文/副标题/数据</div>
+      <div class="big" style="font-family:'Noto Sans SC';font-weight:700">克制即专业</div>
+      <p class="para" style="font-family:'Noto Sans SC'">把复杂的内容讲清楚，比把它说得漂亮更重要。中性、无表情的系统级专业感。</p>
+      <div class="num" style="font-family:'Noto Sans SC'">月活 1,280 万 · 同比 +37%</div>
+      <div class="wts"><span style="font-family:'Noto Sans SC';font-weight:400">常规</span><span style="font-family:'Noto Sans SC';font-weight:500">中黑</span><span style="font-family:'Noto Sans SC';font-weight:700">粗体</span><span style="font-family:'Noto Sans SC';font-weight:900">特黑</span></div>
+      <div class="status" data-status>检测中…</div>
+    </div>
+    <div class="spec" data-f="Noto Sans SC">
+      <div class="top"><span class="name">思源黑体 · 强字重做标题</span><span class="badge cdn">内嵌</span></div>
+      <div class="meta">同字体多字重建层级 · 优先用这招控体积</div>
+      <div class="big" style="font-family:'Noto Sans SC';font-weight:900">为什么是它</div>
+      <p class="para" style="font-family:'Noto Sans SC';font-weight:400">900 特黑 + 500 中黑 + 400 常规即可建完整层级，无需引入第二款字体。</p>
+      <div class="num" style="font-family:'Noto Sans SC';font-weight:500">2026 Q2 · 数据来源：内部统计</div>
+      <div class="status" data-status>检测中…</div>
+    </div>
+  </div>
+
+  <h3 class="role">宋体 · 编辑标题 / 引用</h3>
+  <div class="grid">
+    <div class="spec" data-f="Noto Serif SC">
+      <div class="top"><span class="name">思源宋体 Noto Serif SC</span><span class="badge cdn">内嵌</span></div>
+      <div class="meta">宋体 · OFL · 7 字重 · 衬线里最克制最安全</div>
+      <div class="big" style="font-family:'Noto Serif SC';font-weight:900">书卷气与理性</div>
+      <p class="para" style="font-family:'Noto Serif SC'">庄重、理性、有印刷书卷气。适合编辑标题、引用块与文化类正文。</p>
+      <div class="num" style="font-family:'Noto Serif SC';font-weight:700">「一字一句，皆有重量。」</div>
+      <div class="wts"><span style="font-family:'Noto Serif SC';font-weight:400">常规</span><span style="font-family:'Noto Serif SC';font-weight:700">粗体</span><span style="font-family:'Noto Serif SC';font-weight:900">特黑</span></div>
+      <div class="status" data-status>检测中…</div>
+    </div>
+    <div class="spec" data-f="Zhuque Fangsong, ZhuqueFangsong">
+      <div class="top"><span class="name">朱雀仿宋 Zhuque Fangsong</span><span class="badge local">未内嵌</span></div>
+      <div class="meta">仿宋 · OFL · 单字重 · 引用/注释/公文体</div>
+      <div class="big" style="font-family:'Zhuque Fangsong','ZhuqueFangsong','Noto Serif SC',serif">清瘦有笔意</div>
+      <p class="para" style="font-family:'Zhuque Fangsong','ZhuqueFangsong','Noto Serif SC',serif">公文与文人气并存。注意单字重，不靠它撑标题层级。未安装则回退思源宋。</p>
+      <div class="num" style="font-family:'Zhuque Fangsong','ZhuqueFangsong','Noto Serif SC',serif">附注 03 · 引文出处见 sources.md</div>
+      <div class="status" data-status>检测中…</div>
+    </div>
+    <div class="spec" data-f="KingHwa_OldSong, KingHwaOldSong">
+      <div class="top"><span class="name">京華老宋体 KingHwa OldSong</span><span class="badge local">未内嵌</span></div>
+      <div class="meta">旧宋 · 作者声明免商 · 单字重 · 文化/历史专用</div>
+      <div class="big" style="font-family:'KingHwa_OldSong','KingHwaOldSong','Noto Serif SC',serif">旧书铅印味</div>
+      <p class="para" style="font-family:'KingHwa_OldSong','KingHwaOldSong','Noto Serif SC',serif">桃形点、鹅头钩、三角肩，温润有年代感。风格指向强，不当通用字。</p>
+      <div class="num" style="font-family:'KingHwa_OldSong','KingHwaOldSong','Noto Serif SC',serif">一九六〇年代 · 复刻</div>
+      <div class="status" data-status>检测中…</div>
+    </div>
+  </div>
+
+  <h3 class="role">楷体 · 人文温度</h3>
+  <div class="grid">
+    <div class="spec" data-f="LXGW WenKai">
+      <div class="top"><span class="name">霞鹜文楷 LXGW WenKai</span><span class="badge cdn">内嵌</span></div>
+      <div class="meta">楷体 · OFL · 3 字重 · 人文正文/引用/编辑标题</div>
+      <div class="big" style="font-family:'LXGW WenKai';font-weight:700">安静的人文气</div>
+      <p class="para" style="font-family:'LXGW WenKai'">温润手写楷意但工整，是 field-notes / 编辑气质的最佳人文选项。</p>
+      <div class="num" style="font-family:'LXGW WenKai'">读书笔记 · 2026 春</div>
+      <div class="wts"><span style="font-family:'LXGW WenKai';font-weight:400">常规 400</span><span style="font-family:'LXGW WenKai';font-weight:700">粗 700</span><span style="color:var(--ink-3)">（瘦身后 light/Mono 已移除）</span></div>
+      <div class="status" data-status>检测中…</div>
+    </div>
+    <div class="spec" data-f="LXGW WenKai Mono, LXGW WenKai Screen">
+      <div class="top"><span class="name">霞鹜文楷 Mono</span><span class="badge local">未内嵌</span></div>
+      <div class="meta">中文等宽楷 · OFL · 瘦身后已移除，回退普通文楷</div>
+      <div class="big" style="font-family:'LXGW WenKai Mono','LXGW WenKai',monospace">等宽亦人文</div>
+      <p class="para" style="font-family:'LXGW WenKai Mono','LXGW WenKai',monospace">为控体积未内嵌 Mono 变体；此处回退普通霞鹜文楷。需要可改 download-fonts.sh 的 keep。</p>
+      <div class="num" style="font-family:'LXGW WenKai Mono','LXGW WenKai',monospace">2026-05-16 · v1.0</div>
+      <div class="status" data-status>检测中…</div>
+    </div>
+  </div>
+
+  <h3 class="role">等宽 · 技术 / 数据</h3>
+  <div class="grid">
+    <div class="spec" data-f="Sarasa Mono SC">
+      <div class="top"><span class="name">更纱黑体 Mono Sarasa Mono SC</span><span class="badge local">未内嵌</span></div>
+      <div class="meta">等宽 · OFL · 多字重 · 中英 2:1 对齐 · 技术必备</div>
+      <div class="big" style="font-family:'Sarasa Mono SC','Noto Sans SC',monospace;font-weight:700">代码即文档</div>
+      <p class="para" style="font-family:'Sarasa Mono SC','Noto Sans SC',monospace">中文 abc 123 严格对齐。工程审美标杆。未安装则回退思源黑。</p>
+      <div class="num" style="font-family:'Sarasa Mono SC','Noto Sans SC',monospace">CPU 12% · MEM 3.4G · 200 OK</div>
+      <div class="status" data-status>检测中…</div>
+    </div>
+  </div>
+
+  <h3 class="role">展示 · 仅封面单处</h3>
+  <div class="grid">
+    <div class="spec" data-f="Smiley Sans Oblique">
+      <div class="top"><span class="name">得意黑 Smiley Sans</span><span class="badge cdn">内嵌</span></div>
+      <div class="meta">展示 · OFL · 单字重(倾斜) · ⚠ 仅封面 ≤1 处</div>
+      <div class="big" style="font-family:'Smiley Sans Oblique','Noto Sans SC',sans-serif;font-size:46px">这就是态度</div>
+      <p class="para" style="font-family:'Noto Sans SC'">紧凑、倾斜、有冲劲。处在「克制」边界——只做封面大字，多用即浮夸。</p>
+      <div class="num" style="font-family:'Smiley Sans Oblique','Noto Sans SC',sans-serif">2026 · 限定</div>
+      <div class="status" data-status>检测中…</div>
+    </div>
+  </div>
+
+  <h3 class="role">知情备选 · 非 OFL，默认不启用</h3>
+  <div class="grid">
+    <div class="spec" data-f="HarmonyOS Sans SC">
+      <div class="top"><span class="name">HarmonyOS Sans SC</span><span class="badge local">未内嵌</span></div>
+      <div class="meta">黑体 · 华为私有免商（禁子集化争议）· 产品科技调</div>
+      <div class="big" style="font-family:'HarmonyOS Sans SC','Noto Sans SC',sans-serif;font-weight:700">产品 UI 感</div>
+      <p class="para" style="font-family:'HarmonyOS Sans SC','Noto Sans SC',sans-serif">比思源更「产品 UI」。启用须附授权声明、整文件嵌入。未安装回退思源黑。</p>
+      <div class="num" style="font-family:'HarmonyOS Sans SC','Noto Sans SC',sans-serif">设备 1,280 · 在线 99.7%</div>
+      <div class="status" data-status>检测中…</div>
+    </div>
+    <div class="spec" data-f="Alibaba PuHuiTi 3.0, AlibabaPuHuiTi-3-55-Regular">
+      <div class="top"><span class="name">阿里巴巴普惠体 3.0</span><span class="badge local">未内嵌</span></div>
+      <div class="meta">黑体 · 阿里免商 · 9 字重 · 商务/电商换味</div>
+      <div class="big" style="font-family:'Alibaba PuHuiTi 3.0','AlibabaPuHuiTi-3-55-Regular','Noto Sans SC',sans-serif;font-weight:700">温和而亲和</div>
+      <p class="para" style="font-family:'Alibaba PuHuiTi 3.0','AlibabaPuHuiTi-3-55-Regular','Noto Sans SC',sans-serif">字重最全是优点，授权弱 OFL 一档。未安装回退思源黑。</p>
+      <div class="num" style="font-family:'Alibaba PuHuiTi 3.0','AlibabaPuHuiTi-3-55-Regular','Noto Sans SC',sans-serif">GMV ￥12.8 亿 · +37%</div>
+      <div class="status" data-status>检测中…</div>
+    </div>
+  </div>
+
+  <!-- ============ 主题搭配 ============ -->
+  <h2 class="section">主题 → 字体搭配预览 <span>真实预设调色板 + 推荐中英搭配</span></h2>
+  <div class="pairs">
+
+    <div class="pcard" style="background:#f1efea;color:#0a0a0b">
+      <div class="pk">magazine-eink · 暖纸编辑</div>
+      <div class="ph" style="font-family:'Cabinet Grotesk','Noto Serif SC',serif;font-weight:800">从一个想法到一组卡片</div>
+      <div class="pp" style="font-family:'General Sans','Noto Sans SC',sans-serif">标题 Cabinet Grotesk / 思源宋 700，正文 General Sans / 思源黑，引用霞鹜文楷。</div>
+      <div class="pf" style="font-family:'Geist Mono',monospace"><span>ISSUE 01</span><span>2026.05</span></div>
+    </div>
+
+    <div class="pcard" style="background:#f1f3f5;color:#0a1f3d">
+      <div class="pk">porcelain-research · 靛蓝研究</div>
+      <div class="ph" style="font-family:'Geist','Noto Sans SC',sans-serif;font-weight:700">检索增强的三个失效点</div>
+      <div class="pp" style="font-family:'Source Serif 4','Noto Serif SC',serif">标题 Geist 700 / 思源黑，正文 Source Serif 4 / 思源黑，标注 IBM Plex Mono。</div>
+      <div class="pf" style="font-family:'IBM Plex Mono',monospace"><span>RESEARCH</span><span>fig.3</span></div>
+    </div>
+
+    <div class="pcard" style="background:#f7f7f5;color:#141618">
+      <div class="pk" style="color:#c9342c">newsroom-paper · 报刊新闻</div>
+      <div class="ph" style="font-family:'Newsreader','Noto Serif SC',serif;font-weight:700">事故复盘：四小时内发生了什么</div>
+      <div class="pp" style="font-family:'General Sans','Noto Sans SC',sans-serif">标题/导语 Newsreader 700 / 思源宋，正文 General Sans / 思源黑。</div>
+      <div class="pf" style="font-family:'IBM Plex Mono',monospace"><span>INCIDENT</span><span>14:08 UTC</span></div>
+    </div>
+
+    <div class="pcard" style="background:#f6f7f4;color:#1a2734">
+      <div class="pk" style="color:#2d647f">quiet-report · B2B 报告</div>
+      <div class="ph" style="font-family:'Source Serif 4','Noto Serif SC',serif;font-weight:700">Q2 经营回顾与展望</div>
+      <div class="pp" style="font-family:'General Sans','Noto Sans SC',sans-serif">标题 Source Serif 4 700 / 思源黑多字重，正文 General Sans / 思源黑。</div>
+      <div class="pf" style="font-family:'IBM Plex Mono',monospace"><span>BOARD</span><span>CONFIDENTIAL</span></div>
+    </div>
+
+    <div class="pcard" style="background:#f4f1ea;color:#20262a">
+      <div class="pk" style="color:#3b6f75">product-manual · 说明书</div>
+      <div class="ph" style="font-family:'Space Grotesk','Noto Sans SC',sans-serif;font-weight:700">三步接入 Webhook</div>
+      <div class="pp" style="font-family:'Geist','Noto Sans SC',sans-serif">标题 Space Grotesk / 思源黑 700，正文 Geist / 思源黑，代码 Geist Mono。</div>
+      <div class="pf" style="font-family:'Geist Mono',monospace"><span>STEP 02</span><span>v2.0</span></div>
+    </div>
+
+    <div class="pcard" style="background:#f7f8f3;color:#102033">
+      <div class="pk" style="color:#1468a8">engineering-paper · 工程纸</div>
+      <div class="ph" style="font-family:'Space Grotesk','Noto Sans SC',sans-serif;font-weight:600">事件驱动架构边界</div>
+      <div class="pp" style="font-family:'Geist','Noto Sans SC',sans-serif">标题 Space Grotesk 600 / 思源黑，正文 Geist，等宽更纱 Mono（必备）。</div>
+      <div class="pf" style="font-family:'Geist Mono',monospace"><span>SYS-DESIGN</span><span>fig.1</span></div>
+    </div>
+
+    <div class="pcard" style="background:#f5f1e8;color:#1a2e1f">
+      <div class="pk" style="color:#2f6d4f">field-notes · 田野笔记</div>
+      <div class="ph" style="font-family:'Spectral','Noto Serif SC',serif;font-weight:600">城市里的野生植物</div>
+      <div class="pp" style="font-family:'LXGW WenKai','Noto Sans SC',sans-serif">标题 思源宋 600，正文 霞鹜文楷，西文 Spectral / General Sans。</div>
+      <div class="pf" style="font-family:'IBM Plex Mono',monospace"><span>FIELD</span><span>No.07</span></div>
+    </div>
+
+    <div class="pcard" style="background:#eedfc7;color:#2a1e13">
+      <div class="pk" style="color:#8f4b28">kraft-editorial · 牛皮纸文学</div>
+      <div class="ph" style="font-family:'Libre Caslon Display','Noto Serif SC',serif">一封未寄出的信</div>
+      <div class="pp" style="font-family:'LXGW WenKai','Noto Serif SC',serif">封面 Libre Caslon Display / 京華老宋·思源宋 700，正文 霞鹜文楷 / Spectral。</div>
+      <div class="pf" style="font-family:'Geist Mono',monospace"><span>ESSAY</span><span>1960s</span></div>
+    </div>
+
+    <div class="pcard" style="background:#f0e6d2;color:#1f1a14">
+      <div class="pk" style="color:#6f6255">dune-gallery · 画廊设计</div>
+      <div class="ph" style="font-family:'Cabinet Grotesk','Noto Serif SC',serif;font-weight:800">留白即内容</div>
+      <div class="pp" style="font-family:'General Sans','Noto Sans SC',sans-serif">封面 Cabinet Grotesk / 思源宋 600，正文 General Sans / 思源黑，衬线 Source Serif 4。</div>
+      <div class="pf" style="font-family:'Geist Mono',monospace"><span>GALLERY</span><span>2026</span></div>
+    </div>
+
+    <div class="pcard" style="background:#fbf7f2;color:#302421">
+      <div class="pk" style="color:#c75f55">social-notebook · 社媒小红书</div>
+      <div class="ph" style="font-family:'Smiley Sans Oblique','Noto Sans SC',sans-serif;font-size:34px">学会这 3 招就够了</div>
+      <div class="pp" style="font-family:'Noto Sans SC',sans-serif">封面得意黑×1 或思源黑 Heavy，正文思源黑，西文 Satoshi / Cabinet Grotesk。</div>
+      <div class="pf" style="font-family:'Geist Mono',monospace"><span>笔记</span><span>收藏 ★</span></div>
+    </div>
+
+    <div class="pcard" style="background:#f3eadb;color:#0f0e0d">
+      <div class="pk" style="color:#d65f2d">bold-editorial · 强观点封面</div>
+      <div class="ph" style="font-family:'Cabinet Grotesk','Noto Serif SC',serif;font-weight:800">别再追逐每一个热点</div>
+      <div class="pp" style="font-family:'Satoshi','Noto Sans SC',sans-serif">封面 Cabinet Grotesk 800 / 思源宋 Heavy（得意黑×1），正文 Satoshi / 思源黑，引用 Newsreader。</div>
+      <div class="pf" style="font-family:'Geist Mono',monospace"><span>OPINION</span><span>05·16</span></div>
+    </div>
+
+  </div>
+</div>
+
+<div class="foot">
+  右下角状态用 canvas 测宽法实时检测：<span class="dot ok"></span>已加载 ·
+  <span class="dot miss"></span>未加载（标「未内嵌」者需本机已装该字体才显示，否则回退已内嵌字体；标「内嵌」者应全部已加载）。
+  本页与最终卡片导出一致，全部走 <code>assets/fonts/fonts.css</code> 本地加载，零 CDN/外链；导出由 <code>render-cards.mjs</code> 的 <code>document.fonts.ready</code> 保证字体就绪。
+</div>
+
+<script>
+  (function () {
+    // 真·字体加载检测：canvas 宽度测量法。
+    // document.fonts.check() 对非 @font-face 的本地字体恒返回 true，会误报，故不用它。
+    // 思路：用「目标字体, 基线泛型」渲染探针文本，与纯基线泛型对比宽度；
+    // 任一探针（拉丁/中文）相对三种泛型(monospace/serif/sans-serif)出现差异即判定字体已生效。
+    var cv = document.createElement('canvas');
+    var ctx = cv.getContext('2d');
+    var GEN = ['monospace', 'serif', 'sans-serif'];
+    var PROBES = ['WaQ@gmqil1%80&MN', '永中文字体测试样张壹贰叁'];
+
+    function widths(stack, probe) {
+      ctx.font = '40px ' + stack;
+      return ctx.measureText(probe).width;
+    }
+    function loaded(fam) {
+      return PROBES.some(function (probe) {
+        return GEN.some(function (g) {
+          var base = widths(g, probe);
+          var test = widths('"' + fam + '",' + g, probe);
+          return Math.abs(test - base) > 0.5; // 目标字体改变了排版宽度 → 已生效
+        });
+      });
+    }
+    function probe() {
+      document.querySelectorAll('.spec[data-f]').forEach(function (card) {
+        var fams = card.getAttribute('data-f').split(',').map(function (s) { return s.trim(); });
+        var el = card.querySelector('[data-status]');
+        var ok = fams.some(loaded);
+        var cls = ok ? 'ok' : 'miss';
+        var label = ok ? '已加载 · ' + fams[0] : '未加载 · 回退（本机无此字体）';
+        el.innerHTML = '<span class="dot ' + cls + '"></span>' + label;
+      });
+    }
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () { setTimeout(probe, 300); });
+      setTimeout(probe, 4500); // 兜底：-face 解析慢时再测一次
+    } else {
+      setTimeout(probe, 1500);
+    }
+  })();
+</script>
+</body>
+</html>

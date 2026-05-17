@@ -9,6 +9,8 @@ Use this index to choose a visible design language before building cards. A desi
 3. Optionally add 1-2 modifiers.
 4. Combine with a theme preset and layout recipes.
 
+Each spec's `Recommended Typography` section describes type *roles* (display / serif / sans / mono). Concrete font families for those roles are not chosen here — they come from the `references/fonts.md` selection algorithm, which already encodes per-design-language typography constraints (e.g. `swiss-poster` ≤2 families, `editorial-artifact` serif headline).
+
 Recommended structure:
 
 ```text
