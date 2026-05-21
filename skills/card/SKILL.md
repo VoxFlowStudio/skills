@@ -431,6 +431,8 @@ Use `references/design-languages.md` to define the card set's visual grammar ind
     - **Output**:
       - `-o <path>` / `--output <path>` — custom output path (parents auto-created)
 
+    - **CJK content warning** (issue #3592): `drawtext` overlay (subtitle bar, intro, outro) uses ffmpeg's default font, which does **not** ship CJK glyphs. Chinese / Japanese / Korean text in those overlays renders as `□` tofu boxes. The PNGs themselves are fine (Playwright renders with system CJK fonts) — only the FFmpeg-overlaid text is affected. **For Chinese / Japanese / Korean decks, default to `--no-subtitle --no-intro --no-outro`** until the underlying fontfile bundling is fixed. The narration audio still drives timing per card, so the result is still a clean narrated reel.
+
     - Default output: `<dir>/<slugified deck.meta.title>.mp4` (next to the cards). If `meta.title` is empty, falls back to `cards.mp4`.
     - No external dependencies beyond FFmpeg (auto-detected; falls back to `ffmpeg-static` npm package when system ffmpeg is missing).
     - Intermediate files (WAVs, clips) stored in `<dir>/.card-render-work/` — auto-cleaned on success, preserved on failure for debugging.
