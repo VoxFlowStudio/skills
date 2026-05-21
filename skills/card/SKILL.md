@@ -1,6 +1,6 @@
 ---
 name: card
-description: "Use when the user wants to turn text content into a set of polished, shareable visual CARD IMAGES — knowledge cards, quote cards, 小红书图文, carousel cards, poster cards — rendered as HTML/CSS and exported via Playwright at ratios like 1:1 / 3:4 / 9:16. Triggers: card / 卡片 / 知识卡 / 文字卡片 / 金句卡 / 图文卡片 / 卡片生成 / make cards. For article → vertical card VIDEO use voxflow:slice; for short videos / AI clips use voxflow:video; for podcasts use voxflow:podcast."
+description: "Use when the user wants to turn text content into a set of polished, shareable visual CARD IMAGES or narrated card VIDEOS — knowledge cards, quote cards, 小红书图文, carousel cards, poster cards — rendered as HTML/CSS and exported via Playwright at ratios like 1:1 / 3:4 / 9:16; optionally produces narrated MP4 video from those cards via `voxflow card render` (Ken Burns + TTS). Triggers: card / 卡片 / 知识卡 / 文字卡片 / 金句卡 / 图文卡片 / 卡片生成 / make cards / card video / 卡片视频. For article → Slice-themed card VIDEO use voxflow:slice; for short videos / AI clips use voxflow:video; for podcasts use voxflow:podcast."
 ---
 
 # VoxFlow Skill — Card
@@ -363,6 +363,65 @@ Use `references/design-languages.md` to define the card set's visual grammar ind
    - Export one PNG per card with stable names such as `card-01.png`.
    - Default to 2x screenshot exports for sharpness. A `1080x1080` card should export as a `2160x2160` PNG unless the user explicitly asks for smaller files or `--scale 1`.
    - Provide the user with the output paths and a concise summary of the final ratio, count, and style.
+
+9. Write `deck.json` for video export (required when the user asks for video/narration).
+   - After all HTML cards are finalized and PNGs exported, write a `deck.json` in the output directory.
+   - This file drives TTS narration synthesis and video rendering in the next step.
+   - Format:
+
+   ```json
+   {
+     "meta": {
+       "title": "<Series title>",
+       "ratio": "<ratio used: 9:16 | 1:1 | 3:4>",
+       "language": "<zh | en>"
+     },
+     "cards": [
+       { "file": "card-01.html", "title": "...", "narration": "1-3 sentence spoken caption." },
+       { "file": "card-02.html", "title": "...", "narration": "..." }
+     ]
+   }
+   ```
+
+   - Narration rules:
+     - Write narration in the same language as the card copy.
+     - 1-3 sentences per card. Natural spoken rhythm — avoid lists, avoid bullet-speak.
+     - Don't restate the visual; add context, interpretation, or the key takeaway.
+     - Each card's narration should be understandable when heard without the image.
+   - Also add `data-narration="..."` to the `.card` element in every HTML file for transparency.
+   - Skip this step when the user explicitly asked for images only (no video).
+
+10. Render video (optional — only when user asked for video/narration output).
+    - After PNGs exist in `exports/` and `deck.json` is written:
+
+    ```bash
+    voxflow card render <output-dir>/
+    ```
+
+    - **Output directory structure** after render:
+      ```
+      cards/my-topic/
+      ├── card-01.html … card-N.html   (source HTML)
+      ├── deck.json                     (narration + metadata)
+      ├── exports/card-01.png …         (PNG exports)
+      ├── sources.md                    (attribution)
+      └── my-topic.mp4                  (final video — default output here)
+      ```
+
+    - **Key parameters** (pick based on user preference):
+      - `--voice <id>` — TTS voice. Suggest `voxflow voices` to browse.
+      - `--speed <n>` — narration speed 0.5-2.0 (default: 1.0)
+      - `--pause <sec>` — silence after each card's narration for reading time (default: 2.5)
+      - `--hold <sec>` — card duration in `--no-audio` mode (default: 5)
+      - `--bgm <path>` — background music file (loops at low volume)
+      - `--no-audio` — skip TTS, produce silent video
+      - `--no-intro` / `--no-outro` — skip title/branding cards
+      - `-o <path>` — custom output path
+
+    - Default output: `<dir>/<deck title>.mp4` (next to the cards).
+    - No external dependencies beyond FFmpeg (auto-detected; `ffmpeg-static` as fallback).
+    - Intermediate files (WAVs, clips) stored in `<dir>/.card-render-work/` — auto-cleaned on success, preserved on failure for debugging.
+    - For article-to-card VIDEO with Slice themes (paper-slide, editorial-mag, etc.), prefer `voxflow:slice` instead.
 
 ## Asset and Source Discipline
 

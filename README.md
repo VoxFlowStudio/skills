@@ -9,7 +9,7 @@
 
 ![VoxFlow CLI demo](https://github.com/VoxFlowStudio/skills/raw/main/demo.gif)
 
-Voice in your AI workflow. Six skills that let any AI coding agent (Claude Code · Cursor · Codex · Gemini CLI · Cline) speak in 200+ voices, generate podcasts, dub videos, transcribe audio, and turn text into card images — through one CLI.
+Voice in your AI workflow. Six skills that let any AI coding agent (Claude Code · Cursor · Codex · Gemini CLI · Cline) speak in 200+ voices, generate podcasts, dub videos, transcribe audio, and turn text into card images or narrated card videos — through one CLI.
 
 **Why VoxFlow over a raw TTS API?** One CLI handles auth, voice search, multi-speaker dialogue, video pipelines, and quota. The skills layer makes it native to whichever agent you're already using — no new context-switch.
 
@@ -53,7 +53,7 @@ Six focused skills, each loaded on demand:
 | **transcribe** | `voxflow:transcribe` | `asr` · `asr-jobs` · `translate` · `dub` · `video-translate` · `summarize` · `publish` |
 | **video** | `voxflow:video` | `picstory` · `present` · `slides` · `explain` · `image` |
 | **slice** | `voxflow:slice` | Article → vertical card video (1080×1920); 13 editorial / poster / magazine themes |
-| **card** | `voxflow:card` | Text → shareable card images (HTML/CSS + Playwright); 1:1 / 3:4 / 9:16, editorial design system |
+| **card** | `voxflow:card` | Text → shareable card images (HTML/CSS + Playwright); 1:1 / 3:4 / 9:16, editorial design system. Optional narrated MP4 video via `voxflow card render` (TTS + FFmpeg, in-project output) |
 
 Use the hub skill as the starting point — it routes to the others automatically.
 
