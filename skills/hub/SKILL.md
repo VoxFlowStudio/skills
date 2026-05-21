@@ -1,6 +1,6 @@
 ---
 name: hub
-description: Use when the user wants to read text aloud (TTS), search VoxFlow voices, sample AI stories, or set up VoxFlow install/auth/quota — the entry-point voice toolkit. For podcasts use voxflow:podcast; for short videos / AI clips use voxflow:video; for article-to-card reels (Slice) use voxflow:slice; for transcription / dubbing / subtitle translation use voxflow:transcribe.
+description: Use when the user wants to read text aloud (TTS), search VoxFlow voices, sample AI stories, or set up VoxFlow install/auth/quota — the entry-point voice toolkit. For podcasts use voxflow:podcast; for short videos / AI clips use voxflow:video; for article-to-card reels (Slice) use voxflow:slice; for shareable card images or narrated card videos use voxflow:card; for transcription / dubbing / subtitle translation use voxflow:transcribe.
 ---
 
 # VoxFlow Skill — Hub
@@ -19,7 +19,8 @@ For specialized tasks, switch to:
 
 - **Podcasts** (multi-speaker dialogue) → `voxflow:podcast`
 - **Short videos / AI clips / knowledge cards** (`picstory`, `present`, `slides`, `explain`) → `voxflow:video`
-- **Article → vertical card video (Slice)** — 6 themes (paper / editorial / poster / Notion / brutalist / glass), web app + Remotion → `voxflow:slice`
+- **Article → vertical card video (Slice)** — 13 themes (paper-slide / editorial-mag / bold-poster / notion-card / brutalist / glass-dark / editorial-stencil / broadsheet / blueprint / daisy-pastel / showa-catalog / photo-feature / atmospheric), web app + Remotion → `voxflow:slice`
+- **Shareable card images & narrated card videos** (HTML/CSS + Playwright export, optional `voxflow card render` for narrated MP4) → `voxflow:card`
 - **Transcription, subtitle translation, dubbing, summarize, publish** (`asr`, `asr-jobs`, `translate`, `dub`, `video-translate`, `summarize`, `publish`) → `voxflow:transcribe`
 
 ## Install & login

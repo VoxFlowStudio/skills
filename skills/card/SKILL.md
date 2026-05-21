@@ -1,6 +1,6 @@
 ---
 name: card
-description: "Use when the user wants to turn text content into a set of polished, shareable visual CARD IMAGES or narrated card VIDEOS — knowledge cards, quote cards, 小红书图文, carousel cards, poster cards — rendered as HTML/CSS and exported via Playwright at ratios like 1:1 / 3:4 / 9:16; optionally produces narrated MP4 video from those cards via `voxflow card render` (Ken Burns + TTS). Triggers: card / 卡片 / 知识卡 / 文字卡片 / 金句卡 / 图文卡片 / 卡片生成 / make cards / card video / 卡片视频. For article → Slice-themed card VIDEO use voxflow:slice; for short videos / AI clips use voxflow:video; for podcasts use voxflow:podcast."
+description: "Use when the user wants to turn text content into a set of polished, shareable visual CARD IMAGES or narrated card VIDEOS — knowledge cards, quote cards, 小红书图文, carousel cards, poster cards — rendered as HTML/CSS and exported via Playwright at ratios like 1:1 / 3:4 / 9:16; optionally produces a narrated MP4 video from those cards via `voxflow card render` (per-card TTS + FFmpeg static-image clips with optional subtitle bar / intro+outro cards / BGM mix). Triggers: card / 卡片 / 知识卡 / 文字卡片 / 金句卡 / 图文卡片 / 卡片生成 / make cards / card video / 卡片视频. For article → Slice-themed card VIDEO use voxflow:slice; for short videos / AI clips use voxflow:video; for podcasts use voxflow:podcast."
 ---
 
 # VoxFlow Skill — Card
@@ -374,7 +374,7 @@ Use `references/design-languages.md` to define the card set's visual grammar ind
      "meta": {
        "title": "<Series title>",
        "ratio": "<ratio used: 9:16 | 1:1 | 3:4>",
-       "language": "<zh | en>"
+       "language": "<zh | en | ja | ...>"
      },
      "cards": [
        { "file": "card-01.html", "title": "...", "narration": "1-3 sentence spoken caption." },
@@ -383,6 +383,11 @@ Use `references/design-languages.md` to define the card set's visual grammar ind
    }
    ```
 
+   - Field semantics:
+     - `meta.title` — drives the intro card text and the default output filename (slugified: `[^a-z0-9一-鿿]` → `-`, lowercased; CJK is preserved).
+     - `meta.language` — only `"zh"` switches the intro subtitle to "知识卡片"; any other value (including `"ja"`, `"en"`, `"mixed"`) falls back to "Card Series".
+     - `card.title` — used as the on-screen subtitle bar fallback when `card.narration` is empty.
+     - `card.narration` — the spoken caption fed to TTS and (by default) also rendered as the subtitle bar text.
    - Narration rules:
      - Write narration in the same language as the card copy.
      - 1-3 sentences per card. Natural spoken rhythm — avoid lists, avoid bullet-speak.
@@ -405,22 +410,31 @@ Use `references/design-languages.md` to define the card set's visual grammar ind
       ├── deck.json                     (narration + metadata)
       ├── exports/card-01.png …         (PNG exports)
       ├── sources.md                    (attribution)
-      └── my-topic.mp4                  (final video — default output here)
+      └── my-topic.mp4                  (final video — slug derived from deck.meta.title)
       ```
 
-    - **Key parameters** (pick based on user preference):
+    - **Audio / TTS**:
       - `--voice <id>` — TTS voice. Suggest `voxflow voices` to browse.
       - `--speed <n>` — narration speed 0.5-2.0 (default: 1.0)
-      - `--pause <sec>` — silence after each card's narration for reading time (default: 2.5)
+      - `--no-audio` — skip TTS, produce a silent video (zero quota)
+    - **Timing**:
+      - `--pause <sec>` — silence after each card's narration for reading time (default: 2.5). Baked into the WAV so it always shows in the final clip.
       - `--hold <sec>` — card duration in `--no-audio` mode (default: 5)
-      - `--bgm <path>` — background music file (loops at low volume)
-      - `--no-audio` — skip TTS, produce silent video
-      - `--no-intro` / `--no-outro` — skip title/branding cards
-      - `-o <path>` — custom output path
+    - **Structure**:
+      - `--no-intro` / `--no-outro` — skip title / branding cards
+      - `--intro-dur <sec>` — intro card duration (default: 2.5)
+      - `--outro-dur <sec>` — outro card duration (default: 2)
+    - **Overlay & mix**:
+      - `--no-subtitle` — disable the bottom subtitle bar (subtitles need FFmpeg with `libfreetype`; auto-detected and skipped if missing)
+      - `--bgm <path>` — background music, looped at low volume
+      - `--bgm-volume <n>` — BGM volume 0-1 (default: 0.08)
+    - **Output**:
+      - `-o <path>` / `--output <path>` — custom output path (parents auto-created)
 
-    - Default output: `<dir>/<deck title>.mp4` (next to the cards).
-    - No external dependencies beyond FFmpeg (auto-detected; `ffmpeg-static` as fallback).
+    - Default output: `<dir>/<slugified deck.meta.title>.mp4` (next to the cards). If `meta.title` is empty, falls back to `cards.mp4`.
+    - No external dependencies beyond FFmpeg (auto-detected; falls back to `ffmpeg-static` npm package when system ffmpeg is missing).
     - Intermediate files (WAVs, clips) stored in `<dir>/.card-render-work/` — auto-cleaned on success, preserved on failure for debugging.
+    - **Quota**: ~50 per card narrated (`tts-synthesize`); zero with `--no-audio`. A 5-card deck costs ~250 quota total.
     - For article-to-card VIDEO with Slice themes (paper-slide, editorial-mag, etc.), prefer `voxflow:slice` instead.
 
 ## Asset and Source Discipline

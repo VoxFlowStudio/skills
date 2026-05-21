@@ -1,13 +1,13 @@
 ---
 name: video
-description: Use when the user wants AI-generated short-form video — knowledge cards (picstory / 小红书 / TikTok / Reels), narrated explainers, presentations, AI clips, or slides — covering picstory, present, slides, explain, and image generation. For article-to-card reels (Slice — 6 themes including paper-slide), use voxflow:slice.
+description: Use when the user wants AI-generated short-form video — knowledge cards (picstory / 小红书 / TikTok / Reels), narrated explainers, presentations, AI clips, or slides — covering picstory, present, slides, explain, and image generation. For article-to-card reels (Slice — 13 themes including paper-slide), use voxflow:slice. For shareable HTML/CSS card images or narrated card MP4 videos (`voxflow card render`) use voxflow:card.
 ---
 
 # VoxFlow Video Skill
 
 Generate short-form videos with AI: LLM writes the script, AI draws cards or scenes, TTS narrates, FFmpeg / Remotion renders the final MP4.
 
-For article-to-card reels (Slice — 6 themes: paper / editorial / poster / Notion / brutalist / glass), switch to `voxflow:slice`.
+For article-to-card reels (Slice — 13 themes: paper-slide / editorial-mag / bold-poster / notion-card / brutalist / glass-dark / editorial-stencil / broadsheet / blueprint / daisy-pastel / showa-catalog / photo-feature / atmospheric), switch to `voxflow:slice`. For shareable HTML/CSS card image sets or narrated card-to-MP4 export, switch to `voxflow:card`.
 
 Five entry points — pick by what the user wants:
 
