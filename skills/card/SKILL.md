@@ -431,7 +431,7 @@ Use `references/design-languages.md` to define the card set's visual grammar ind
     - **Output**:
       - `-o <path>` / `--output <path>` — custom output path (parents auto-created)
 
-    - **CJK content warning** (issue #3592): `drawtext` overlay (subtitle bar, intro, outro) uses ffmpeg's default font, which does **not** ship CJK glyphs. Chinese / Japanese / Korean text in those overlays renders as `□` tofu boxes. The PNGs themselves are fine (Playwright renders with system CJK fonts) — only the FFmpeg-overlaid text is affected. **For Chinese / Japanese / Korean decks, default to `--no-subtitle --no-intro --no-outro`** until the underlying fontfile bundling is fixed. The narration audio still drives timing per card, so the result is still a clean narrated reel.
+    - **CJK content** (since CLI 1.17.1): subtitles, intro, and outro overlays auto-detect CJK text in `meta.title` / `card.title` / `card.narration` and inject a CJK-capable system fontfile (PingFang / Hiragino / Heiti on macOS; Noto CJK / WQY on Linux; msyh / SimSun on Windows). If your platform has no CJK font installed, set `VOXFLOW_CJK_FONT=/path/to/font.ttc` to point at one explicitly. When neither autodetect nor override finds a font, the command logs a warning and you should fall back to `--no-subtitle --no-intro --no-outro` to avoid `□` tofu boxes.
 
     - Default output: `<dir>/<slugified deck.meta.title>.mp4` (next to the cards). If `meta.title` is empty, falls back to `cards.mp4`.
     - No external dependencies beyond FFmpeg (auto-detected; falls back to `ffmpeg-static` npm package when system ffmpeg is missing).
