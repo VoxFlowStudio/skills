@@ -1,6 +1,6 @@
 {
   "name": "voxflow",
-  "version": "1.17.1",
+  "version": "1.17.2",
   "description": "AI voice CLI bundled as 6 skills (hub, podcast, transcribe, video, slice, card). Synthesize speech in 200+ voices across 40+ languages, generate multi-speaker AI podcasts, transcribe audio/video with word-level timestamps, dub videos from SRT subtitles, run end-to-end video translation, turn long articles into vertical card video reels via Remotion, and turn text into polished shareable card images or narrated card videos. Backed by a hosted TTS/ASR/LLM/render service with per-user quota (free tier 10K/mo).",
   "author": {
     "name": "VoxFlow",
